@@ -1,12 +1,20 @@
 # FloatingActionButtons Menu (FABsMenu)
-====================
 
 Just a simple library to use a menu with `FloatingActionButton`s from Design Support Library and following [guidelines](https://material.io/guidelines/components/buttons-floating-action-button.html#buttons-floating-action-button-transitions)
 
-## Usage
-=====
-Just add the dependency to your `build.gradle`:
 
+## Usage
+
+Add jitpack dependency to your root `build.gradle`:
+```groovy
+allprojects {
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+
+And add the dependency to your `build.gradle`:
 ```groovy
 dependencies {
     compile 'me.jahirfiquitiva:FABsMenu:1.0.0'
@@ -18,12 +26,11 @@ To see how the buttons are added to your xml layouts, check the sample project.
 
 
 ## Credits
-=======
+
 This project is based on Future Simple's [android-floating-action-button](https://github.com/futuresimple/android-floating-action-button) project, which is also based on [FloatingActionButton](https://github.com/makovkastar/FloatingActionButton) library by [Oleksandr Melnykov](https://github.com/makovkastar).
 
 
 ## License
-=======
 
 
     Copyright (c) 2017 Jahir Fiquitiva
@@ -41,6 +48,8 @@ This project is based on Future Simple's [android-floating-action-button](https:
     limitations under the License.
 
 
+	--
+	
 
     Copyright (c) 2014 Jerzy Chalupski
 
