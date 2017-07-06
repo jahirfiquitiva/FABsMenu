@@ -1,0 +1,208 @@
+<!--
+  ~ Copyright (c) 2017. Jahir Fiquitiva
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ 	 http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:fab="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:background="@color/background"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <jahirfiquitiva.libs.fabsmenu.TitleFAB
+            android:id="@+id/pink_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_fab_star"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="16dp"
+            fab:fabSize="normal"
+            fab:backgroundTint="@color/pink"
+            fab:rippleColor="@color/pink_pressed"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/pink_icon"
+            android:text="Text below button"
+            android:layout_centerHorizontal="true"
+            style="@style/menu_labels_style"
+            android:layout_marginBottom="48dp"
+            tools:ignore="HardcodedText"/>
+
+    <jahirfiquitiva.libs.fabsmenu.TitleFAB
+            android:id="@+id/setter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="16dp"/>
+
+    <jahirfiquitiva.libs.fabsmenu.FABsMenu
+            android:id="@+id/right_labels"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            fab:fab_moreButtonBackgroundColor="@color/white"
+            fab:fab_moreButtonRippleColor="@color/white_pressed"
+            fab:fab_moreButtonSize="mini"
+            fab:fab_labelStyle="@style/menu_labels_style"
+            fab:fab_labelsPosition="right">
+
+        <jahirfiquitiva.libs.fabsmenu.TitleFAB
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_title="Label on the right"
+                fab:backgroundTint="@color/white"
+                fab:rippleColor="@color/white_pressed"/>
+
+        <jahirfiquitiva.libs.fabsmenu.TitleFAB
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fabSize="mini"
+                fab:fab_title="Another one on the right"
+                fab:backgroundTint="@color/white"
+                fab:rippleColor="@color/white_pressed"/>
+
+    </jahirfiquitiva.libs.fabsmenu.FABsMenu>
+
+    <jahirfiquitiva.libs.fabsmenu.FABsMenu
+            android:id="@+id/multiple_actions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            fab:fab_moreButtonBackgroundColor="@color/white"
+            fab:fab_moreButtonRippleColor="@color/white_pressed"
+            fab:fab_labelStyle="@style/menu_labels_style"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp">
+
+        <jahirfiquitiva.libs.fabsmenu.TitleFAB
+                android:id="@+id/action_a"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_title="Action A"
+                fab:backgroundTint="@color/white"
+                fab:rippleColor="@color/white_pressed"/>
+
+        <jahirfiquitiva.libs.fabsmenu.TitleFAB
+                android:id="@+id/action_b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_title="Action with a very long name that won\'t fit on the screen"
+                fab:backgroundTint="@color/white"
+                fab:rippleColor="@color/white_pressed"/>
+
+    </jahirfiquitiva.libs.fabsmenu.FABsMenu>
+
+    <jahirfiquitiva.libs.fabsmenu.FABsMenu
+            android:id="@+id/multiple_actions_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            fab:fab_moreButtonBackgroundColor="@color/white"
+            fab:fab_moreButtonRippleColor="@color/white_pressed"
+            fab:fab_moreButtonSize="mini"
+            fab:fab_expandDirection="down"
+            fab:fab_labelStyle="@style/menu_labels_style"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp">
+
+        <jahirfiquitiva.libs.fabsmenu.TitleFAB
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fabSize="mini"
+                fab:backgroundTint="@color/white"
+                fab:rippleColor="@color/white_pressed"/>
+
+        <jahirfiquitiva.libs.fabsmenu.TitleFAB
+                android:id="@+id/button_remove"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_title="Click to remove"
+                fab:backgroundTint="@color/white"
+                fab:rippleColor="@color/white_pressed"/>
+
+        <jahirfiquitiva.libs.fabsmenu.TitleFAB
+                android:id="@+id/button_gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:backgroundTint="@color/white"
+                fab:rippleColor="@color/white_pressed"/>
+
+        <jahirfiquitiva.libs.fabsmenu.TitleFAB
+                android:id="@+id/action_enable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_title="Set bottom menu enabled/disabled"
+                fab:backgroundTint="@color/white"
+                fab:rippleColor="@color/white_pressed"/>
+
+    </jahirfiquitiva.libs.fabsmenu.FABsMenu>
+
+    <jahirfiquitiva.libs.fabsmenu.FABsMenu
+            android:id="@+id/multiple_actions_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/multiple_actions_down"
+            android:layout_toStartOf="@+id/multiple_actions_down"
+            android:layout_alignParentTop="true"
+            fab:fab_moreButtonBackgroundColor="@color/white"
+            fab:fab_moreButtonRippleColor="@color/white_pressed"
+            fab:fab_moreButtonSize="mini"
+            fab:fab_expandDirection="left"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp">
+
+        <jahirfiquitiva.libs.fabsmenu.TitleFAB
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:backgroundTint="@color/white"
+                fab:rippleColor="@color/white_pressed"/>
+
+        <jahirfiquitiva.libs.fabsmenu.TitleFAB
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:backgroundTint="@color/white"
+                fab:rippleColor="@color/white_pressed"
+                fab:fabSize="mini"/>
+
+        <jahirfiquitiva.libs.fabsmenu.TitleFAB
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                fab:backgroundTint="@color/white"
+                fab:rippleColor="@color/white_pressed"
+                fab:fabSize="mini"/>
+
+    </jahirfiquitiva.libs.fabsmenu.FABsMenu>
+
+    <jahirfiquitiva.libs.fabsmenu.TitleFAB
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/setter_drawable"
+            android:layout_above="@id/setter"
+            android:layout_centerHorizontal="true"/>
+</RelativeLayout>
