@@ -17,15 +17,12 @@
 package jahirfiquitiva.apps.fabsmenu.demo;
 
 import android.app.Activity;
-import android.content.res.ColorStateList;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Toast;
 
 import jahirfiquitiva.libs.fabsmenu.FABsMenu;
+import jahirfiquitiva.libs.fabsmenu.MenuFAB;
 import jahirfiquitiva.libs.fabsmenu.TitleFAB;
 
 public class MainActivity extends Activity {
@@ -35,78 +32,50 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*
-
-        findViewById(R.id.pink_icon).setOnClickListener(new View.OnClickListener() {
+        FABsMenu menu = findViewById(R.id.fabs_menu);
+        menu.setOnFABsMenuUpdateListener(new FABsMenu.OnFABsMenuUpdateListener() {
             @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Clicked pink Floating Action Button",
-                        Toast.LENGTH_SHORT).show();
+            public void onMenuClicked() {
+                showToast("You pressed the menu!");
+            }
+
+            @Override
+            public void onMenuExpanded() {
+                showToast("The menu has been expanded!");
+            }
+
+            @Override
+            public void onMenuCollapsed() {
+                showToast("The menu has been collapsed!");
             }
         });
 
-        TitleFAB button = findViewById(R.id.setter);
-        button.setSize(TitleFAB.SIZE_MINI);
-        button.setBackgroundTintList(ColorStateList.valueOf(
-                ContextCompat.getColor(this, R.color.pink)));
-        button.setRippleColor(ContextCompat.getColor(this, R.color.pink_pressed));
-        button.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_fab_star));
-
-        final View actionB = findViewById(R.id.action_b);
-
-        TitleFAB actionC = new TitleFAB(this);
-        actionC.setTitle("Hide/Show Action above");
-        actionC.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                actionB.setVisibility(actionB.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
-            }
-        });
-
-        final FABsMenu menuMultipleActions = findViewById(R.id.multiple_actions);
-        menuMultipleActions.addButton(actionC);
-
-        final TitleFAB removeAction = findViewById(R.id.button_remove);
-        removeAction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((FABsMenu) findViewById(R.id.multiple_actions_down)).removeButton(removeAction);
-            }
-        });
-
-        ShapeDrawable drawable = new ShapeDrawable(new OvalShape());
-        drawable.getPaint().setColor(ContextCompat.getColor(this, R.color.white));
-        ((TitleFAB) findViewById(R.id.setter_drawable)).setImageDrawable(drawable);
-
-        final TitleFAB actionA = findViewById(R.id.action_a);
-        actionA.setOnClickListener(new View.OnClickListener() {
+        TitleFAB clickableTitle = findViewById(R.id.clickable_title);
+        clickableTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                actionA.setTitle("Action A clicked");
+                showToast("You pressed the red fab or its title");
             }
         });
 
-        // Test that FAMs containing FABs with visibility GONE do not cause crashes
-        findViewById(R.id.button_gone).setVisibility(View.GONE);
-
-        final TitleFAB actionEnable = findViewById(R.id.action_enable);
-        actionEnable.setOnClickListener(new View.OnClickListener() {
+        TitleFAB mini = findViewById(R.id.mini_fab);
+        mini.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                menuMultipleActions.setEnabled(!menuMultipleActions.isEnabled());
+                showToast("You pressed the mini fab!");
             }
         });
 
-        FABsMenu rightLabels = findViewById(R.id.right_labels);
-        TitleFAB addedOnce = new TitleFAB(this);
-        addedOnce.setTitle("Added once");
-        rightLabels.addButton(addedOnce);
+        TitleFAB green = findViewById(R.id.green_fab);
+        green.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showToast("You pressed the green fab");
+            }
+        });
+    }
 
-        TitleFAB addedTwice = new TitleFAB(this);
-        addedTwice.setTitle("Added twice");
-        rightLabels.addButton(addedTwice);
-        rightLabels.removeButton(addedTwice);
-        rightLabels.addButton(addedTwice);
-        */
+    private void showToast(String text) {
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 }

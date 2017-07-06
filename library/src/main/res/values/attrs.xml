@@ -18,6 +18,7 @@
 <resources>
     <declare-styleable name="TitleFAB">
         <attr name="fab_title" format="string"/>
+        <attr name="fab_enableTitleClick" format="boolean"/>
     </declare-styleable>
     <declare-styleable name="FABsMenu">
         <attr name="fab_moreButtonRippleColor" format="color"/>

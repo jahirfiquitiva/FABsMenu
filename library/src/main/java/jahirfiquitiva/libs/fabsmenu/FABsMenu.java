@@ -38,6 +38,7 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
+import android.view.MotionEvent;
 import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,10 +62,10 @@ public class FABsMenu extends ViewGroup {
     private static Interpolator sExpandInterpolator = new OvershootInterpolator();
     private static Interpolator sCollapseInterpolator = new DecelerateInterpolator(3f);
     private static Interpolator sAlphaExpandInterpolator = new DecelerateInterpolator();
-    private Drawable mAddButtonPlusIcon;
-    private int mAddButtonColorNormal;
-    private int mAddButtonColorPressed;
-    private int mAddButtonSize;
+    private Drawable mMenuButtonPlusIcon;
+    private int mMenuButtonColorNormal;
+    private int mMenuButtonColorPressed;
+    private int mMenuButtonSize;
     private int mExpandDirection;
     private int mButtonSpacing;
     private int mLabelsMargin;
@@ -72,7 +73,7 @@ public class FABsMenu extends ViewGroup {
     private boolean mExpanded;
     private AnimatorSet mExpandAnimation = new AnimatorSet().setDuration(ANIMATION_DURATION);
     private AnimatorSet mCollapseAnimation = new AnimatorSet().setDuration(ANIMATION_DURATION);
-    private TitleFAB mAddButton;
+    private MenuFAB mMenuButton;
     private RotatingDrawable mRotatingDrawable;
     private int mMaxButtonWidth;
     private int mMaxButtonHeight;
@@ -106,12 +107,13 @@ public class FABsMenu extends ViewGroup {
 
         TypedArray attr = context.obtainStyledAttributes(attributeSet, R.styleable.FABsMenu,
                 0, 0);
-        mAddButtonPlusIcon = attr.getDrawable(R.styleable.FABsMenu_fab_moreButtonPlusIcon);
-        mAddButtonColorNormal = attr.getColor(R.styleable.FABsMenu_fab_moreButtonBackgroundColor,
+        mMenuButtonPlusIcon = attr.getDrawable(R.styleable.FABsMenu_fab_moreButtonPlusIcon);
+        mMenuButtonColorNormal = attr.getColor(R.styleable.FABsMenu_fab_moreButtonBackgroundColor,
                 getColor(android.R.color.holo_blue_dark));
-        mAddButtonColorPressed = attr.getColor(R.styleable.FABsMenu_fab_moreButtonRippleColor,
+        mMenuButtonColorPressed = attr.getColor(R.styleable.FABsMenu_fab_moreButtonRippleColor,
                 getColor(android.R.color.holo_blue_light));
-        mAddButtonSize = attr.getInt(R.styleable.FABsMenu_fab_moreButtonSize, TitleFAB.SIZE_NORMAL);
+        mMenuButtonSize = attr.getInt(R.styleable.FABsMenu_fab_moreButtonSize, TitleFAB
+                .SIZE_NORMAL);
         mExpandDirection = attr.getInt(R.styleable.FABsMenu_fab_expandDirection, EXPAND_UP);
         mLabelsStyle = attr.getResourceId(R.styleable.FABsMenu_fab_labelStyle, 0);
         mLabelsPosition = attr.getInt(R.styleable.FABsMenu_fab_labelsPosition, LABELS_ON_LEFT_SIDE);
@@ -135,10 +137,10 @@ public class FABsMenu extends ViewGroup {
     }
 
     private void createAddButton(Context context) {
-        mAddButton = new TitleFAB(context);
+        mMenuButton = new MenuFAB(context);
 
-        if (mAddButtonPlusIcon != null) {
-            RotatingDrawable rotatingDrawable = new RotatingDrawable(mAddButtonPlusIcon);
+        if (mMenuButtonPlusIcon != null) {
+            RotatingDrawable rotatingDrawable = new RotatingDrawable(mMenuButtonPlusIcon);
             mRotatingDrawable = rotatingDrawable;
 
             final OvershootInterpolator interpolator = new OvershootInterpolator();
@@ -154,24 +156,23 @@ public class FABsMenu extends ViewGroup {
             mExpandAnimation.play(expandAnimator);
             mCollapseAnimation.play(collapseAnimator);
 
-            mAddButton.setImageDrawable(rotatingDrawable);
+            mMenuButton.setImageDrawable(rotatingDrawable);
         }
 
-        mAddButton.setBackgroundTintList(ColorStateList.valueOf(mAddButtonColorNormal));
-        mAddButton.setRippleColor(mAddButtonColorPressed);
+        mMenuButton.setBackgroundTintList(ColorStateList.valueOf(mMenuButtonColorNormal));
+        mMenuButton.setRippleColor(mMenuButtonColorPressed);
 
-        mAddButton.requestLayout();
-
-        mAddButton.setId(R.id.fab_expand_menu_button);
-        mAddButton.setSize(mAddButtonSize);
-        mAddButton.setOnClickListener(new OnClickListener() {
+        mMenuButton.setId(R.id.fab_expand_menu_button);
+        mMenuButton.setSize(mMenuButtonSize);
+        mMenuButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mListener != null) mListener.onMenuClicked();
                 toggle();
             }
         });
 
-        addView(mAddButton, super.generateDefaultLayoutParams());
+        addView(mMenuButton, super.generateDefaultLayoutParams());
         mButtonsCount++;
     }
 
@@ -207,8 +208,8 @@ public class FABsMenu extends ViewGroup {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         measureChildren(widthMeasureSpec, heightMeasureSpec);
 
-        int width = 0;
-        int height = 0;
+        int width = mButtonSpacing;
+        int height = mButtonSpacing;
 
         mMaxButtonWidth = 0;
         mMaxButtonHeight = 0;
@@ -264,6 +265,14 @@ public class FABsMenu extends ViewGroup {
         setMeasuredDimension(width, height);
     }
 
+    private void setMargins(View view, int left, int top, int right, int bottom) {
+        if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+            p.setMargins(left, top, right, bottom);
+            view.requestLayout();
+        }
+    }
+
     private int adjustForOvershoot(int dimension) {
         return dimension * 12 / 10;
     }
@@ -276,18 +285,17 @@ public class FABsMenu extends ViewGroup {
             case EXPAND_DOWN:
                 boolean expandUp = mExpandDirection == EXPAND_UP;
 
-                if (changed) {
-                    mTouchDelegateGroup.clearTouchDelegates();
-                }
+                mTouchDelegateGroup.clearTouchDelegates();
 
-                int addButtonY = expandUp ? b - t - mAddButton.getMeasuredHeight() : 0;
-                // Ensure mAddButton is centered on the line where the buttons should be
+                int addButtonY = expandUp ? b - t - mMenuButton.getMeasuredHeight() : 0;
+                // Ensure mMenuButton is centered on the line where the buttons should be
                 int buttonsHorizontalCenter = mLabelsPosition == LABELS_ON_LEFT_SIDE
                         ? r - l - mMaxButtonWidth / 2
                         : mMaxButtonWidth / 2;
-                int addButtonLeft = buttonsHorizontalCenter - mAddButton.getMeasuredWidth() / 2;
-                mAddButton.layout(addButtonLeft, addButtonY, addButtonLeft + mAddButton
-                        .getMeasuredWidth(), addButtonY + mAddButton.getMeasuredHeight());
+                int addButtonLeft = buttonsHorizontalCenter - mMenuButton.getMeasuredWidth() / 2;
+                mMenuButton.layout(addButtonLeft, addButtonY, addButtonLeft +
+                        mMenuButton.getMeasuredWidth(), addButtonY + mMenuButton
+                        .getMeasuredHeight());
 
                 int labelsOffset = mMaxButtonWidth / 2 + mLabelsMargin;
                 int labelsXNearButton = mLabelsPosition == LABELS_ON_LEFT_SIDE
@@ -296,12 +304,12 @@ public class FABsMenu extends ViewGroup {
 
                 int nextY = expandUp ?
                         addButtonY - mButtonSpacing :
-                        addButtonY + mAddButton.getMeasuredHeight() + mButtonSpacing;
+                        addButtonY + mMenuButton.getMeasuredHeight() + mButtonSpacing;
 
                 for (int i = mButtonsCount - 1; i >= 0; i--) {
                     final View child = getChildAt(i);
 
-                    if (child == mAddButton || child.getVisibility() == GONE) continue;
+                    if (child == mMenuButton || child.getVisibility() == GONE) continue;
 
                     int childX = buttonsHorizontalCenter - child.getMeasuredWidth() / 2;
                     int childY = expandUp ? nextY - child.getMeasuredHeight() : nextY;
@@ -368,24 +376,24 @@ public class FABsMenu extends ViewGroup {
             case EXPAND_RIGHT:
                 boolean expandLeft = mExpandDirection == EXPAND_LEFT;
 
-                int addButtonX = expandLeft ? r - l - mAddButton.getMeasuredWidth() : 0;
-                // Ensure mAddButton is centered on the line where the buttons should be
-                int addButtonTop = b - t - mMaxButtonHeight + (mMaxButtonHeight - mAddButton
+                int addButtonX = expandLeft ? r - l - mMenuButton.getMeasuredWidth() : 0;
+                // Ensure mMenuButton is centered on the line where the buttons should be
+                int addButtonTop = b - t - mMaxButtonHeight + (mMaxButtonHeight - mMenuButton
                         .getMeasuredHeight()) / 2;
-                mAddButton.layout(addButtonX, addButtonTop, addButtonX + mAddButton
-                        .getMeasuredWidth(), addButtonTop + mAddButton.getMeasuredHeight());
+                mMenuButton.layout(addButtonX, addButtonTop, addButtonX + mMenuButton
+                        .getMeasuredWidth(), addButtonTop + mMenuButton.getMeasuredHeight());
 
                 int nextX = expandLeft ?
                         addButtonX - mButtonSpacing :
-                        addButtonX + mAddButton.getMeasuredWidth() + mButtonSpacing;
+                        addButtonX + mMenuButton.getMeasuredWidth() + mButtonSpacing;
 
                 for (int i = mButtonsCount - 1; i >= 0; i--) {
                     final View child = getChildAt(i);
 
-                    if (child == mAddButton || child.getVisibility() == GONE) continue;
+                    if (child == mMenuButton || child.getVisibility() == GONE) continue;
 
                     int childX = expandLeft ? nextX - child.getMeasuredWidth() : nextX;
-                    int childY = addButtonTop + (mAddButton.getMeasuredHeight() - child
+                    int childY = addButtonTop + (mMenuButton.getMeasuredHeight() - child
                             .getMeasuredHeight()) / 2;
                     child.layout(childX, childY, childX + child.getMeasuredWidth(), childY +
                             child.getMeasuredHeight());
@@ -434,7 +442,7 @@ public class FABsMenu extends ViewGroup {
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        bringChildToFront(mAddButton);
+        bringChildToFront(mMenuButton);
         mButtonsCount = getChildCount();
 
         if (mLabelsStyle != 0) {
@@ -449,12 +457,20 @@ public class FABsMenu extends ViewGroup {
             TitleFAB button = (TitleFAB) getChildAt(i);
             String title = button.getTitle();
 
-            if (button == mAddButton || title == null || title.length() <= 0 ||
+            if (button == mMenuButton || title == null || title.length() <= 0 ||
                     button.getTag(R.id.fab_label) != null) continue;
 
             TextView label = new TextView(context);
             TextViewCompat.setTextAppearance(label, mLabelsStyle);
             label.setText(button.getTitle());
+
+            if (button.isTitleClickEnabled()) {
+                if (button.getClickListener() != null) {
+                    label.setClickable(true);
+                    label.setOnClickListener(button.getClickListener());
+                }
+            }
+
             addView(label);
 
             button.setTag(R.id.fab_label, label);
@@ -497,7 +513,6 @@ public class FABsMenu extends ViewGroup {
             mTouchDelegateGroup.setEnabled(true);
             mCollapseAnimation.cancel();
             mExpandAnimation.start();
-
             if (mListener != null) {
                 mListener.onMenuExpanded();
             }
@@ -511,8 +526,7 @@ public class FABsMenu extends ViewGroup {
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
-
-        mAddButton.setEnabled(enabled);
+        mMenuButton.setEnabled(enabled);
     }
 
     @Override
@@ -520,7 +534,6 @@ public class FABsMenu extends ViewGroup {
         Parcelable superState = super.onSaveInstanceState();
         SavedState savedState = new SavedState(superState);
         savedState.mExpanded = mExpanded;
-
         return savedState;
     }
 
@@ -530,12 +543,10 @@ public class FABsMenu extends ViewGroup {
             SavedState savedState = (SavedState) state;
             mExpanded = savedState.mExpanded;
             mTouchDelegateGroup.setEnabled(mExpanded);
-
             if (mRotatingDrawable != null) {
                 mRotatingDrawable.setRotation(mExpanded ? EXPANDED_PLUS_ROTATION :
                         COLLAPSED_PLUS_ROTATION);
             }
-
             super.onRestoreInstanceState(savedState.getSuperState());
         } else {
             super.onRestoreInstanceState(state);
@@ -543,6 +554,8 @@ public class FABsMenu extends ViewGroup {
     }
 
     public interface OnFABsMenuUpdateListener {
+        void onMenuClicked();
+
         void onMenuExpanded();
 
         void onMenuCollapsed();
@@ -706,4 +719,12 @@ public class FABsMenu extends ViewGroup {
         return dp;
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return false;
+    }
+
+    public TitleFAB getMenuButton() {
+        return mMenuButton;
+    }
 }

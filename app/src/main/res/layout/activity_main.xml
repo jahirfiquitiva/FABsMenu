@@ -20,13 +20,14 @@
                 android:layout_height="match_parent">
 
     <jahirfiquitiva.libs.fabsmenu.FABsMenu
-            android:id="@+id/multiple_actions_left"
+            android:id="@+id/fabs_menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_margin="16dp"
+            android:clipChildren="false"
             fab:fab_moreButtonBackgroundColor="@color/pink"
             fab:fab_moreButtonRippleColor="@color/pink_pressed"
             fab:fab_moreButtonSize="normal"
@@ -35,22 +36,17 @@
             fab:fab_expandDirection="up">
 
         <jahirfiquitiva.libs.fabsmenu.TitleFAB
+                android:id="@+id/clickable_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                fab:fab_title="Primary color fab"
-                fab:fabSize="normal"
-                fab:backgroundTint="@color/colorPrimary"
-                fab:rippleColor="@color/colorPrimaryDark"/>
-
-        <jahirfiquitiva.libs.fabsmenu.TitleFAB
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                fab:fab_title="Red fab"
+                fab:fab_title="Clickable title"
+                fab:fab_enableTitleClick="true"
                 fab:fabSize="mini"
                 fab:backgroundTint="@color/colorAccent"
                 fab:rippleColor="@color/colorAccent"/>
 
         <jahirfiquitiva.libs.fabsmenu.TitleFAB
+                android:id="@+id/mini_fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 fab:fab_title="Mini fab with long text"
@@ -59,9 +55,9 @@
                 fab:rippleColor="@color/blue_semi_pressed"/>
 
         <jahirfiquitiva.libs.fabsmenu.TitleFAB
+                android:id="@+id/green_fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
                 fab:fab_title="Fab with even longer text that might not even fit in all the screens"
                 fab:fabSize="normal"
                 fab:backgroundTint="@color/green"

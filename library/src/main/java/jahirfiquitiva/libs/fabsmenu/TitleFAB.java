@@ -18,14 +18,20 @@ package jahirfiquitiva.libs.fabsmenu;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.TextView;
 
+@CoordinatorLayout.DefaultBehavior(FABSnackbarBehavior.class)
 public class TitleFAB extends FloatingActionButton {
 
     private static final int MAX_CHARACTERS_COUNT = 25;
-    String mTitle;
+    private String mTitle;
+    private boolean titleClickEnabled;
+    private View.OnClickListener clickListener;
 
     public TitleFAB(Context context) {
         this(context, null);
@@ -44,7 +50,18 @@ public class TitleFAB extends FloatingActionButton {
     void init(Context context, AttributeSet attributeSet) {
         TypedArray attr = context.obtainStyledAttributes(attributeSet, R.styleable.TitleFAB, 0, 0);
         mTitle = attr.getString(R.styleable.TitleFAB_fab_title);
+        titleClickEnabled = attr.getBoolean(R.styleable.TitleFAB_fab_enableTitleClick, false);
         attr.recycle();
+    }
+
+    @Override
+    public void setOnClickListener(@Nullable OnClickListener l) {
+        super.setOnClickListener(l);
+        this.clickListener = l;
+    }
+
+    public OnClickListener getClickListener() {
+        return clickListener;
     }
 
     TextView getLabelView() {
@@ -68,5 +85,13 @@ public class TitleFAB extends FloatingActionButton {
         if (label != null) {
             label.setText(title);
         }
+    }
+
+    public boolean isTitleClickEnabled() {
+        return titleClickEnabled;
+    }
+
+    public void setTitleClickEnabled(boolean titleClickEnabled) {
+        this.titleClickEnabled = titleClickEnabled;
     }
 }
