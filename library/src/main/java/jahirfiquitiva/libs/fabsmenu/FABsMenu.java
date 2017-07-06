@@ -22,6 +22,7 @@ import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -34,6 +35,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.TextViewCompat;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.TouchDelegate;
@@ -43,8 +45,6 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.TextView;
-
-import jahirfiquitiva.libs.fabsmenu.R;
 
 public class FABsMenu extends ViewGroup {
     public static final int EXPAND_UP = 0;
@@ -97,15 +97,9 @@ public class FABsMenu extends ViewGroup {
     }
 
     private void init(Context context, AttributeSet attributeSet) {
-        mButtonSpacing = 0;
-        /*
-        mButtonSpacing = (int) (getResources().getDimension(R.dimen.fab_actions_spacing) -
-                getResources().getDimension(R.dimen.fab_shadow_radius) -
-                getResources().getDimension(R.dimen.fab_shadow_offset));
-        */
+        mButtonSpacing = (int) convertDpToPixel(16, context);
         mLabelsMargin = getResources().getDimensionPixelSize(R.dimen.fab_labels_margin);
-        mLabelsVerticalOffset = 4; //getResources().getDimensionPixelSize(R.dimen
-        // .fab_shadow_offset);
+        mLabelsVerticalOffset = (int) convertDpToPixel(-2, context);
 
         mTouchDelegateGroup = new TouchDelegateGroup(this);
         setTouchDelegate(mTouchDelegateGroup);
@@ -114,13 +108,13 @@ public class FABsMenu extends ViewGroup {
                 0, 0);
         mAddButtonPlusIcon = attr.getDrawable(R.styleable.FABsMenu_fab_moreButtonPlusIcon);
         mAddButtonColorNormal = attr.getColor(R.styleable.FABsMenu_fab_moreButtonBackgroundColor,
-                getColor(android.R.color                .holo_blue_dark));
-        mAddButtonColorPressed = attr.getColor(R.styleable                .FABsMenu_fab_moreButtonRippleColor,
-                getColor(android.R.color                .holo_blue_light));
-        mAddButtonSize = attr.getInt(R.styleable.FABsMenu_fab_moreButtonSize,TitleFAB.SIZE_NORMAL);
-        mExpandDirection = attr.getInt(R.styleable.FABsMenu_fab_expandDirection,                EXPAND_UP);
+                getColor(android.R.color.holo_blue_dark));
+        mAddButtonColorPressed = attr.getColor(R.styleable.FABsMenu_fab_moreButtonRippleColor,
+                getColor(android.R.color.holo_blue_light));
+        mAddButtonSize = attr.getInt(R.styleable.FABsMenu_fab_moreButtonSize, TitleFAB.SIZE_NORMAL);
+        mExpandDirection = attr.getInt(R.styleable.FABsMenu_fab_expandDirection, EXPAND_UP);
         mLabelsStyle = attr.getResourceId(R.styleable.FABsMenu_fab_labelStyle, 0);
-        mLabelsPosition = attr.getInt(R.styleable.FABsMenu_fab_labelsPosition,                LABELS_ON_LEFT_SIDE);
+        mLabelsPosition = attr.getInt(R.styleable.FABsMenu_fab_labelsPosition, LABELS_ON_LEFT_SIDE);
         attr.recycle();
 
         if (mLabelsStyle != 0 && expandsHorizontally()) {
@@ -339,11 +333,11 @@ public class FABsMenu extends ViewGroup {
                                 ? labelsXNearButton
                                 : labelXAwayFromButton;
 
-                        int labelTop = childY - mLabelsVerticalOffset + (child.getMeasuredHeight
-                                () - label.getMeasuredHeight()) / 2;
+                        int labelTop = childY - mLabelsVerticalOffset +
+                                (child.getMeasuredHeight() - label.getMeasuredHeight()) / 2;
 
-                        label.layout(labelLeft, labelTop, labelRight, labelTop + label
-                                .getMeasuredHeight());
+                        label.layout(labelLeft, labelTop, labelRight, labelTop +
+                                label.getMeasuredHeight());
 
                         Rect touchArea = new Rect(
                                 Math.min(childX, labelLeft),
@@ -455,7 +449,7 @@ public class FABsMenu extends ViewGroup {
             TitleFAB button = (TitleFAB) getChildAt(i);
             String title = button.getTitle();
 
-            if (button == mAddButton || title == null ||
+            if (button == mAddButton || title == null || title.length() <= 0 ||
                     button.getTag(R.id.fab_label) != null) continue;
 
             TextView label = new TextView(context);
@@ -681,4 +675,35 @@ public class FABsMenu extends ViewGroup {
             });
         }
     }
+
+
+    /**
+     * This method converts dp unit to equivalent pixels, depending on device density.
+     *
+     * @param dp      A value in dp (density independent pixels) unit. Which we need to convert into
+     *                pixels
+     * @param context Context to get resources and device specific display metrics
+     * @return A float value to represent px equivalent to dp depending on device density
+     */
+    public static float convertDpToPixel(float dp, Context context) {
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float px = dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return px;
+    }
+
+    /**
+     * This method converts device specific pixels to density independent pixels.
+     *
+     * @param px      A value in px (pixels) unit. Which we need to convert into db
+     * @param context Context to get resources and device specific display metrics
+     * @return A float value to represent dp equivalent to px value
+     */
+    public static float convertPixelsToDp(float px, Context context) {
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float dp = px / ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return dp;
+    }
+
 }

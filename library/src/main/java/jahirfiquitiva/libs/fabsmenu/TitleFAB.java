@@ -22,10 +22,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-import jahirfiquitiva.libs.fabsmenu.R;
-
 public class TitleFAB extends FloatingActionButton {
 
+    private static final int MAX_CHARACTERS_COUNT = 25;
     String mTitle;
 
     public TitleFAB(Context context) {
@@ -53,7 +52,14 @@ public class TitleFAB extends FloatingActionButton {
     }
 
     public String getTitle() {
-        return mTitle;
+        if (mTitle == null) return null;
+        StringBuilder title = new StringBuilder();
+        if (mTitle.length() > MAX_CHARACTERS_COUNT) {
+            title.append(mTitle.substring(0, MAX_CHARACTERS_COUNT)).append("...");
+        } else {
+            title.append(mTitle);
+        }
+        return title.toString();
     }
 
     public void setTitle(String title) {

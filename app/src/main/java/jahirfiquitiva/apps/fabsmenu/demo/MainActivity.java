@@ -28,14 +28,14 @@ import android.widget.Toast;
 import jahirfiquitiva.libs.fabsmenu.FABsMenu;
 import jahirfiquitiva.libs.fabsmenu.TitleFAB;
 
-import jahirfiquitiva.apps.fabsmenu.demo.R;
-
 public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        /*
 
         findViewById(R.id.pink_icon).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,13 +54,12 @@ public class MainActivity extends Activity {
 
         final View actionB = findViewById(R.id.action_b);
 
-        TitleFAB actionC = new TitleFAB(getBaseContext());
+        TitleFAB actionC = new TitleFAB(this);
         actionC.setTitle("Hide/Show Action above");
         actionC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                actionB.setVisibility(actionB.getVisibility() == View.GONE ? View.VISIBLE : View
-                        .GONE);
+                actionB.setVisibility(actionB.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
             }
         });
 
@@ -108,5 +107,6 @@ public class MainActivity extends Activity {
         rightLabels.addButton(addedTwice);
         rightLabels.removeButton(addedTwice);
         rightLabels.addButton(addedTwice);
+        */
     }
 }
