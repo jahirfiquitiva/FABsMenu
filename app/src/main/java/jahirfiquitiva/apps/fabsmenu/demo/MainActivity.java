@@ -22,7 +22,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import jahirfiquitiva.libs.fabsmenu.FABsMenu;
-import jahirfiquitiva.libs.fabsmenu.MenuFAB;
 import jahirfiquitiva.libs.fabsmenu.TitleFAB;
 
 public class MainActivity extends Activity {
