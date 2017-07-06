@@ -48,7 +48,7 @@ This project is based on Future Simple's [android-floating-action-button](https:
     limitations under the License.
 
 
-	--
+## Original license
 	
 
     Copyright (c) 2014 Jerzy Chalupski
