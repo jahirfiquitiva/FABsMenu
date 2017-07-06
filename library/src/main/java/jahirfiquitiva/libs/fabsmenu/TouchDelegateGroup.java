@@ -22,6 +22,8 @@ import android.view.MotionEvent;
 import android.view.TouchDelegate;
 import android.view.View;
 
+import jahirfiquitiva.libs.fabsmenu.R;
+
 import java.util.ArrayList;
 
 public class TouchDelegateGroup extends TouchDelegate {

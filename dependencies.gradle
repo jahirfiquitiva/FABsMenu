@@ -16,7 +16,7 @@
 
 ext.versions = [
         // Core app details
-        appId                  : "FABs Menu",
+        appId                  : "FABsMenu",
         appGroup               : "jahirfiquitiva.apps",
         libGroup               : "jahirfiquitiva.libs",
         minSdk                 : 16,

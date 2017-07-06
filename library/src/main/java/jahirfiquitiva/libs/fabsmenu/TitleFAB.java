@@ -22,6 +22,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+import jahirfiquitiva.libs.fabsmenu.R;
+
 public class TitleFAB extends FloatingActionButton {
 
     String mTitle;

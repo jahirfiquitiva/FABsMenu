@@ -22,8 +22,6 @@ android {
     buildToolsVersion versions.buildTools
 
     lintOptions {
-        abortOnError false
-        checkReleaseBuilds false
         disable 'MissingTranslation'
         disable 'GoogleAppIndexingWarning'
     }

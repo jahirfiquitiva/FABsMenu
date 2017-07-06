@@ -28,14 +28,12 @@ android {
     }
 
     lintOptions {
-        abortOnError false
-        checkReleaseBuilds false
         disable 'MissingTranslation'
         disable 'GoogleAppIndexingWarning'
     }
 
     defaultConfig {
-        applicationId versions.appGroup + "." + versions.appId.replaceAll(" ","").toLowerCase() + ".demo"
+        applicationId "jahirfiquitiva.apps.fabsmenu.demo"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
         versionCode versions.versionCode

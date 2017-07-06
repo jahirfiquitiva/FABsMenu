@@ -28,6 +28,8 @@ import android.widget.Toast;
 import jahirfiquitiva.libs.fabsmenu.FABsMenu;
 import jahirfiquitiva.libs.fabsmenu.TitleFAB;
 
+import jahirfiquitiva.apps.fabsmenu.demo.R;
+
 public class MainActivity extends Activity {
 
     @Override

@@ -17,5 +17,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="jahirfiquitiva.libs.fabsmenu">
 
-    <application android:supportsRtl="true"/>
+    <application android:supportsRtl="true">
+
+    </application>
 </manifest>
