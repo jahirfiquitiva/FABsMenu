@@ -42,9 +42,6 @@ Then sync the gradle files.
 
 Finally, use it in your layout, just like this:
 
-To see how the buttons are added to your xml layouts, check the sample project.
-
-
 ```xml
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:fab="http://schemas.android.com/apk/res-auto"
@@ -125,6 +122,27 @@ To see how the buttons are added to your xml layouts, check the sample project.
 </RelativeLayout>
 ```
 
+And call the methods in java code:
+```java
+final FABsMenu menu = findViewById(R.id.fabs_menu);
+        menu.setMenuUpdateListener(new FABsMenu.OnFABsMenuUpdateListener() {
+            @Override
+            public void onMenuClicked() {
+                showToast("You pressed the menu!");
+                menu.toggle(); // Expands or collapses the menu depending on its state
+            }
+
+            @Override
+            public void onMenuExpanded() {
+                showToast("The menu has been expanded!");
+            }
+
+            @Override
+            public void onMenuCollapsed() {
+                showToast("The menu has been collapsed!");
+            }
+        });
+```
 
 ## Attributes explanation
 
@@ -134,6 +152,10 @@ To see how the buttons are added to your xml layouts, check the sample project.
 
 2. FABsMenu attributes
 	* `fab_menuMargins` --> The margins of the menu (Defaults to `16dp`)
+	* `fab_menuTopMargin` --> The top margin of the menu (Defaults to `fab_menuMargins`)
+	* `fab_menuBottomMargin` --> The bottom margin of the menu (Defaults to `fab_menuMargins`)
+	* `fab_menuRightMargin` --> The right margin of the menu (Defaults to `fab_menuMargins`)
+	* `fab_menuLeftMargin` --> The left margin of the menu (Defaults to `fab_menuMargins`)
 	* `fab_moreButtonRippleColor` --> The menu fab ripples color
 	* `fab_moreButtonBackgroundColor` --> The menu fab background color
 	* `fab_moreButtonSize` --> Specify the size. Choose between `mini` and `normal` (Defaults to `normal`)

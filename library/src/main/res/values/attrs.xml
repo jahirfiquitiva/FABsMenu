@@ -32,6 +32,10 @@
 
     <declare-styleable name="FABsMenu">
         <attr name="fab_menuMargins" format="dimension"/>
+        <attr name="fab_menuTopMargin" format="dimension"/>
+        <attr name="fab_menuBottomMargin" format="dimension"/>
+        <attr name="fab_menuRightMargin" format="dimension"/>
+        <attr name="fab_menuLeftMargin" format="dimension"/>
 
         <attr name="fab_moreButtonRippleColor" format="color"/>
         <attr name="fab_moreButtonBackgroundColor" format="color"/>

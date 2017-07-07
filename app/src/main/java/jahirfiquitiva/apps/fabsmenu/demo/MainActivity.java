@@ -34,11 +34,12 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.activity_main);
 
-        FABsMenu menu = findViewById(R.id.fabs_menu);
-        menu.setOnFABsMenuUpdateListener(new FABsMenu.OnFABsMenuUpdateListener() {
+        final FABsMenu menu = findViewById(R.id.fabs_menu);
+        menu.setMenuUpdateListener(new FABsMenu.OnFABsMenuUpdateListener() {
             @Override
             public void onMenuClicked() {
                 showToast("You pressed the menu!");
+                menu.toggle();
             }
 
             @Override
