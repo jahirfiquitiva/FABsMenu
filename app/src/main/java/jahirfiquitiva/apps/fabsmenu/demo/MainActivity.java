@@ -35,17 +35,17 @@ public class MainActivity extends Activity {
         menu.setOnFABsMenuUpdateListener(new FABsMenu.OnFABsMenuUpdateListener() {
             @Override
             public void onMenuClicked() {
-                // showToast("You pressed the menu!");
+                showToast("You pressed the menu!");
             }
 
             @Override
             public void onMenuExpanded() {
-                // showToast("The menu has been expanded!");
+                showToast("The menu has been expanded!");
             }
 
             @Override
             public void onMenuCollapsed() {
-                // showToast("The menu has been collapsed!");
+                showToast("The menu has been collapsed!");
             }
         });
 

@@ -474,8 +474,6 @@ public class FABsMenu extends ViewGroup {
                             button.getClickListener().onClick(label);
                     }
                 });
-            } else {
-                Log.e("FABs", "Button title click is not enabled");
             }
 
             addView(label);
