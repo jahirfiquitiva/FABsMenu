@@ -509,11 +509,6 @@ public class FABsMenu extends ViewGroup {
                 labelText.setPadding(mLabelTextPadding, mLabelTextPadding / 2, mLabelTextPadding,
                         mLabelTextPadding / 2);
 
-                TypedValue outValue = new TypedValue();
-                getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackground,
-                        outValue, true);
-                label.setForeground(ContextCompat.getDrawable(getContext(), outValue.resourceId));
-
                 if (button.isTitleClickEnabled()) {
                     label.setClickable(true);
                     label.setOnClickListener(new OnClickListener() {

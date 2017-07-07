@@ -19,8 +19,11 @@ package jahirfiquitiva.libs.fabsmenu;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
+import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.widget.TextView;
 
 public class LabelView extends CardView {
@@ -46,6 +49,19 @@ public class LabelView extends CardView {
         super(context, attrs, defStyleAttr);
         rightBackgroundColor = backgroundColor;
         setCardBackgroundColor(0);
+    }
+
+    @Override
+    public void setOnClickListener(@Nullable OnClickListener l) {
+        if (l != null) {
+            TypedValue outValue = new TypedValue();
+            getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackground,
+                    outValue, true);
+            setForeground(ContextCompat.getDrawable(getContext(), outValue.resourceId));
+        } else {
+            setForeground(null);
+        }
+        super.setOnClickListener(l);
     }
 
     @Override
