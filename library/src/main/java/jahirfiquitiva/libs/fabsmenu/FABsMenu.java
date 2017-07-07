@@ -454,21 +454,28 @@ public class FABsMenu extends ViewGroup {
         Context context = new ContextThemeWrapper(getContext(), mLabelsStyle);
 
         for (int i = 0; i < mButtonsCount; i++) {
-            TitleFAB button = (TitleFAB) getChildAt(i);
+            final TitleFAB button = (TitleFAB) getChildAt(i);
             String title = button.getTitle();
 
             if (button == mMenuButton || title == null || title.length() <= 0 ||
                     button.getTag(R.id.fab_label) != null) continue;
 
-            TextView label = new TextView(context);
+            final TextView label = new TextView(context);
+            label.setId(i + 1);
             TextViewCompat.setTextAppearance(label, mLabelsStyle);
             label.setText(button.getTitle());
 
             if (button.isTitleClickEnabled()) {
-                if (button.getClickListener() != null) {
-                    label.setClickable(true);
-                    label.setOnClickListener(button.getClickListener());
-                }
+                label.setClickable(true);
+                label.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (button.getClickListener() != null)
+                            button.getClickListener().onClick(label);
+                    }
+                });
+            } else {
+                Log.e("FABs", "Button title click is not enabled");
             }
 
             addView(label);
