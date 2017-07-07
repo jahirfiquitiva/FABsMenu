@@ -18,18 +18,21 @@ package jahirfiquitiva.libs.fabsmenu;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 public class FABsMenuLayout extends FrameLayout {
 
     @ColorInt
-    private int backgroundColor;
+    private int overlayColor;
+    private View overlayView;
 
     public FABsMenuLayout(@NonNull Context context) {
         super(context);
@@ -49,9 +52,31 @@ public class FABsMenuLayout extends FrameLayout {
     private void init(Context context, AttributeSet attrs) {
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs,
                 R.styleable.FABsMenuLayout, 0, 0);
-        backgroundColor = a.getColor(R.styleable.FABsMenuLayout_fabs_menu_backgroundColor,
-                ContextCompat.getColor(context, android.R.color.black));
+        overlayColor = a.getColor(R.styleable.FABsMenuLayout_fabs_menu_overlayColor,
+                Color.parseColor("#4d000000"));
         a.recycle();
+
+        overlayView = new View(context);
+        overlayView.setLayoutParams(new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        overlayView.setBackgroundColor(overlayColor);
+        overlayView.setVisibility(View.GONE);
+        addView(overlayView);
     }
 
+    public int getOverlayColor() {
+        return overlayColor;
+    }
+
+    public void setOverlayColor(int overlayColor) {
+        this.overlayColor = overlayColor;
+    }
+
+    public View getOverlayView() {
+        return overlayView;
+    }
+
+    public void setOverlayView(View overlayView) {
+        this.overlayView = overlayView;
+    }
 }

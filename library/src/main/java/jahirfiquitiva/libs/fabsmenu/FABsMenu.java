@@ -41,6 +41,7 @@ import android.view.MotionEvent;
 import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.OvershootInterpolator;
@@ -503,6 +504,38 @@ public class FABsMenu extends ViewGroup {
         }
     }
 
+    private void toggleOverlay(final boolean show, boolean immediately) {
+        ViewParent parent = getParent();
+        if (parent != null) {
+            if (parent instanceof FABsMenuLayout) {
+                final View overlay = ((FABsMenuLayout) parent).getOverlayView();
+                if (show) {
+                    overlay.setAlpha(0);
+                    overlay.setVisibility(VISIBLE);
+                }
+                overlay.animate().alpha(show ? 1f : 0f)
+                        .setDuration(immediately ? 0 : ANIMATION_DURATION).setListener(
+                        new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                                if (!show) {
+                                    overlay.setVisibility(GONE);
+                                    overlay.setOnClickListener(null);
+                                } else {
+                                    overlay.setOnClickListener(new OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            collapse();
+                                        }
+                                    });
+                                }
+                            }
+                        }).start();
+            }
+        }
+    }
+
     public void collapse() {
         collapse(false);
     }
@@ -515,10 +548,10 @@ public class FABsMenu extends ViewGroup {
         if (mExpanded) {
             mExpanded = false;
             mTouchDelegateGroup.setEnabled(false);
+            toggleOverlay(false, immediately);
             mCollapseAnimation.setDuration(immediately ? 0 : ANIMATION_DURATION);
             mCollapseAnimation.start();
             mExpandAnimation.cancel();
-
             if (mListener != null) {
                 mListener.onMenuCollapsed();
             }
@@ -537,6 +570,7 @@ public class FABsMenu extends ViewGroup {
         if (!mExpanded) {
             mExpanded = true;
             mTouchDelegateGroup.setEnabled(true);
+            toggleOverlay(true, false);
             mCollapseAnimation.cancel();
             mExpandAnimation.start();
             if (mListener != null) {

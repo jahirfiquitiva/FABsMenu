@@ -17,7 +17,7 @@
 
 <resources>
     <declare-styleable name="FABsMenuLayout">
-        <attr name="fabs_menu_backgroundColor" format="color"/>
+        <attr name="fabs_menu_overlayColor" format="color"/>
     </declare-styleable>
 
     <declare-styleable name="TitleFAB">
