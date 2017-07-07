@@ -18,9 +18,11 @@ package jahirfiquitiva.libs.fabsmenu;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
@@ -31,6 +33,12 @@ public class TitleFAB extends FloatingActionButton {
     private static final int MAX_CHARACTERS_COUNT = 25;
     private String mTitle;
     private boolean titleClickEnabled;
+    @ColorInt
+    private int titleBackgroundColor;
+    @ColorInt
+    private int titleTextColor;
+    private int titleCornerRadius;
+
     private View.OnClickListener clickListener;
 
     public TitleFAB(Context context) {
@@ -51,7 +59,17 @@ public class TitleFAB extends FloatingActionButton {
         TypedArray attr = context.obtainStyledAttributes(attributeSet, R.styleable.TitleFAB, 0, 0);
         mTitle = attr.getString(R.styleable.TitleFAB_fab_title);
         titleClickEnabled = attr.getBoolean(R.styleable.TitleFAB_fab_enableTitleClick, false);
+        titleBackgroundColor = attr.getInt(R.styleable.TitleFAB_fab_title_backgroundColor,
+                ContextCompat.getColor(context, android.R.color.white));
+        titleTextColor = attr.getInt(R.styleable.TitleFAB_fab_title_textColor,
+                ContextCompat.getColor(context, android.R.color.black));
+        titleCornerRadius = attr.getDimensionPixelSize(
+                R.styleable.TitleFAB_fab_title_cornerRadius, -1);
         attr.recycle();
+    }
+
+    public void setClickListener(OnClickListener clickListener) {
+        setOnClickListener(clickListener);
     }
 
     @Override
@@ -93,5 +111,29 @@ public class TitleFAB extends FloatingActionButton {
 
     public void setTitleClickEnabled(boolean titleClickEnabled) {
         this.titleClickEnabled = titleClickEnabled;
+    }
+
+    public int getTitleBackgroundColor() {
+        return titleBackgroundColor;
+    }
+
+    public void setTitleBackgroundColor(int titleBackgroundColor) {
+        this.titleBackgroundColor = titleBackgroundColor;
+    }
+
+    public int getTitleTextColor() {
+        return titleTextColor;
+    }
+
+    public void setTitleTextColor(int titleTextColor) {
+        this.titleTextColor = titleTextColor;
+    }
+
+    public int getTitleCornerRadius() {
+        return titleCornerRadius;
+    }
+
+    public void setTitleCornerRadius(int titleCornerRadius) {
+        this.titleCornerRadius = titleCornerRadius;
     }
 }

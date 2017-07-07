@@ -48,6 +48,7 @@ dependencies {
     // Android Support Libraries
     compile 'com.android.support:support-v13:' + versions.supportLibsTest
     compile 'com.android.support:appcompat-v7:' + versions.supportLibsTest
+    compile 'com.android.support:cardview-v7:' + versions.supportLibsTest
     compile 'com.android.support:design:' + versions.supportLibsTest
 }
 

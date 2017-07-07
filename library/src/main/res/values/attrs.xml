@@ -22,23 +22,32 @@
 
     <declare-styleable name="TitleFAB">
         <attr name="fab_title" format="string"/>
+        <attr name="fab_title_backgroundColor" format="color"/>
+        <attr name="fab_title_textColor" format="color"/>
+        <attr name="fab_title_cornerRadius" format="dimension"/>
         <attr name="fab_enableTitleClick" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="FABsMenu">
         <attr name="fab_menuMargins" format="dimension"/>
+
         <attr name="fab_moreButtonRippleColor" format="color"/>
         <attr name="fab_moreButtonBackgroundColor" format="color"/>
+
         <attr name="fab_moreButtonSize" format="enum">
             <enum name="normal" value="0"/>
             <enum name="mini" value="1"/>
         </attr>
+
         <attr name="fab_moreButtonPlusIcon" format="reference"/>
-        <attr name="fab_labelStyle" format="reference"/>
+
         <attr name="fab_labelsPosition" format="enum">
             <enum name="left" value="0"/>
             <enum name="right" value="1"/>
         </attr>
+
+        <attr name="fab_labelTextPadding" format="dimension"/>
+
         <attr name="fab_expandDirection" format="enum">
             <enum name="up" value="0"/>
             <enum name="down" value="1"/>

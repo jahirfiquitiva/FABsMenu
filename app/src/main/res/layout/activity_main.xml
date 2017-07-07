@@ -32,9 +32,18 @@
             fab:fab_moreButtonBackgroundColor="@color/pink"
             fab:fab_moreButtonRippleColor="@color/pink_pressed"
             fab:fab_moreButtonSize="normal"
-            fab:fab_labelStyle="@style/menu_labels_style"
             fab:fab_labelsPosition="left"
             fab:fab_expandDirection="up">
+
+        <jahirfiquitiva.libs.fabsmenu.TitleFAB
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fabSize="mini"
+                fab:backgroundTint="@color/colorAccent"
+                fab:rippleColor="@color/colorAccent"
+                fab:fab_title="This is a custom title"
+                fab:fab_title_backgroundColor="@color/colorAccent"
+                fab:fab_title_textColor="@android:color/white"/>
 
         <jahirfiquitiva.libs.fabsmenu.TitleFAB
                 android:id="@+id/clickable_title"

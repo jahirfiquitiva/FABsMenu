@@ -16,5 +16,43 @@
 
 package jahirfiquitiva.libs.fabsmenu;
 
-public class LabelView {
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.ColorInt;
+import android.support.v7.widget.CardView;
+import android.util.AttributeSet;
+
+public class LabelView extends CardView {
+
+    @ColorInt
+    private int rightBackgroundColor;
+
+    public LabelView(Context context, @ColorInt int backgroundColor) {
+        super(context);
+        rightBackgroundColor = backgroundColor;
+        setCardBackgroundColor(0);
+    }
+
+    public LabelView(Context context, AttributeSet attrs, @ColorInt int backgroundColor) {
+        super(context, attrs);
+        rightBackgroundColor = backgroundColor;
+        setCardBackgroundColor(0);
+    }
+
+    public LabelView(Context context, AttributeSet attrs, int defStyleAttr,
+                     @ColorInt int backgroundColor) {
+        super(context, attrs, defStyleAttr);
+        rightBackgroundColor = backgroundColor;
+        setCardBackgroundColor(0);
+    }
+
+    @Override
+    public void setForeground(Drawable foreground) {
+        super.setForeground(foreground);
+    }
+
+    @Override
+    public void setCardBackgroundColor(@ColorInt int ignored) {
+        super.setCardBackgroundColor(rightBackgroundColor);
+    }
 }

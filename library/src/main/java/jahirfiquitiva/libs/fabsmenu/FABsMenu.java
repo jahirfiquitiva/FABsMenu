@@ -33,11 +33,10 @@ import android.os.Parcelable;
 import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.TextViewCompat;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.TouchDelegate;
 import android.view.View;
@@ -56,7 +55,7 @@ public class FABsMenu extends ViewGroup {
     public static final int LABELS_ON_LEFT_SIDE = 0;
     public static final int LABELS_ON_RIGHT_SIDE = 1;
 
-    private static final int ANIMATION_DURATION = 300;
+    private static final int ANIMATION_DURATION = 500;
     private static final float COLLAPSED_PLUS_ROTATION = 0f;
     private static final float EXPANDED_PLUS_ROTATION = 90f + 45f;
     private static Interpolator sExpandInterpolator = new OvershootInterpolator();
@@ -70,6 +69,7 @@ public class FABsMenu extends ViewGroup {
     private int mExpandDirection;
     private int mButtonSpacing;
     private int mLabelsMargin;
+    private int mLabelTextPadding;
     private int mLabelsVerticalOffset;
     private boolean mExpanded;
     private AnimatorSet mExpandAnimation = new AnimatorSet().setDuration(ANIMATION_DURATION);
@@ -78,7 +78,6 @@ public class FABsMenu extends ViewGroup {
     private RotatingDrawable mRotatingDrawable;
     private int mMaxButtonWidth;
     private int mMaxButtonHeight;
-    private int mLabelsStyle;
     private int mLabelsPosition;
     private int mButtonsCount;
     private TouchDelegateGroup mTouchDelegateGroup;
@@ -101,31 +100,35 @@ public class FABsMenu extends ViewGroup {
     private void init(Context context, AttributeSet attributeSet) {
         mButtonSpacing = (int) convertDpToPixel(16, context);
         mLabelsMargin = getResources().getDimensionPixelSize(R.dimen.fab_labels_margin);
-        mLabelsVerticalOffset = (int) convertDpToPixel(-2, context);
+        mLabelsVerticalOffset = (int) convertDpToPixel(-1.5f, context);
 
         mTouchDelegateGroup = new TouchDelegateGroup(this);
         setTouchDelegate(mTouchDelegateGroup);
 
         TypedArray attr = context.obtainStyledAttributes(attributeSet, R.styleable.FABsMenu,
                 0, 0);
+
         mMenuMargins = attr.getDimensionPixelSize(R.styleable.FABsMenu_fab_menuMargins, (int)
                 convertDpToPixel(16, context));
+
         mMenuButtonPlusIcon = attr.getDrawable(R.styleable.FABsMenu_fab_moreButtonPlusIcon);
+
         mMenuButtonColorNormal = attr.getColor(R.styleable.FABsMenu_fab_moreButtonBackgroundColor,
                 getColor(android.R.color.holo_blue_dark));
         mMenuButtonColorPressed = attr.getColor(R.styleable.FABsMenu_fab_moreButtonRippleColor,
                 getColor(android.R.color.holo_blue_light));
+
         mMenuButtonSize = attr.getInt(R.styleable.FABsMenu_fab_moreButtonSize, TitleFAB
                 .SIZE_NORMAL);
-        mExpandDirection = attr.getInt(R.styleable.FABsMenu_fab_expandDirection, EXPAND_UP);
-        mLabelsStyle = attr.getResourceId(R.styleable.FABsMenu_fab_labelStyle, 0);
-        mLabelsPosition = attr.getInt(R.styleable.FABsMenu_fab_labelsPosition, LABELS_ON_LEFT_SIDE);
-        attr.recycle();
 
-        if (mLabelsStyle != 0 && expandsHorizontally()) {
-            throw new IllegalStateException("Action labels in horizontal expand orientation is " +
-                    "not supported.");
-        }
+        mExpandDirection = attr.getInt(R.styleable.FABsMenu_fab_expandDirection, EXPAND_UP);
+
+        mLabelsPosition = attr.getInt(R.styleable.FABsMenu_fab_labelsPosition, LABELS_ON_LEFT_SIDE);
+
+        mLabelTextPadding = attr.getDimensionPixelSize(R.styleable.FABsMenu_fab_labelTextPadding,
+                (int) convertDpToPixel(8, context));
+
+        attr.recycle();
 
         createAddButton(context);
     }
@@ -185,9 +188,7 @@ public class FABsMenu extends ViewGroup {
                     "more than six options.");
         addView(button, mButtonsCount - 1);
         mButtonsCount++;
-        if (mLabelsStyle != 0) {
-            createLabels();
-        }
+        createLabels();
         if (mButtonsCount < 3)
             Log.w("FABsMenu", "A floating action buttons menu should have at least three options");
     }
@@ -239,7 +240,7 @@ public class FABsMenu extends ViewGroup {
             }
 
             if (!expandsHorizontally()) {
-                TextView label = (TextView) child.getTag(R.id.fab_label);
+                LabelView label = (LabelView) child.getTag(R.id.fab_label);
                 if (label != null) {
                     maxLabelWidth = Math.max(maxLabelWidth, label.getMeasuredWidth());
                 }
@@ -450,40 +451,55 @@ public class FABsMenu extends ViewGroup {
         bringChildToFront(mMenuButton);
         mButtonsCount = getChildCount();
 
-        if (mLabelsStyle != 0) {
-            createLabels();
-        }
+        createLabels();
     }
 
     private void createLabels() {
-        Context context = new ContextThemeWrapper(getContext(), mLabelsStyle);
+        if (!expandsHorizontally()) {
+            for (int i = 0; i < mButtonsCount; i++) {
+                final TitleFAB button = (TitleFAB) getChildAt(i);
+                String title = button.getTitle();
 
-        for (int i = 0; i < mButtonsCount; i++) {
-            final TitleFAB button = (TitleFAB) getChildAt(i);
-            String title = button.getTitle();
+                if (button == mMenuButton || title == null || title.length() <= 0 ||
+                        button.getTag(R.id.fab_label) != null) continue;
 
-            if (button == mMenuButton || title == null || title.length() <= 0 ||
-                    button.getTag(R.id.fab_label) != null) continue;
+                final LabelView label = new LabelView(getContext(),
+                        button.getTitleBackgroundColor());
+                label.setId(i + 1);
 
-            final TextView label = new TextView(context);
-            label.setId(i + 1);
-            TextViewCompat.setTextAppearance(label, mLabelsStyle);
-            label.setText(button.getTitle());
+                if (button.getTitleCornerRadius() != -1)
+                    label.setRadius(button.getTitleCornerRadius());
 
-            if (button.isTitleClickEnabled()) {
-                label.setClickable(true);
-                label.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (button.getClickListener() != null)
-                            button.getClickListener().onClick(label);
-                    }
-                });
+                final TextView labelText = new TextView(getContext());
+                labelText.setText(button.getTitle());
+                labelText.setTextColor(button.getTitleTextColor());
+                labelText.setPadding(mLabelTextPadding, mLabelTextPadding / 2, mLabelTextPadding,
+                        mLabelTextPadding / 2);
+
+                TypedValue outValue = new TypedValue();
+                getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackground,
+                        outValue, true);
+                label.setForeground(ContextCompat.getDrawable(getContext(), outValue.resourceId));
+
+                if (button.isTitleClickEnabled()) {
+                    label.setClickable(true);
+                    label.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (button.getClickListener() != null)
+                                button.getClickListener().onClick(label);
+                        }
+                    });
+                }
+
+                label.addView(labelText);
+                addView(label);
+
+                button.setTag(R.id.fab_label, label);
             }
-
-            addView(label);
-
-            button.setTag(R.id.fab_label, label);
+        } else {
+            Log.e("FABs Menu", "FABs menu items can't have labels when the menu expands " +
+                    "horizontally");
         }
     }
 
