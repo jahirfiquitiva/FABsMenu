@@ -118,6 +118,45 @@ To see how the buttons are added to your xml layouts, check the sample project.
 ```
 
 
+## Attributes explanation
+
+1. FABsMenuLayout attributes:
+	* `fabs_menu_overlayColor` --> Set the menu overlay color (Defaults to `#4d000000`)
+	* `fabs_menu_cickableOverlay` --> Specify whether the overlay is clickable or not (Defaults to `true`)
+
+2. FABsMenu attributes
+	* `fab_menuMargins` --> The margins of the menu (Defaults to `16dp`)
+	* `fab_moreButtonRippleColor` --> The menu fab ripples color
+	* `fab_moreButtonBackgroundColor` --> The menu fab background color
+	* `fab_moreButtonSize` --> Specify the size. Choose between `mini` and `normal` (Defaults to `normal`)
+	* `fab_moreButtonPlusIcon` --> The reference to the plus icon drawable (Defaults to `null`)
+	* `fab_labelsPosition` --> Where to show the labels. Choose between `left` and `right` (Defaults to `left`)
+	* `fab_expandDirection` --> The direction the menu should expand to. Choose between `up`, `down`, `left` and `right`. (Defaults to `up`)
+	
+3. TitleFAB attributes:
+	* `fab_title` --> A string that will be shown as the fab label (Defaults to `null`)
+	* `fab_title_backgroundColor` --> The color of the label background (Defaults to `#fff`)
+	* `fab_title_textColor` --> The color of the label text (Defaults to `#000`)
+	* `fab_title_cornerRadius` --> The dimension of the label corners radius (Defaults to `2dp`)
+	* `fab_title_textPadding` --> The dimension of the text padding (Defaults to `8dp`)
+	* `fab_enableTitleClick` --> Specify whether the label click should fire the fab click too (Defaults to `false`)
+
+
+## Important notes
+
+1. The FABs are based on the ones from Design Support libraries, so you can use these customization attributes:
+	```xml
+		fab:fabSize="mini"
+		fab:backgroundTint="@color/blue_semi"
+		fab:rippleColor="@color/blue_semi_pressed"
+	```
+	
+2. For the FABsMenu, the previous attributes will not work.
+3. For the FABsMenu, use `fab_menuMargins` instead of the normal `android:layout_margin` attribute. This will prevent FABs elevation being cropped.
+4. As stated in guidelines, a FABsMenu should not have more than 6 items. If you use more than 6, you will get an `IllegalArgumentException`. Also, remember FABs menu should have **at least** 3 items too.
+5. For now, the icon you set for FABsMenu will always rotate, so be sure you set an icon that looks good in both states (normal and rotated).
+
+
 ## Credits
 
 This project is based on Future Simple's [android-floating-action-button](https://github.com/futuresimple/android-floating-action-button) project, which is also based on [FloatingActionButton](https://github.com/makovkastar/FloatingActionButton) library by [Oleksandr Melnykov](https://github.com/makovkastar).
