@@ -6,6 +6,11 @@
 Just a simple library to use a menu with `FloatingActionButton`s from Design Support Library and following [guidelines](https://material.io/guidelines/components/buttons-floating-action-button.html#buttons-floating-action-button-transitions)
 
 
+## Preview
+
+![FABs Menu Preview](https://github.com/jahirfiquitiva/FABsMenu/raw/master/preview/preview.gif)
+
+
 ## Usage
 
 Add jitpack dependency to your root `build.gradle`:
