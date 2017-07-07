@@ -1,7 +1,8 @@
 # FloatingActionButtons Menu (FABsMenu)
 
+[![JitPack Badge](https://jitpack.io/v/jahirfiquitiva/FABsMenu.svg)](https://jitpack.io/#jahirfiquitiva/FABsMenu)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/3ab596acdd5648599c34d56dba1eea39)](https://www.codacy.com/app/jahirfiquitiva/FABsMenu?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jahirfiquitiva/FABsMenu&amp;utm_campaign=Badge_Grade)
-<a target="_blank" href="https://travis-ci.org/jahirfiquitiva/FABsMenu/builds" title="Travis Builds"><img src="https://travis-ci.org/jahirfiquitiva/FABsMenu.svg?branch=master" /></a>
+[![Build Status](https://travis-ci.org/jahirfiquitiva/FABsMenu.svg?branch=master)](https://travis-ci.org/jahirfiquitiva/FABsMenu)
 
 Just a simple library to use a menu with `FloatingActionButton`s from Design Support Library and following [guidelines](https://material.io/guidelines/components/buttons-floating-action-button.html#buttons-floating-action-button-transitions)
 
