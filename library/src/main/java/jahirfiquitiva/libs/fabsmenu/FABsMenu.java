@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package jahirfiquitiva.libs.fabsmenu;
 
 import android.animation.Animator;
@@ -505,7 +506,7 @@ public class FABsMenu extends ViewGroup {
     }
 
     private void toggleOverlay(final boolean show, boolean immediately) {
-        ViewParent parent = getParent();
+        final ViewParent parent = getParent();
         if (parent != null) {
             if (parent instanceof FABsMenuLayout) {
                 final View overlay = ((FABsMenuLayout) parent).getOverlayView();
@@ -523,12 +524,13 @@ public class FABsMenu extends ViewGroup {
                                     overlay.setVisibility(GONE);
                                     overlay.setOnClickListener(null);
                                 } else {
-                                    overlay.setOnClickListener(new OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            collapse();
-                                        }
-                                    });
+                                    if (((FABsMenuLayout) parent).hasClickableOverlay())
+                                        overlay.setOnClickListener(new OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                collapse();
+                                            }
+                                        });
                                 }
                             }
                         }).start();

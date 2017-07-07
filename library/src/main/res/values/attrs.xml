@@ -18,6 +18,7 @@
 <resources>
     <declare-styleable name="FABsMenuLayout">
         <attr name="fabs_menu_overlayColor" format="color"/>
+        <attr name="fabs_menu_cickableOverlay" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="TitleFAB">

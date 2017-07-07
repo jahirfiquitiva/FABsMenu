@@ -33,6 +33,7 @@ public class FABsMenuLayout extends FrameLayout {
     @ColorInt
     private int overlayColor;
     private View overlayView;
+    private boolean clickableOverlay;
 
     public FABsMenuLayout(@NonNull Context context) {
         super(context);
@@ -54,6 +55,8 @@ public class FABsMenuLayout extends FrameLayout {
                 R.styleable.FABsMenuLayout, 0, 0);
         overlayColor = a.getColor(R.styleable.FABsMenuLayout_fabs_menu_overlayColor,
                 Color.parseColor("#4d000000"));
+        clickableOverlay = a.getBoolean(R.styleable.FABsMenuLayout_fabs_menu_cickableOverlay,
+                true);
         a.recycle();
 
         overlayView = new View(context);
@@ -78,5 +81,13 @@ public class FABsMenuLayout extends FrameLayout {
 
     public void setOverlayView(View overlayView) {
         this.overlayView = overlayView;
+    }
+
+    public boolean hasClickableOverlay() {
+        return clickableOverlay;
+    }
+
+    public void setClickableOverlay(boolean clickableOverlay) {
+        this.clickableOverlay = clickableOverlay;
     }
 }
