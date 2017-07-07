@@ -71,10 +71,6 @@ public class TitleFAB extends FloatingActionButton {
         attr.recycle();
     }
 
-    public void setClickListener(OnClickListener clickListener) {
-        setOnClickListener(clickListener);
-    }
-
     @Override
     public void setOnClickListener(@Nullable OnClickListener l) {
         super.setOnClickListener(l);
@@ -83,6 +79,10 @@ public class TitleFAB extends FloatingActionButton {
 
     public OnClickListener getClickListener() {
         return clickListener;
+    }
+
+    public void setClickListener(OnClickListener clickListener) {
+        setOnClickListener(clickListener);
     }
 
     TextView getLabelView() {

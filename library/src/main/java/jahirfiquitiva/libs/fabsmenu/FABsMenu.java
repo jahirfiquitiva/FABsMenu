@@ -62,59 +62,36 @@ public class FABsMenu extends ViewGroup {
     public static final int EXPAND_DOWN = 1;
     public static final int EXPAND_LEFT = 2;
     public static final int EXPAND_RIGHT = 3;
-
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({EXPAND_UP, EXPAND_DOWN, EXPAND_LEFT, EXPAND_RIGHT})
-    public @interface EXPAND_DIRECTION {
-    }
-
     public static final int LABELS_ON_LEFT_SIDE = 0;
     public static final int LABELS_ON_RIGHT_SIDE = 1;
-
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({LABELS_ON_LEFT_SIDE, LABELS_ON_RIGHT_SIDE})
-    public @interface LABELS_POSITION {
-    }
-
     private static final float COLLAPSED_PLUS_ROTATION = 0f;
     private static final float EXPANDED_PLUS_ROTATION = 90f + 45f;
-
     private static Interpolator expandInterpolator = new OvershootInterpolator();
     private static Interpolator collapseInterpolator = new DecelerateInterpolator(3f);
     private static Interpolator alphaExpandInterpolator = new DecelerateInterpolator();
-
     private int animationDuration = 500;
-
     private int menuMargins;
     private int menuTopMargin;
     private int menuBottomMargin;
     private int menuRightMargin;
     private int menuLeftMargin;
-
     private int menuButtonColor;
     private int menuButtonRippleColor;
     private int menuButtonSize;
     private int expandDirection;
-
     private MenuFAB menuButton;
     private Drawable menuButtonIcon;
     private RotatingDrawable rotatingDrawable;
-
     private int buttonSpacing;
-
     private int labelsMargin;
     private int labelsVerticalOffset;
     private int labelsPosition;
-
     private boolean expanded;
     private AnimatorSet expandAnimation = new AnimatorSet().setDuration(animationDuration);
     private AnimatorSet collapseAnimation = new AnimatorSet().setDuration(animationDuration);
-
     private int buttonsCount;
-
     private int maxButtonWidth;
     private int maxButtonHeight;
-
     private TouchDelegateGroup touchDelegateGroup;
     private OnFABsMenuUpdateListener menuUpdateListener;
 
@@ -311,16 +288,18 @@ public class FABsMenu extends ViewGroup {
             case EXPAND_UP:
             case EXPAND_DOWN:
                 height += buttonSpacing * (buttonsCount - 1);
+                height += (Math.max(menuTopMargin, menuBottomMargin) * 1.5);
                 height = adjustForOvershoot(height);
                 break;
             case EXPAND_LEFT:
             case EXPAND_RIGHT:
                 width += buttonSpacing * (buttonsCount - 1);
+                width += (Math.max(menuLeftMargin, menuRightMargin) * 1.5);
                 width = adjustForOvershoot(width);
                 break;
         }
 
-        setMeasuredDimension((int) (width + (menuMargins * 1.5)), height);
+        setMeasuredDimension(width, height);
     }
 
     private int adjustForOvershoot(int dimension) {
@@ -666,6 +645,215 @@ public class FABsMenu extends ViewGroup {
         }
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return false;
+    }
+
+    public int getMenuMargins() {
+        return menuMargins;
+    }
+
+    public void setMenuMargins(int menuMargins) {
+        this.menuMargins = menuMargins;
+        setMenuTopMargin(menuMargins);
+        setMenuBottomMargin(menuMargins);
+        setMenuLeftMargin(menuMargins);
+        setMenuRightMargin(menuMargins);
+        requestLayout();
+    }
+
+    public int getMenuTopMargin() {
+        return menuTopMargin;
+    }
+
+    public void setMenuTopMargin(int menuTopMargin) {
+        this.menuTopMargin = menuTopMargin;
+        requestLayout();
+    }
+
+    public int getMenuBottomMargin() {
+        return menuBottomMargin;
+    }
+
+    public void setMenuBottomMargin(int menuBottomMargin) {
+        this.menuBottomMargin = menuBottomMargin;
+        requestLayout();
+    }
+
+    public int getMenuRightMargin() {
+        return menuRightMargin;
+    }
+
+    public void setMenuRightMargin(int menuRightMargin) {
+        this.menuRightMargin = menuRightMargin;
+        requestLayout();
+    }
+
+    public int getMenuLeftMargin() {
+        return menuLeftMargin;
+    }
+
+    public void setMenuLeftMargin(int menuLeftMargin) {
+        this.menuLeftMargin = menuLeftMargin;
+        requestLayout();
+    }
+
+    @ColorInt
+    public int getMenuButtonColor() {
+        return menuButtonColor;
+    }
+
+    public void setMenuButtonColor(@ColorInt int menuButtonColor) {
+        this.menuButtonColor = menuButtonColor;
+    }
+
+    @ColorInt
+    public int getMenuButtonRippleColor() {
+        return menuButtonRippleColor;
+    }
+
+    public void setMenuButtonRippleColor(@ColorInt int menuButtonRippleColor) {
+        this.menuButtonRippleColor = menuButtonRippleColor;
+    }
+
+    public int getMenuButtonSize() {
+        return menuButtonSize;
+    }
+
+    public void setMenuButtonSize(int menuButtonSize) {
+        this.menuButtonSize = menuButtonSize;
+    }
+
+    public int getExpandDirection() {
+        return expandDirection;
+    }
+
+    public void setExpandDirection(@EXPAND_DIRECTION int expandDirection) {
+        this.expandDirection = expandDirection;
+    }
+
+    public MenuFAB getMenuButton() {
+        return menuButton;
+    }
+
+    public void setMenuButton(@NonNull MenuFAB menuButton) {
+        this.menuButton = menuButton;
+    }
+
+    public Drawable getMenuButtonIcon() {
+        return menuButtonIcon;
+    }
+
+    public void setMenuButtonIcon(@NonNull Drawable menuButtonIcon) {
+        this.menuButtonIcon = menuButtonIcon;
+        createRotatingDrawable();
+    }
+
+    public RotatingDrawable getRotatingDrawable() {
+        return rotatingDrawable;
+    }
+
+    public int getButtonSpacing() {
+        return buttonSpacing;
+    }
+
+    public void setButtonSpacing(int buttonSpacing) {
+        this.buttonSpacing = buttonSpacing;
+    }
+
+    public int getLabelsMargin() {
+        return labelsMargin;
+    }
+
+    public void setLabelsMargin(int labelsMargin) {
+        this.labelsMargin = labelsMargin;
+    }
+
+    public int getLabelsPosition() {
+        return labelsPosition;
+    }
+
+    public void setLabelsPosition(@LABELS_POSITION int labelsPosition) {
+        this.labelsPosition = labelsPosition;
+    }
+
+    public int getButtonsCount() {
+        return buttonsCount;
+    }
+
+    public int getMaxButtonWidth() {
+        return maxButtonWidth;
+    }
+
+    public void setMaxButtonWidth(int maxButtonWidth) {
+        this.maxButtonWidth = maxButtonWidth;
+    }
+
+    public int getMaxButtonHeight() {
+        return maxButtonHeight;
+    }
+
+    public void setMaxButtonHeight(int maxButtonHeight) {
+        this.maxButtonHeight = maxButtonHeight;
+    }
+
+    public OnFABsMenuUpdateListener getMenuUpdateListener() {
+        return menuUpdateListener;
+    }
+
+    public void setMenuUpdateListener(OnFABsMenuUpdateListener menuUpdateListener) {
+        this.menuUpdateListener = menuUpdateListener;
+    }
+
+    public void setMenuButtonIcon(@NonNull Bitmap bitmap) {
+        try {
+            setMenuButtonIcon(new BitmapDrawable(getResources(), bitmap));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setMenuButtonIcon(@NonNull Uri uri) {
+        try {
+            InputStream inputStream = getContext().getContentResolver().openInputStream(uri);
+            Drawable icon = Drawable.createFromStream(inputStream, uri.toString());
+            if (icon != null) setMenuButtonIcon(icon);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setMenuButtonIcon(@DrawableRes int resId) {
+        try {
+            setMenuButtonIcon(ContextCompat.getDrawable(getContext(), resId));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setLabelsVerticalOffset(int labelsVerticalOffset) {
+        this.labelsVerticalOffset = labelsVerticalOffset;
+    }
+
+    public int getAnimationDuration() {
+        return animationDuration;
+    }
+
+    public void setAnimationDuration(int animationDuration) {
+        this.animationDuration = animationDuration;
+    }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({EXPAND_UP, EXPAND_DOWN, EXPAND_LEFT, EXPAND_RIGHT})
+    public @interface EXPAND_DIRECTION {
+    }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({LABELS_ON_LEFT_SIDE, LABELS_ON_RIGHT_SIDE})
+    public @interface LABELS_POSITION {
+    }
+
     public interface OnFABsMenuUpdateListener {
         void onMenuClicked();
 
@@ -800,204 +988,5 @@ public class FABsMenu extends ViewGroup {
                 }
             });
         }
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        return false;
-    }
-
-    public void setMenuMargins(int menuMargins) {
-        this.menuMargins = menuMargins;
-        setMenuTopMargin(menuMargins);
-        setMenuBottomMargin(menuMargins);
-        setMenuLeftMargin(menuMargins);
-        setMenuRightMargin(menuMargins);
-        requestLayout();
-    }
-
-    public void setMenuTopMargin(int menuTopMargin) {
-        this.menuTopMargin = menuTopMargin;
-        requestLayout();
-    }
-
-    public void setMenuBottomMargin(int menuBottomMargin) {
-        this.menuBottomMargin = menuBottomMargin;
-        requestLayout();
-    }
-
-    public void setMenuRightMargin(int menuRightMargin) {
-        this.menuRightMargin = menuRightMargin;
-        requestLayout();
-    }
-
-    public void setMenuLeftMargin(int menuLeftMargin) {
-        this.menuLeftMargin = menuLeftMargin;
-        requestLayout();
-    }
-
-    public int getMenuMargins() {
-        return menuMargins;
-    }
-
-    public int getMenuTopMargin() {
-        return menuTopMargin;
-    }
-
-    public int getMenuBottomMargin() {
-        return menuBottomMargin;
-    }
-
-    public int getMenuRightMargin() {
-        return menuRightMargin;
-    }
-
-    public int getMenuLeftMargin() {
-        return menuLeftMargin;
-    }
-
-    @ColorInt
-    public int getMenuButtonColor() {
-        return menuButtonColor;
-    }
-
-    @ColorInt
-    public int getMenuButtonRippleColor() {
-        return menuButtonRippleColor;
-    }
-
-    public int getMenuButtonSize() {
-        return menuButtonSize;
-    }
-
-    public int getExpandDirection() {
-        return expandDirection;
-    }
-
-    public MenuFAB getMenuButton() {
-        return menuButton;
-    }
-
-    public Drawable getMenuButtonIcon() {
-        return menuButtonIcon;
-    }
-
-    public RotatingDrawable getRotatingDrawable() {
-        return rotatingDrawable;
-    }
-
-    public int getButtonSpacing() {
-        return buttonSpacing;
-    }
-
-    public int getLabelsMargin() {
-        return labelsMargin;
-    }
-
-    public int getLabelsPosition() {
-        return labelsPosition;
-    }
-
-    public int getButtonsCount() {
-        return buttonsCount;
-    }
-
-    public int getMaxButtonWidth() {
-        return maxButtonWidth;
-    }
-
-    public int getMaxButtonHeight() {
-        return maxButtonHeight;
-    }
-
-    public OnFABsMenuUpdateListener getMenuUpdateListener() {
-        return menuUpdateListener;
-    }
-
-    public void setMenuButtonColor(@ColorInt int menuButtonColor) {
-        this.menuButtonColor = menuButtonColor;
-    }
-
-    public void setMenuButtonRippleColor(@ColorInt int menuButtonRippleColor) {
-        this.menuButtonRippleColor = menuButtonRippleColor;
-    }
-
-    public void setMenuButtonSize(int menuButtonSize) {
-        this.menuButtonSize = menuButtonSize;
-    }
-
-    public void setExpandDirection(@EXPAND_DIRECTION int expandDirection) {
-        this.expandDirection = expandDirection;
-    }
-
-    public void setMenuButton(@NonNull MenuFAB menuButton) {
-        this.menuButton = menuButton;
-    }
-
-    public void setMenuButtonIcon(@NonNull Bitmap bitmap) {
-        try {
-            setMenuButtonIcon(new BitmapDrawable(getResources(), bitmap));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void setMenuButtonIcon(@NonNull Uri uri) {
-        try {
-            InputStream inputStream = getContext().getContentResolver().openInputStream(uri);
-            Drawable icon = Drawable.createFromStream(inputStream, uri.toString());
-            if (icon != null) setMenuButtonIcon(icon);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void setMenuButtonIcon(@DrawableRes int resId) {
-        try {
-            setMenuButtonIcon(ContextCompat.getDrawable(getContext(), resId));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void setMenuButtonIcon(@NonNull Drawable menuButtonIcon) {
-        this.menuButtonIcon = menuButtonIcon;
-        createRotatingDrawable();
-    }
-
-    public void setButtonSpacing(int buttonSpacing) {
-        this.buttonSpacing = buttonSpacing;
-    }
-
-    public void setLabelsMargin(int labelsMargin) {
-        this.labelsMargin = labelsMargin;
-    }
-
-    public void setLabelsVerticalOffset(int labelsVerticalOffset) {
-        this.labelsVerticalOffset = labelsVerticalOffset;
-    }
-
-    public void setLabelsPosition(@LABELS_POSITION int labelsPosition) {
-        this.labelsPosition = labelsPosition;
-    }
-
-    public void setMaxButtonWidth(int maxButtonWidth) {
-        this.maxButtonWidth = maxButtonWidth;
-    }
-
-    public void setMaxButtonHeight(int maxButtonHeight) {
-        this.maxButtonHeight = maxButtonHeight;
-    }
-
-    public void setMenuUpdateListener(OnFABsMenuUpdateListener menuUpdateListener) {
-        this.menuUpdateListener = menuUpdateListener;
-    }
-
-    public int getAnimationDuration() {
-        return animationDuration;
-    }
-
-    public void setAnimationDuration(int animationDuration) {
-        this.animationDuration = animationDuration;
     }
 }

@@ -18,7 +18,6 @@ package jahirfiquitiva.libs.fabsmenu;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.support.annotation.DrawableRes;
@@ -40,13 +39,13 @@ public class MenuFAB extends TitleFAB {
     }
 
     @Override
-    public void setTitle(String ignored) {
-        super.setTitle(null);
+    public String getTitle() {
+        return null;
     }
 
     @Override
-    public String getTitle() {
-        return null;
+    public void setTitle(String ignored) {
+        super.setTitle(null);
     }
 
     @Override
