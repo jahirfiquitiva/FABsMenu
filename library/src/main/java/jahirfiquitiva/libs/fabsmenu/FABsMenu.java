@@ -63,6 +63,7 @@ public class FABsMenu extends ViewGroup {
     private static Interpolator sCollapseInterpolator = new DecelerateInterpolator(3f);
     private static Interpolator sAlphaExpandInterpolator = new DecelerateInterpolator();
     private Drawable mMenuButtonPlusIcon;
+    private int mMenuMargins;
     private int mMenuButtonColorNormal;
     private int mMenuButtonColorPressed;
     private int mMenuButtonSize;
@@ -107,6 +108,8 @@ public class FABsMenu extends ViewGroup {
 
         TypedArray attr = context.obtainStyledAttributes(attributeSet, R.styleable.FABsMenu,
                 0, 0);
+        mMenuMargins = attr.getDimensionPixelSize(R.styleable.FABsMenu_fab_menuMargins, (int)
+                convertDpToPixel(16, context));
         mMenuButtonPlusIcon = attr.getDrawable(R.styleable.FABsMenu_fab_moreButtonPlusIcon);
         mMenuButtonColorNormal = attr.getColor(R.styleable.FABsMenu_fab_moreButtonBackgroundColor,
                 getColor(android.R.color.holo_blue_dark));
@@ -262,7 +265,7 @@ public class FABsMenu extends ViewGroup {
                 break;
         }
 
-        setMeasuredDimension(width, height);
+        setMeasuredDimension((int) (width + (mMenuMargins * 1.5)), height);
     }
 
     private void setMargins(View view, int left, int top, int right, int bottom) {
@@ -288,14 +291,17 @@ public class FABsMenu extends ViewGroup {
                 mTouchDelegateGroup.clearTouchDelegates();
 
                 int addButtonY = expandUp ? b - t - mMenuButton.getMeasuredHeight() : 0;
+                addButtonY -= mMenuMargins;
+
                 // Ensure mMenuButton is centered on the line where the buttons should be
                 int buttonsHorizontalCenter = mLabelsPosition == LABELS_ON_LEFT_SIDE
                         ? r - l - mMaxButtonWidth / 2
                         : mMaxButtonWidth / 2;
+                buttonsHorizontalCenter -= mMenuMargins;
                 int addButtonLeft = buttonsHorizontalCenter - mMenuButton.getMeasuredWidth() / 2;
-                mMenuButton.layout(addButtonLeft, addButtonY, addButtonLeft +
-                        mMenuButton.getMeasuredWidth(), addButtonY + mMenuButton
-                        .getMeasuredHeight());
+                mMenuButton.layout(addButtonLeft, addButtonY,
+                        addButtonLeft + mMenuButton.getMeasuredWidth(),
+                        addButtonY + mMenuButton.getMeasuredHeight());
 
                 int labelsOffset = mMaxButtonWidth / 2 + mLabelsMargin;
                 int labelsXNearButton = mLabelsPosition == LABELS_ON_LEFT_SIDE
@@ -413,7 +419,6 @@ public class FABsMenu extends ViewGroup {
                             childX - mButtonSpacing :
                             childX + child.getMeasuredWidth() + mButtonSpacing;
                 }
-
                 break;
         }
     }

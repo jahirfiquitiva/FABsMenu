@@ -18,6 +18,7 @@ package jahirfiquitiva.apps.fabsmenu.demo;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.View;
 import android.widget.Toast;
 
@@ -29,6 +30,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+
         setContentView(R.layout.activity_main);
 
         FABsMenu menu = findViewById(R.id.fabs_menu);

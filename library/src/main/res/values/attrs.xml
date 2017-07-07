@@ -16,11 +16,17 @@
   -->
 
 <resources>
+    <declare-styleable name="FABsMenuLayout">
+        <attr name="fabs_menu_backgroundColor" format="color"/>
+    </declare-styleable>
+
     <declare-styleable name="TitleFAB">
         <attr name="fab_title" format="string"/>
         <attr name="fab_enableTitleClick" format="boolean"/>
     </declare-styleable>
+
     <declare-styleable name="FABsMenu">
+        <attr name="fab_menuMargins" format="dimension"/>
         <attr name="fab_moreButtonRippleColor" format="color"/>
         <attr name="fab_moreButtonBackgroundColor" format="color"/>
         <attr name="fab_moreButtonSize" format="enum">
