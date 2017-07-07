@@ -50,12 +50,6 @@ public class MenuFAB extends TitleFAB {
     }
 
     @Override
-    public void setImageDrawable(@Nullable Drawable drawable) {
-        throw new UnsupportedOperationException("Don't set the drawable for menu button using " +
-                "this method. Use FABs Menu setMenuButtonIcon() method instead.");
-    }
-
-    @Override
     public void setImageBitmap(Bitmap bm) {
         throw new UnsupportedOperationException("Don't set the bitmap for menu button using " +
                 "this method. Use FABs Menu setMenuButtonIcon() method instead.");
