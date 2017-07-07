@@ -4,13 +4,13 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/3ab596acdd5648599c34d56dba1eea39)](https://www.codacy.com/app/jahirfiquitiva/FABsMenu?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jahirfiquitiva/FABsMenu&amp;utm_campaign=Badge_Grade)
 [![Build Status](https://travis-ci.org/jahirfiquitiva/FABsMenu.svg?branch=master)](https://travis-ci.org/jahirfiquitiva/FABsMenu)
 
-Just a simple library to use a menu with `FloatingActionButton`s from Design Support Library and following [guidelines](https://material.io/guidelines/components/buttons-floating-action-button.html#buttons-floating-action-button-transitions)
+Just a simple library to use a menu of `FloatingActionButton`s from Design Support Library that follows [Material Design guidelines](https://material.io/guidelines/components/buttons-floating-action-button.html#buttons-floating-action-button-transitions)
 
 ### Long story
 
 Android Support/Design libraries still doesn't include a FloatingActionButtons menu, and the libraries found here and there are either too cluttered or filled with unnecessary stuff or using custom views that simply don't follow guidelines, which made me avoid them.
 
-I was looking for a new library, and the ones I knew of, have been deprecated/abandoned because the simple FABs are included in the design support library, so I felt the urge of having something that could suffice my needs, and couldn't help but create a library, although is mostly based on one of those abandoned libraries.
+I was looking for a new library, and the ones I knew of, have been deprecated/abandoned because the simple FABs are included in the design support library, so I felt the urge of having something that could suffice my needs, and couldn't help but create a library, although is mostly based on [one of those abandoned libraries](https://github.com/jahirfiquitiva/FABsMenu#credits).
 
 This library uses the design library FABs but wraps them inside a ViewGroup to make them look like the FloatingActionButtons menu suggested in Material Design guidelines.
 
