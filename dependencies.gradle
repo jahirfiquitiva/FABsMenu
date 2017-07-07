@@ -23,8 +23,8 @@ ext.versions = [
         targetSdk              : 26,
         compileSdk             : 26,
         buildTools             : '26.0.0',
-        versionCode            : 200,
-        versionName            : '2.0.0',
+        versionCode            : 102,
+        versionName            : '1.0.2',
         gradlePlugin           : '2.3.3',
         libPubPlugin           : '1.5',
         // Libraries versions
