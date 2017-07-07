@@ -25,6 +25,7 @@
         <attr name="fab_title" format="string"/>
         <attr name="fab_title_backgroundColor" format="color"/>
         <attr name="fab_title_textColor" format="color"/>
+        <attr name="fab_title_textPadding" format="dimension"/>
         <attr name="fab_title_cornerRadius" format="dimension"/>
         <attr name="fab_enableTitleClick" format="boolean"/>
     </declare-styleable>
@@ -46,8 +47,6 @@
             <enum name="left" value="0"/>
             <enum name="right" value="1"/>
         </attr>
-
-        <attr name="fab_labelTextPadding" format="dimension"/>
 
         <attr name="fab_expandDirection" format="enum">
             <enum name="up" value="0"/>

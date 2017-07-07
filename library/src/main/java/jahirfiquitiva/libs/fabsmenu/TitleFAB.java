@@ -31,13 +31,14 @@ import android.widget.TextView;
 public class TitleFAB extends FloatingActionButton {
 
     private static final int MAX_CHARACTERS_COUNT = 25;
-    private String mTitle;
+    private String title;
     private boolean titleClickEnabled;
     @ColorInt
     private int titleBackgroundColor;
     @ColorInt
     private int titleTextColor;
     private int titleCornerRadius;
+    private int titleTextPadding;
 
     private View.OnClickListener clickListener;
 
@@ -57,7 +58,7 @@ public class TitleFAB extends FloatingActionButton {
 
     void init(Context context, AttributeSet attributeSet) {
         TypedArray attr = context.obtainStyledAttributes(attributeSet, R.styleable.TitleFAB, 0, 0);
-        mTitle = attr.getString(R.styleable.TitleFAB_fab_title);
+        title = attr.getString(R.styleable.TitleFAB_fab_title);
         titleClickEnabled = attr.getBoolean(R.styleable.TitleFAB_fab_enableTitleClick, false);
         titleBackgroundColor = attr.getInt(R.styleable.TitleFAB_fab_title_backgroundColor,
                 ContextCompat.getColor(context, android.R.color.white));
@@ -65,6 +66,8 @@ public class TitleFAB extends FloatingActionButton {
                 ContextCompat.getColor(context, android.R.color.black));
         titleCornerRadius = attr.getDimensionPixelSize(
                 R.styleable.TitleFAB_fab_title_cornerRadius, -1);
+        titleTextPadding = attr.getDimensionPixelSize(R.styleable.TitleFAB_fab_title_textPadding,
+                (int) DimensionUtils.convertDpToPixel(8, context));
         attr.recycle();
     }
 
@@ -87,18 +90,18 @@ public class TitleFAB extends FloatingActionButton {
     }
 
     public String getTitle() {
-        if (mTitle == null) return null;
-        StringBuilder title = new StringBuilder();
-        if (mTitle.length() > MAX_CHARACTERS_COUNT) {
-            title.append(mTitle.substring(0, MAX_CHARACTERS_COUNT)).append("...");
+        if (title == null) return null;
+        StringBuilder titleBuilder = new StringBuilder();
+        if (title.length() > MAX_CHARACTERS_COUNT) {
+            titleBuilder.append(title.substring(0, MAX_CHARACTERS_COUNT)).append("...");
         } else {
-            title.append(mTitle);
+            titleBuilder.append(title);
         }
-        return title.toString();
+        return titleBuilder.toString();
     }
 
     public void setTitle(String title) {
-        mTitle = title;
+        this.title = title;
         TextView label = getLabelView();
         if (label != null) {
             label.setText(title);
@@ -135,5 +138,13 @@ public class TitleFAB extends FloatingActionButton {
 
     public void setTitleCornerRadius(int titleCornerRadius) {
         this.titleCornerRadius = titleCornerRadius;
+    }
+
+    public int getTitleTextPadding() {
+        return titleTextPadding;
+    }
+
+    public void setTitleTextPadding(int titleTextPadding) {
+        this.titleTextPadding = titleTextPadding;
     }
 }

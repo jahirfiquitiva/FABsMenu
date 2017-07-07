@@ -23,7 +23,6 @@ import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -35,7 +34,6 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
@@ -71,7 +69,6 @@ public class FABsMenu extends ViewGroup {
     private int mExpandDirection;
     private int mButtonSpacing;
     private int mLabelsMargin;
-    private int mLabelTextPadding;
     private int mLabelsVerticalOffset;
     private boolean mExpanded;
     private AnimatorSet mExpandAnimation = new AnimatorSet().setDuration(ANIMATION_DURATION);
@@ -100,9 +97,9 @@ public class FABsMenu extends ViewGroup {
     }
 
     private void init(Context context, AttributeSet attributeSet) {
-        mButtonSpacing = (int) convertDpToPixel(16, context);
+        mButtonSpacing = (int) DimensionUtils.convertDpToPixel(16, context);
         mLabelsMargin = getResources().getDimensionPixelSize(R.dimen.fab_labels_margin);
-        mLabelsVerticalOffset = (int) convertDpToPixel(-1.5f, context);
+        mLabelsVerticalOffset = (int) DimensionUtils.convertDpToPixel(-1.5f, context);
 
         mTouchDelegateGroup = new TouchDelegateGroup(this);
         setTouchDelegate(mTouchDelegateGroup);
@@ -110,8 +107,8 @@ public class FABsMenu extends ViewGroup {
         TypedArray attr = context.obtainStyledAttributes(attributeSet, R.styleable.FABsMenu,
                 0, 0);
 
-        mMenuMargins = attr.getDimensionPixelSize(R.styleable.FABsMenu_fab_menuMargins, (int)
-                convertDpToPixel(16, context));
+        mMenuMargins = attr.getDimensionPixelSize(R.styleable.FABsMenu_fab_menuMargins,
+                (int) DimensionUtils.convertDpToPixel(16, context));
 
         mMenuButtonPlusIcon = attr.getDrawable(R.styleable.FABsMenu_fab_moreButtonPlusIcon);
 
@@ -126,9 +123,6 @@ public class FABsMenu extends ViewGroup {
         mExpandDirection = attr.getInt(R.styleable.FABsMenu_fab_expandDirection, EXPAND_UP);
 
         mLabelsPosition = attr.getInt(R.styleable.FABsMenu_fab_labelsPosition, LABELS_ON_LEFT_SIDE);
-
-        mLabelTextPadding = attr.getDimensionPixelSize(R.styleable.FABsMenu_fab_labelTextPadding,
-                (int) convertDpToPixel(8, context));
 
         attr.recycle();
 
@@ -475,6 +469,7 @@ public class FABsMenu extends ViewGroup {
                 final TextView labelText = new TextView(getContext());
                 labelText.setText(button.getTitle());
                 labelText.setTextColor(button.getTitleTextColor());
+                int mLabelTextPadding = button.getTitleTextPadding();
                 labelText.setPadding(mLabelTextPadding, mLabelTextPadding / 2, mLabelTextPadding,
                         mLabelTextPadding / 2);
 
@@ -749,36 +744,6 @@ public class FABsMenu extends ViewGroup {
                 }
             });
         }
-    }
-
-
-    /**
-     * This method converts dp unit to equivalent pixels, depending on device density.
-     *
-     * @param dp      A value in dp (density independent pixels) unit. Which we need to convert into
-     *                pixels
-     * @param context Context to get resources and device specific display metrics
-     * @return A float value to represent px equivalent to dp depending on device density
-     */
-    public static float convertDpToPixel(float dp, Context context) {
-        Resources resources = context.getResources();
-        DisplayMetrics metrics = resources.getDisplayMetrics();
-        float px = dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
-        return px;
-    }
-
-    /**
-     * This method converts device specific pixels to density independent pixels.
-     *
-     * @param px      A value in px (pixels) unit. Which we need to convert into db
-     * @param context Context to get resources and device specific display metrics
-     * @return A float value to represent dp equivalent to px value
-     */
-    public static float convertPixelsToDp(float px, Context context) {
-        Resources resources = context.getResources();
-        DisplayMetrics metrics = resources.getDisplayMetrics();
-        float dp = px / ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
-        return dp;
     }
 
     @Override
