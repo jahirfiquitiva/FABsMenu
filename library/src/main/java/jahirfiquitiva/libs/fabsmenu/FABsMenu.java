@@ -30,6 +30,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
@@ -186,22 +187,7 @@ public class FABsMenu extends ViewGroup {
         menuButton = new MenuFAB(context);
 
         if (menuButtonIcon != null) {
-            rotatingDrawable = new RotatingDrawable(menuButtonIcon);
-
-            final OvershootInterpolator interpolator = new OvershootInterpolator();
-
-            final ObjectAnimator collapseAnimator = ObjectAnimator.ofFloat(rotatingDrawable,
-                    "rotation", EXPANDED_PLUS_ROTATION, COLLAPSED_PLUS_ROTATION);
-            final ObjectAnimator expandAnimator = ObjectAnimator.ofFloat(rotatingDrawable,
-                    "rotation", COLLAPSED_PLUS_ROTATION, EXPANDED_PLUS_ROTATION);
-
-            collapseAnimator.setInterpolator(interpolator);
-            expandAnimator.setInterpolator(interpolator);
-
-            expandAnimation.play(expandAnimator);
-            collapseAnimation.play(collapseAnimator);
-
-            menuButton.setImageDrawable(rotatingDrawable);
+            createRotatingDrawable();
         }
 
         menuButton.setBackgroundTintList(ColorStateList.valueOf(menuButtonColor));
@@ -218,6 +204,26 @@ public class FABsMenu extends ViewGroup {
 
         addView(menuButton, super.generateDefaultLayoutParams());
         buttonsCount++;
+    }
+
+    private void createRotatingDrawable() {
+        RotatingDrawable dr = new RotatingDrawable(menuButtonIcon);
+
+        final OvershootInterpolator interpolator = new OvershootInterpolator();
+
+        final ObjectAnimator collapseAnimator = ObjectAnimator.ofFloat(dr,
+                "rotation", EXPANDED_PLUS_ROTATION, COLLAPSED_PLUS_ROTATION);
+        final ObjectAnimator expandAnimator = ObjectAnimator.ofFloat(dr,
+                "rotation", COLLAPSED_PLUS_ROTATION, EXPANDED_PLUS_ROTATION);
+
+        collapseAnimator.setInterpolator(interpolator);
+        expandAnimator.setInterpolator(interpolator);
+
+        expandAnimation.play(expandAnimator);
+        collapseAnimation.play(collapseAnimator);
+
+        menuButton.setImageDrawable(dr);
+        rotatingDrawable = dr;
     }
 
     public void addButton(TitleFAB button) {
@@ -840,10 +846,12 @@ public class FABsMenu extends ViewGroup {
         return menuLeftMargin;
     }
 
+    @ColorInt
     public int getMenuButtonColor() {
         return menuButtonColor;
     }
 
+    @ColorInt
     public int getMenuButtonRippleColor() {
         return menuButtonRippleColor;
     }
@@ -896,11 +904,11 @@ public class FABsMenu extends ViewGroup {
         return menuUpdateListener;
     }
 
-    public void setMenuButtonColor(int menuButtonColor) {
+    public void setMenuButtonColor(@ColorInt int menuButtonColor) {
         this.menuButtonColor = menuButtonColor;
     }
 
-    public void setMenuButtonRippleColor(int menuButtonRippleColor) {
+    public void setMenuButtonRippleColor(@ColorInt int menuButtonRippleColor) {
         this.menuButtonRippleColor = menuButtonRippleColor;
     }
 
@@ -918,6 +926,7 @@ public class FABsMenu extends ViewGroup {
 
     public void setMenuButtonIcon(Drawable menuButtonIcon) {
         this.menuButtonIcon = menuButtonIcon;
+        createRotatingDrawable();
     }
 
     public void setButtonSpacing(int buttonSpacing) {

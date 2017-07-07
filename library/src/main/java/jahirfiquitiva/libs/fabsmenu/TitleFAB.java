@@ -120,7 +120,7 @@ public class TitleFAB extends FloatingActionButton {
         return titleBackgroundColor;
     }
 
-    public void setTitleBackgroundColor(int titleBackgroundColor) {
+    public void setTitleBackgroundColor(@ColorInt int titleBackgroundColor) {
         this.titleBackgroundColor = titleBackgroundColor;
     }
 
@@ -128,7 +128,7 @@ public class TitleFAB extends FloatingActionButton {
         return titleTextColor;
     }
 
-    public void setTitleTextColor(int titleTextColor) {
+    public void setTitleTextColor(@ColorInt int titleTextColor) {
         this.titleTextColor = titleTextColor;
     }
 
