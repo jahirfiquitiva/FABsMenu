@@ -17,15 +17,99 @@ allprojects {
 }
 ```
 
-And add the dependency to your `build.gradle`:
+Next, add the dependency to your `build.gradle`:
 ```groovy
 dependencies {
     compile 'me.jahirfiquitiva:FABsMenu:36dd81d'
 }
 ```
 
+Then sync the gradle files.
+
+Finally, use it in your layout, just like this:
+
 To see how the buttons are added to your xml layouts, check the sample project.
 
+
+```xml
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:fab="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+	<!-- Menu Layout is needed for the overlay to work -->
+    <jahirfiquitiva.libs.fabsmenu.FABsMenuLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+			fab:fabs_menu_overlayColor="#4d000000"
+			fab:fabs_menu_cickableOverlay="true">
+			
+		<!-- FABs Menu is the main view. It will contain all the items FABs and it create the menu fab itself -->
+        <jahirfiquitiva.libs.fabsmenu.FABsMenu
+                android:id="@+id/fabs_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:clipChildren="false"
+                fab:fab_menuMargins="16dp"
+                fab:fab_moreButtonPlusIcon="@drawable/ic_plus"
+                fab:fab_moreButtonBackgroundColor="@color/pink"
+                fab:fab_moreButtonRippleColor="@color/pink_pressed"
+                fab:fab_moreButtonSize="normal"
+                fab:fab_labelsPosition="left"
+                fab:fab_expandDirection="up">
+
+			<!-- This is the item that appears at the top of the menu -->
+            <jahirfiquitiva.libs.fabsmenu.TitleFAB
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    fab:srcCompat="@drawable/ic_share"
+                    fab:fabSize="mini"
+                    fab:backgroundTint="@color/colorAccent"
+                    fab:rippleColor="@color/colorAccent"
+                    fab:fab_title="This is a custom title"
+                    fab:fab_title_backgroundColor="@color/colorAccent"
+                    fab:fab_title_textColor="@android:color/white"/>
+
+            <jahirfiquitiva.libs.fabsmenu.TitleFAB
+                    android:id="@+id/clickable_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    fab:srcCompat="@drawable/ic_pencil"
+                    fab:fab_title="Clickable title"
+                    fab:fab_enableTitleClick="true"
+                    fab:fab_title_textColor="@color/colorAccent"
+                    fab:fabSize="mini"
+                    fab:backgroundTint="@color/colorAccent"
+                    fab:rippleColor="@color/colorAccent"/>
+
+            <jahirfiquitiva.libs.fabsmenu.TitleFAB
+                    android:id="@+id/mini_fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    fab:srcCompat="@drawable/ic_heart"
+                    fab:fab_title="Mini fab with long text"
+                    fab:fabSize="mini"
+                    fab:backgroundTint="@color/blue_semi"
+                    fab:rippleColor="@color/blue_semi_pressed"/>
+
+			<!-- This item will appear just above the menu FAB -->
+            <jahirfiquitiva.libs.fabsmenu.TitleFAB
+                    android:id="@+id/green_fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    fab:srcCompat="@drawable/ic_person"
+                    fab:fab_title="Fab with even longer text that might not even fit in all the screens"
+                    fab:fabSize="normal"
+                    fab:backgroundTint="@color/green"
+                    fab:rippleColor="@color/green_pressed"/>
+
+        </jahirfiquitiva.libs.fabsmenu.FABsMenu>
+		
+    </jahirfiquitiva.libs.fabsmenu.FABsMenuLayout>
+
+</RelativeLayout>
+```
 
 
 ## Credits
