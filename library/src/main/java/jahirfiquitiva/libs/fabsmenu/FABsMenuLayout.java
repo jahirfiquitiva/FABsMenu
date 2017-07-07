@@ -51,27 +51,32 @@ public class FABsMenuLayout extends FrameLayout {
     }
 
     private void init(Context context, AttributeSet attrs) {
-        TypedArray a = context.getTheme().obtainStyledAttributes(attrs,
-                R.styleable.FABsMenuLayout, 0, 0);
-        overlayColor = a.getColor(R.styleable.FABsMenuLayout_fabs_menu_overlayColor,
-                Color.parseColor("#4d000000"));
-        clickableOverlay = a.getBoolean(R.styleable.FABsMenuLayout_fabs_menu_cickableOverlay,
-                true);
-        a.recycle();
+        try {
+            TypedArray a = context.getTheme().obtainStyledAttributes(attrs,
+                    R.styleable.FABsMenuLayout, 0, 0);
+            overlayColor = a.getColor(R.styleable.FABsMenuLayout_fabs_menu_overlayColor,
+                    Color.parseColor("#4d000000"));
+            clickableOverlay = a.getBoolean(R.styleable.FABsMenuLayout_fabs_menu_cickableOverlay,
+                    true);
+            a.recycle();
 
-        overlayView = new View(context);
-        overlayView.setLayoutParams(new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        overlayView.setBackgroundColor(overlayColor);
-        overlayView.setVisibility(View.GONE);
-        addView(overlayView);
+            overlayView = new View(context);
+            overlayView.setLayoutParams(new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            overlayView.setBackgroundColor(overlayColor);
+            overlayView.setVisibility(View.GONE);
+            addView(overlayView);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
+    @ColorInt
     public int getOverlayColor() {
         return overlayColor;
     }
 
-    public void setOverlayColor(int overlayColor) {
+    public void setOverlayColor(@ColorInt int overlayColor) {
         this.overlayColor = overlayColor;
     }
 

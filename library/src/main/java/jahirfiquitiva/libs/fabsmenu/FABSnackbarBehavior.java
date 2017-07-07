@@ -26,16 +26,15 @@ import android.view.View;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class FABSnackbarBehavior extends CoordinatorLayout.Behavior<View> {
 
     private float mTranslationY;
 
-    @SuppressWarnings("unused")
     public FABSnackbarBehavior() {
         super();
     }
 
-    @SuppressWarnings("unused")
     public FABSnackbarBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
     }

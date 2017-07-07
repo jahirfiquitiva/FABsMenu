@@ -24,14 +24,18 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -48,6 +52,7 @@ import android.view.animation.Interpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.TextView;
 
+import java.io.InputStream;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -128,55 +133,60 @@ public class FABsMenu extends ViewGroup {
     }
 
     private void init(Context context, AttributeSet attributeSet) {
-        buttonSpacing = (int) DimensionUtils.convertDpToPixel(16, context);
-        labelsMargin = getResources().getDimensionPixelSize(R.dimen.fab_labels_margin);
-        labelsVerticalOffset = (int) DimensionUtils.convertDpToPixel(-1.5f, context);
+        try {
+            buttonSpacing = (int) DimensionUtils.convertDpToPixel(16, context);
+            labelsMargin = getResources().getDimensionPixelSize(R.dimen.fab_labels_margin);
+            labelsVerticalOffset = (int) DimensionUtils.convertDpToPixel(-1.5f, context);
 
-        touchDelegateGroup = new TouchDelegateGroup(this);
-        setTouchDelegate(touchDelegateGroup);
+            touchDelegateGroup = new TouchDelegateGroup(this);
+            setTouchDelegate(touchDelegateGroup);
 
-        TypedArray attr = context.obtainStyledAttributes(attributeSet, R.styleable.FABsMenu,
-                0, 0);
+            TypedArray attr = context.obtainStyledAttributes(attributeSet, R.styleable.FABsMenu,
+                    0, 0);
 
-        menuMargins = attr.getDimensionPixelSize(R.styleable.FABsMenu_fab_menuMargins, 0);
+            menuMargins = attr.getDimensionPixelSize(R.styleable.FABsMenu_fab_menuMargins, 0);
 
-        menuTopMargin = attr.getDimensionPixelSize(R.styleable.FABsMenu_fab_menuTopMargin,
-                menuMargins != 0
-                        ? menuMargins
-                        : (int) DimensionUtils.convertDpToPixel(16, context));
+            menuTopMargin = attr.getDimensionPixelSize(R.styleable.FABsMenu_fab_menuTopMargin,
+                    menuMargins != 0
+                            ? menuMargins
+                            : (int) DimensionUtils.convertDpToPixel(16, context));
 
-        menuBottomMargin = attr.getDimensionPixelSize(R.styleable.FABsMenu_fab_menuBottomMargin,
-                menuMargins != 0
-                        ? menuMargins
-                        : (int) DimensionUtils.convertDpToPixel(16, context));
+            menuBottomMargin = attr.getDimensionPixelSize(R.styleable.FABsMenu_fab_menuBottomMargin,
+                    menuMargins != 0
+                            ? menuMargins
+                            : (int) DimensionUtils.convertDpToPixel(16, context));
 
-        menuRightMargin = attr.getDimensionPixelSize(R.styleable.FABsMenu_fab_menuRightMargin,
-                menuMargins != 0
-                        ? menuMargins
-                        : (int) DimensionUtils.convertDpToPixel(16, context));
+            menuRightMargin = attr.getDimensionPixelSize(R.styleable.FABsMenu_fab_menuRightMargin,
+                    menuMargins != 0
+                            ? menuMargins
+                            : (int) DimensionUtils.convertDpToPixel(16, context));
 
-        menuLeftMargin = attr.getDimensionPixelSize(R.styleable.FABsMenu_fab_menuLeftMargin,
-                menuMargins != 0
-                        ? menuMargins
-                        : (int) DimensionUtils.convertDpToPixel(16, context));
+            menuLeftMargin = attr.getDimensionPixelSize(R.styleable.FABsMenu_fab_menuLeftMargin,
+                    menuMargins != 0
+                            ? menuMargins
+                            : (int) DimensionUtils.convertDpToPixel(16, context));
 
-        menuButtonIcon = attr.getDrawable(R.styleable.FABsMenu_fab_moreButtonPlusIcon);
+            menuButtonIcon = attr.getDrawable(R.styleable.FABsMenu_fab_moreButtonPlusIcon);
 
-        menuButtonColor = attr.getColor(R.styleable.FABsMenu_fab_moreButtonBackgroundColor,
-                getColor(android.R.color.holo_blue_dark));
-        menuButtonRippleColor = attr.getColor(R.styleable.FABsMenu_fab_moreButtonRippleColor,
-                getColor(android.R.color.holo_blue_light));
+            menuButtonColor = attr.getColor(R.styleable.FABsMenu_fab_moreButtonBackgroundColor,
+                    getColor(android.R.color.holo_blue_dark));
+            menuButtonRippleColor = attr.getColor(R.styleable.FABsMenu_fab_moreButtonRippleColor,
+                    getColor(android.R.color.holo_blue_light));
 
-        menuButtonSize = attr.getInt(R.styleable.FABsMenu_fab_moreButtonSize, TitleFAB
-                .SIZE_NORMAL);
+            menuButtonSize = attr.getInt(R.styleable.FABsMenu_fab_moreButtonSize, TitleFAB
+                    .SIZE_NORMAL);
 
-        expandDirection = attr.getInt(R.styleable.FABsMenu_fab_expandDirection, EXPAND_UP);
+            expandDirection = attr.getInt(R.styleable.FABsMenu_fab_expandDirection, EXPAND_UP);
 
-        labelsPosition = attr.getInt(R.styleable.FABsMenu_fab_labelsPosition, LABELS_ON_LEFT_SIDE);
+            labelsPosition = attr.getInt(R.styleable.FABsMenu_fab_labelsPosition,
+                    LABELS_ON_LEFT_SIDE);
 
-        attr.recycle();
+            attr.recycle();
 
-        createAddButton(context);
+            createAddButton(context);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean expandsHorizontally() {
@@ -920,11 +930,37 @@ public class FABsMenu extends ViewGroup {
         this.expandDirection = expandDirection;
     }
 
-    public void setMenuButton(MenuFAB menuButton) {
+    public void setMenuButton(@NonNull MenuFAB menuButton) {
         this.menuButton = menuButton;
     }
 
-    public void setMenuButtonIcon(Drawable menuButtonIcon) {
+    public void setMenuButtonIcon(@NonNull Bitmap bitmap) {
+        try {
+            setMenuButtonIcon(new BitmapDrawable(getResources(), bitmap));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setMenuButtonIcon(@NonNull Uri uri) {
+        try {
+            InputStream inputStream = getContext().getContentResolver().openInputStream(uri);
+            Drawable icon = Drawable.createFromStream(inputStream, uri.toString());
+            if (icon != null) setMenuButtonIcon(icon);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setMenuButtonIcon(@DrawableRes int resId) {
+        try {
+            setMenuButtonIcon(ContextCompat.getDrawable(getContext(), resId));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setMenuButtonIcon(@NonNull Drawable menuButtonIcon) {
         this.menuButtonIcon = menuButtonIcon;
         createRotatingDrawable();
     }

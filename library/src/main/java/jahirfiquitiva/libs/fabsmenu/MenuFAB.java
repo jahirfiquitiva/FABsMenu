@@ -17,6 +17,12 @@
 package jahirfiquitiva.libs.fabsmenu;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.Icon;
+import android.net.Uri;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 
 public class MenuFAB extends TitleFAB {
@@ -41,5 +47,35 @@ public class MenuFAB extends TitleFAB {
     @Override
     public String getTitle() {
         return null;
+    }
+
+    @Override
+    public void setImageDrawable(@Nullable Drawable drawable) {
+        throw new UnsupportedOperationException("Don't set the drawable for menu button using " +
+                "this method. Use FABs Menu setMenuButtonIcon() method instead.");
+    }
+
+    @Override
+    public void setImageBitmap(Bitmap bm) {
+        throw new UnsupportedOperationException("Don't set the bitmap for menu button using " +
+                "this method. Use FABs Menu setMenuButtonIcon() method instead.");
+    }
+
+    @Override
+    public void setImageIcon(@Nullable Icon icon) {
+        throw new UnsupportedOperationException("This method is not available for now." +
+                " Use FABs Menu setMenuButtonIcon() method instead.");
+    }
+
+    @Override
+    public void setImageURI(@Nullable Uri uri) {
+        throw new UnsupportedOperationException("Don't set the uri for menu button using " +
+                "this method. Use FABs Menu setMenuButtonIcon() method instead.");
+    }
+
+    @Override
+    public void setImageResource(@DrawableRes int resId) {
+        throw new UnsupportedOperationException("Don't set the resource for menu button using " +
+                "this method. Use FABs Menu setMenuButtonIcon() method instead.");
     }
 }
