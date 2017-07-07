@@ -21,11 +21,13 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
+import android.widget.TextView;
 
 public class LabelView extends CardView {
 
     @ColorInt
     private int rightBackgroundColor;
+    private TextView content;
 
     public LabelView(Context context, @ColorInt int backgroundColor) {
         super(context);
@@ -49,6 +51,14 @@ public class LabelView extends CardView {
     @Override
     public void setForeground(Drawable foreground) {
         super.setForeground(foreground);
+    }
+
+    public TextView getContent() {
+        return content;
+    }
+
+    public void setContent(TextView content) {
+        this.content = content;
     }
 
     @Override

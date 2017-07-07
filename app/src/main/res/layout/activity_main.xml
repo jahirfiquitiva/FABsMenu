@@ -38,6 +38,7 @@
                 fab:fab_expandDirection="up">
 
             <jahirfiquitiva.libs.fabsmenu.TitleFAB
+                    android:id="@+id/to_remove"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     fab:srcCompat="@drawable/ic_share"

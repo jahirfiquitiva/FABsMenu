@@ -225,13 +225,13 @@ public class FABsMenu extends ViewGroup {
     }
 
     public void removeButton(TitleFAB button) {
-        if (buttonsCount <= 0) return;
         try {
             removeView(button.getLabelView());
             removeView(button);
             button.setTag(R.id.fab_label, null);
             buttonsCount--;
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -288,16 +288,17 @@ public class FABsMenu extends ViewGroup {
             case EXPAND_UP:
             case EXPAND_DOWN:
                 height += buttonSpacing * (buttonsCount - 1);
-                height += (Math.max(menuTopMargin, menuBottomMargin) * 1.5);
                 height = adjustForOvershoot(height);
                 break;
             case EXPAND_LEFT:
             case EXPAND_RIGHT:
                 width += buttonSpacing * (buttonsCount - 1);
-                width += (Math.max(menuLeftMargin, menuRightMargin) * 1.5);
                 width = adjustForOvershoot(width);
                 break;
         }
+
+        height += Math.max(menuTopMargin, menuBottomMargin);
+        width += (Math.max(menuLeftMargin, menuRightMargin)) * 2;
 
         setMeasuredDimension(width, height);
     }
@@ -518,13 +519,14 @@ public class FABsMenu extends ViewGroup {
                     label.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            if (button.getClickListener() != null)
-                                button.getClickListener().onClick(label);
+                            if (button.getOnClickListener() != null)
+                                button.getOnClickListener().onClick(label);
                         }
                     });
                 }
 
                 label.addView(labelText);
+                label.setContent(labelText);
                 addView(label);
 
                 button.setTag(R.id.fab_label, label);

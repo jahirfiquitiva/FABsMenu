@@ -17,6 +17,7 @@
 package jahirfiquitiva.apps.fabsmenu.demo;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
 import android.view.View;
@@ -76,6 +77,16 @@ public class MainActivity extends Activity {
                 showToast("You pressed the green fab");
             }
         });
+
+        // Removes a button
+        TitleFAB toRemove = findViewById(R.id.to_remove);
+        menu.removeButton(toRemove);
+
+        // Adds a button to the bottom
+        TitleFAB toAdd = new TitleFAB(this);
+        toAdd.setTitle("A new added fab");
+        toAdd.setBackgroundColor(Color.parseColor("#ff5722"));
+        menu.addButton(toAdd);
     }
 
     private void showToast(String text) {

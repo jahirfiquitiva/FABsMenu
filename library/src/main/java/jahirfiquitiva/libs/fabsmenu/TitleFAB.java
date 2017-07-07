@@ -17,6 +17,7 @@
 package jahirfiquitiva.libs.fabsmenu;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
@@ -25,7 +26,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.TextView;
 
 @CoordinatorLayout.DefaultBehavior(FABSnackbarBehavior.class)
 public class TitleFAB extends FloatingActionButton {
@@ -72,21 +72,22 @@ public class TitleFAB extends FloatingActionButton {
     }
 
     @Override
+    public void setBackgroundColor(@ColorInt int color) {
+        super.setBackgroundTintList(ColorStateList.valueOf(color));
+    }
+
+    @Override
     public void setOnClickListener(@Nullable OnClickListener l) {
         super.setOnClickListener(l);
         this.clickListener = l;
     }
 
-    public OnClickListener getClickListener() {
+    public OnClickListener getOnClickListener() {
         return clickListener;
     }
 
-    public void setClickListener(OnClickListener clickListener) {
-        setOnClickListener(clickListener);
-    }
-
-    TextView getLabelView() {
-        return (TextView) getTag(R.id.fab_label);
+    LabelView getLabelView() {
+        return (LabelView) getTag(R.id.fab_label);
     }
 
     public String getTitle() {
@@ -102,9 +103,9 @@ public class TitleFAB extends FloatingActionButton {
 
     public void setTitle(String title) {
         this.title = title;
-        TextView label = getLabelView();
-        if (label != null) {
-            label.setText(title);
+        LabelView label = getLabelView();
+        if (label != null && label.getContent() != null) {
+            label.getContent().setText(title);
         }
     }
 

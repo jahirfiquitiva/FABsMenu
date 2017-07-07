@@ -144,6 +144,20 @@ final FABsMenu menu = findViewById(R.id.fabs_menu);
         });
 ```
 
+You can also add or remove buttons programmatically:
+```java
+// Removes a button
+TitleFAB toRemove = findViewById(R.id.to_remove);
+menu.removeButton(toRemove);
+
+// Adds a button to the bottom
+TitleFAB toAdd = new TitleFAB(this);
+toAdd.setTitle("A new added fab");
+toAdd.setBackgroundColor(Color.parseColor("#ff5722"));
+menu.addButton(toAdd);
+```
+
+
 ## Attributes explanation
 
 1. FABsMenuLayout attributes:
