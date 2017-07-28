@@ -162,7 +162,7 @@ menu.addButton(toAdd);
 
 1. FABsMenuLayout attributes:
 	* `fabs_menu_overlayColor` --> Set the menu overlay color (Defaults to `#4d000000`)
-	* `fabs_menu_cickableOverlay` --> Specify whether the overlay is clickable or not (Defaults to `true`)
+	* `fabs_menu_clickableOverlay` --> Specify whether the overlay is clickable or not (Defaults to `true`)
 
 2. FABsMenu attributes
 	* `fab_menuMargins` --> The margins of the menu (Defaults to `16dp`)

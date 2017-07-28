@@ -56,7 +56,7 @@ public class FABsMenuLayout extends FrameLayout {
                     R.styleable.FABsMenuLayout, 0, 0);
             overlayColor = a.getColor(R.styleable.FABsMenuLayout_fabs_menu_overlayColor,
                     Color.parseColor("#4d000000"));
-            clickableOverlay = a.getBoolean(R.styleable.FABsMenuLayout_fabs_menu_cickableOverlay,
+            clickableOverlay = a.getBoolean(R.styleable.FABsMenuLayout_fabs_menu_clickableOverlay,
                     true);
             a.recycle();
 
