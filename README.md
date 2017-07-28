@@ -200,6 +200,16 @@ menu.addButton(toAdd);
 4. As stated in guidelines, a FABsMenu should not have more than 6 items. If you use more than 6, you will get an `IllegalArgumentException`. Also, remember FABs menu should have **at least** 3 items too.
 5. For now, the icon you set for FABsMenu will always rotate, so be sure you set an icon that looks good in both states (normal and rotated).
 
+## Apps using FABsMenu
+
+* Yours? Fill [an issue](https://github.com/jahirfiquitiva/FABsMenu/issues/new) and let me know ;)
+
+## Developed by
+
+* Jahir Fiquitiva
+	* [Website](https://www.jahirfiquitiva.me)
+	* [Google+](https://google.com/+JahirFiquitivaR)
+	* [Donate](https://paypal.me/jahirfiquitiva/5)
 
 ## Credits
 
