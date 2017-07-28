@@ -53,7 +53,7 @@ Finally, use it in your layout, just like this:
             android:layout_width="match_parent"
             android:layout_height="match_parent"
 			fab:fabs_menu_overlayColor="#4d000000"
-			fab:fabs_menu_cickableOverlay="true">
+			fab:fabs_menu_clickableOverlay="true">
 			
 		<!-- FABs Menu is the main view. It will contain all the items FABs and it create the menu fab itself -->
         <jahirfiquitiva.libs.fabsmenu.FABsMenu
