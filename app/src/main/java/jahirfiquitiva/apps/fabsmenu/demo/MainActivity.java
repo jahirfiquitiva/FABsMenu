@@ -16,9 +16,9 @@
 
 package jahirfiquitiva.apps.fabsmenu.demo;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.view.View;
 import android.widget.Toast;
@@ -26,15 +26,15 @@ import android.widget.Toast;
 import jahirfiquitiva.libs.fabsmenu.FABsMenu;
 import jahirfiquitiva.libs.fabsmenu.TitleFAB;
 
-public class MainActivity extends Activity {
-
+public class MainActivity extends AppCompatActivity {
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-
+        
         setContentView(R.layout.activity_main);
-
+        
         final FABsMenu menu = findViewById(R.id.fabs_menu);
         menu.setMenuUpdateListener(new FABsMenu.OnFABsMenuUpdateListener() {
             @Override
@@ -42,18 +42,18 @@ public class MainActivity extends Activity {
                 showToast("You pressed the menu!");
                 menu.toggle();
             }
-
+            
             @Override
             public void onMenuExpanded() {
                 showToast("The menu has been expanded!");
             }
-
+            
             @Override
             public void onMenuCollapsed() {
                 showToast("The menu has been collapsed!");
             }
         });
-
+        
         TitleFAB clickableTitle = findViewById(R.id.clickable_title);
         clickableTitle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +61,7 @@ public class MainActivity extends Activity {
                 showToast("You pressed the red fab or its title");
             }
         });
-
+        
         TitleFAB mini = findViewById(R.id.mini_fab);
         mini.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +69,7 @@ public class MainActivity extends Activity {
                 showToast("You pressed the mini fab!");
             }
         });
-
+        
         TitleFAB green = findViewById(R.id.green_fab);
         green.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,18 +77,18 @@ public class MainActivity extends Activity {
                 showToast("You pressed the green fab");
             }
         });
-
+        
         // Removes a button
         TitleFAB toRemove = findViewById(R.id.to_remove);
         menu.removeButton(toRemove);
-
+        
         // Adds a button to the bottom
         TitleFAB toAdd = new TitleFAB(this);
         toAdd.setTitle("A new added fab");
         toAdd.setBackgroundColor(Color.parseColor("#ff5722"));
         menu.addButton(toAdd);
     }
-
+    
     private void showToast(String text) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
