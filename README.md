@@ -34,7 +34,7 @@ allprojects {
 Next, add the dependency to your `build.gradle`:
 ```groovy
 dependencies {
-    compile 'me.jahirfiquitiva:FABsMenu:1.0.3'
+    compile 'me.jahirfiquitiva:FABsMenu:1.0.4'
 }
 ```
 
@@ -43,19 +43,20 @@ Then sync the gradle files.
 Finally, use it in your layout, just like this:
 
 ```xml
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:fab="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:fab="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-	<!-- Menu Layout is needed for the overlay to work -->
+    <!-- Menu Layout is needed for the overlay to work -->
     <jahirfiquitiva.libs.fabsmenu.FABsMenuLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-			fab:fabs_menu_overlayColor="#4d000000"
-			fab:fabs_menu_clickableOverlay="true">
-			
-		<!-- FABs Menu is the main view. It will contain all the items FABs and it create the menu fab itself -->
+            fab:fabs_menu_overlayColor="#4d000000"
+            fab:fabs_menu_clickableOverlay="true">
+
+        <!-- FABs Menu is the main view. It will contain all the items FABs and it create the menu fab itself -->
         <jahirfiquitiva.libs.fabsmenu.FABsMenu
                 android:id="@+id/fabs_menu"
                 android:layout_width="wrap_content"
@@ -70,8 +71,9 @@ Finally, use it in your layout, just like this:
                 fab:fab_labelsPosition="left"
                 fab:fab_expandDirection="up">
 
-			<!-- This is the item that appears at the top of the menu -->
+            <!-- This is the item that appears at the top of the menu -->
             <jahirfiquitiva.libs.fabsmenu.TitleFAB
+                    android:id="@+id/to_remove"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     fab:srcCompat="@drawable/ic_share"
@@ -104,7 +106,7 @@ Finally, use it in your layout, just like this:
                     fab:backgroundTint="@color/blue_semi"
                     fab:rippleColor="@color/blue_semi_pressed"/>
 
-			<!-- This item will appear just above the menu FAB -->
+            <!-- This item will appear just above the menu FAB -->
             <jahirfiquitiva.libs.fabsmenu.TitleFAB
                     android:id="@+id/green_fab"
                     android:layout_width="wrap_content"
@@ -116,7 +118,7 @@ Finally, use it in your layout, just like this:
                     fab:rippleColor="@color/green_pressed"/>
 
         </jahirfiquitiva.libs.fabsmenu.FABsMenu>
-		
+
     </jahirfiquitiva.libs.fabsmenu.FABsMenuLayout>
 
 </RelativeLayout>
@@ -125,23 +127,27 @@ Finally, use it in your layout, just like this:
 And call the methods in java code:
 ```java
 final FABsMenu menu = findViewById(R.id.fabs_menu);
-        menu.setMenuUpdateListener(new FABsMenu.OnFABsMenuUpdateListener() {
-            @Override
-            public void onMenuClicked() {
-                showToast("You pressed the menu!");
-                menu.toggle(); // Expands or collapses the menu depending on its state
-            }
+menu.setMenuUpdateListener(new FABsMenuListener() {
+    // You don't need to override all methods. Just the ones you want.
 
-            @Override
-            public void onMenuExpanded() {
-                showToast("The menu has been expanded!");
-            }
+    @Override
+    public void onMenuClicked(FABsMenu fabsMenu) {
+        super.onMenuClicked(fabsMenu); // Default implementation opens the menu on click
+        showToast("You pressed the menu!");
+    }
 
-            @Override
-            public void onMenuCollapsed() {
-                showToast("The menu has been collapsed!");
-            }
-        });
+    @Override
+    public void onMenuCollapsed(FABsMenu fabsMenu) {
+        super.onMenuCollapsed(fabsMenu);
+        showToast("The menu has been collapsed!");
+    }
+
+    @Override
+    public void onMenuExpanded(FABsMenu fabsMenu) {
+        super.onMenuExpanded(fabsMenu);
+        showToast("The menu has been expanded!");
+    }
+});
 ```
 
 You can also add or remove buttons programmatically:

@@ -92,7 +92,7 @@ public class FABsMenu extends ViewGroup {
     private int maxButtonWidth;
     private int maxButtonHeight;
     private TouchDelegateGroup touchDelegateGroup;
-    private OnFABsMenuUpdateListener menuUpdateListener;
+    private FABsMenuListener menuListener;
     
     public FABsMenu(Context context) {
         this(context, null);
@@ -188,7 +188,7 @@ public class FABsMenu extends ViewGroup {
         menuButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (menuUpdateListener != null) menuUpdateListener.onMenuClicked();
+                if (menuListener != null) menuListener.onMenuClicked(FABsMenu.this);
             }
         });
         
@@ -595,8 +595,8 @@ public class FABsMenu extends ViewGroup {
             collapseAnimation.setDuration(immediately ? 0 : animationDuration);
             collapseAnimation.start();
             expandAnimation.cancel();
-            if (menuUpdateListener != null) {
-                menuUpdateListener.onMenuCollapsed();
+            if (menuListener != null) {
+                menuListener.onMenuCollapsed(this);
             }
         }
     }
@@ -616,8 +616,8 @@ public class FABsMenu extends ViewGroup {
             toggleOverlay(true, false);
             collapseAnimation.cancel();
             expandAnimation.start();
-            if (menuUpdateListener != null) {
-                menuUpdateListener.onMenuExpanded();
+            if (menuListener != null) {
+                menuListener.onMenuExpanded(this);
             }
         }
     }
@@ -809,12 +809,12 @@ public class FABsMenu extends ViewGroup {
         this.maxButtonHeight = maxButtonHeight;
     }
     
-    public OnFABsMenuUpdateListener getMenuUpdateListener() {
-        return menuUpdateListener;
+    public FABsMenuListener getMenuListener() {
+        return menuListener;
     }
     
-    public void setMenuUpdateListener(OnFABsMenuUpdateListener menuUpdateListener) {
-        this.menuUpdateListener = menuUpdateListener;
+    public void setMenuUpdateListener(FABsMenuListener menuListener) {
+        this.menuListener = menuListener;
     }
     
     public void setMenuButtonIcon(@NonNull Bitmap bitmap) {
@@ -863,14 +863,6 @@ public class FABsMenu extends ViewGroup {
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({LABELS_ON_LEFT_SIDE, LABELS_ON_RIGHT_SIDE})
     public @interface LABELS_POSITION {
-    }
-    
-    public interface OnFABsMenuUpdateListener {
-        void onMenuClicked();
-        
-        void onMenuExpanded();
-        
-        void onMenuCollapsed();
     }
     
     private static class RotatingDrawable extends LayerDrawable {

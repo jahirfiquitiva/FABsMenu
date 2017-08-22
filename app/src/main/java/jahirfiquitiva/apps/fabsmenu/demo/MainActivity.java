@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import jahirfiquitiva.libs.fabsmenu.FABsMenu;
+import jahirfiquitiva.libs.fabsmenu.FABsMenuListener;
 import jahirfiquitiva.libs.fabsmenu.TitleFAB;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,21 +37,25 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         
         final FABsMenu menu = findViewById(R.id.fabs_menu);
-        menu.setMenuUpdateListener(new FABsMenu.OnFABsMenuUpdateListener() {
+        menu.setMenuUpdateListener(new FABsMenuListener() {
+            // You don't need to override all methods. Just the ones you want.
+            
             @Override
-            public void onMenuClicked() {
+            public void onMenuClicked(FABsMenu fabsMenu) {
+                super.onMenuClicked(fabsMenu); // Default implementation opens the menu on click
                 showToast("You pressed the menu!");
-                menu.toggle();
             }
             
             @Override
-            public void onMenuExpanded() {
-                showToast("The menu has been expanded!");
-            }
-            
-            @Override
-            public void onMenuCollapsed() {
+            public void onMenuCollapsed(FABsMenu fabsMenu) {
+                super.onMenuCollapsed(fabsMenu);
                 showToast("The menu has been collapsed!");
+            }
+            
+            @Override
+            public void onMenuExpanded(FABsMenu fabsMenu) {
+                super.onMenuExpanded(fabsMenu);
+                showToast("The menu has been expanded!");
             }
         });
         
