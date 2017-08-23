@@ -18,9 +18,11 @@ package jahirfiquitiva.apps.fabsmenu.demo;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import jahirfiquitiva.libs.fabsmenu.FABsMenu;
@@ -35,6 +37,15 @@ public class MainActivity extends AppCompatActivity {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         
         setContentView(R.layout.activity_main);
+        
+        Button snackButton = findViewById(R.id.snack_button);
+        snackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(findViewById(R.id.coordinator), "Testing, testing, 1, 2, 3",
+                              Snackbar.LENGTH_LONG).show();
+            }
+        });
         
         final FABsMenu menu = findViewById(R.id.fabs_menu);
         menu.setMenuUpdateListener(new FABsMenuListener() {

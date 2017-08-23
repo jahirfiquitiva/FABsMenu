@@ -14,7 +14,8 @@
   ~ limitations under the License.
   -->
 
-<RelativeLayout
+<android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinator"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:fab="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -94,4 +95,10 @@
 
     </jahirfiquitiva.libs.fabsmenu.FABsMenuLayout>
 
-</RelativeLayout>
+    <Button
+            android:id="@+id/snack_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show snackbar"/>
+
+</android.support.design.widget.CoordinatorLayout>

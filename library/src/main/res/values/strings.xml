@@ -15,6 +15,6 @@
   ~ limitations under the License.
   -->
 
-<resources>
-    <string name="fabs_menu_layout_behavior">jahirfiquitiva.libs.fabsmenu.FABSnackbarBehavior</string>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="fabs_menu_layout_behavior">"jahirfiquitiva.libs.fabsmenu.FABSnackbarBehavior"</string>
 </resources>
