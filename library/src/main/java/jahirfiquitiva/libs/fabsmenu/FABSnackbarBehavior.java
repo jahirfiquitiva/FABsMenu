@@ -26,19 +26,37 @@ import android.view.View;
 
 import java.util.List;
 
+/**
+ * Credits to: https://goo.gl/ZWHwaw
+ * <p>
+ * Layout behavior that can be applied to either {@link TitleFAB} or {@link
+ * FABsMenu} to make components automatically animate to stay above {@code Snackbar}
+ * instances within the same parent {@code CoordinatorLayout}.
+ * <p>
+ * Usage:
+ * <pre>
+ * &lt;android.support.design.widget.CoordinatorLayout ...&gt;
+ *   ...
+ *   &lt;jahirfiquitiva.libs.fabsmenu.FABsMenuLayout
+ *     ...
+ *     app:layout_behavior="jahirfiquitiva.libs.fabsmenu.FABSnackbarBehavior"
+ * /&gt;
+ * &lt;/android.support.design.widget.CoordinatorLayout&gt;
+ * </pre>
+ */
 @SuppressWarnings("unused")
 public class FABSnackbarBehavior extends CoordinatorLayout.Behavior<View> {
-
+    
     private float mTranslationY;
-
+    
     public FABSnackbarBehavior() {
         super();
     }
-
+    
     public FABSnackbarBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
-
+    
     /**
      * Find the {@code translation Y} value for any child Snackbar components.
      *
@@ -48,21 +66,21 @@ public class FABSnackbarBehavior extends CoordinatorLayout.Behavior<View> {
     private float getFabTranslationYForSnackbar(CoordinatorLayout parent, View fab) {
         float minOffset = 0.0F;
         final List<View> dependencies = parent.getDependencies(fab);
-
+        
         for (View view : dependencies) {
             if (view instanceof Snackbar.SnackbarLayout && parent.doViewsOverlap(fab, view)) {
                 minOffset = Math.min(minOffset, view.getTranslationY() - (float) view.getHeight());
             }
         }
-
+        
         return minOffset;
     }
-
+    
     @Override
     public boolean layoutDependsOn(CoordinatorLayout parent, View child, View dependency) {
         return dependency instanceof Snackbar.SnackbarLayout;
     }
-
+    
     @Override
     public boolean onDependentViewChanged(CoordinatorLayout parent, View child, View dependency) {
         if (dependency instanceof Snackbar.SnackbarLayout) {
@@ -70,7 +88,7 @@ public class FABSnackbarBehavior extends CoordinatorLayout.Behavior<View> {
         }
         return false;
     }
-
+    
     /**
      * Animate FAB on snackbar change.
      */

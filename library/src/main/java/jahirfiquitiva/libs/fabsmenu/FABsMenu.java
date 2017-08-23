@@ -38,6 +38,7 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -56,6 +57,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @SuppressWarnings("unused")
+@CoordinatorLayout.DefaultBehavior(FABSnackbarBehavior.class)
 public class FABsMenu extends ViewGroup {
     public static final int EXPAND_UP = 0;
     public static final int EXPAND_DOWN = 1;
@@ -756,6 +758,14 @@ public class FABsMenu extends ViewGroup {
         return menuButtonIcon;
     }
     
+    public void setMenuButtonIcon(@DrawableRes int resId) {
+        try {
+            setMenuButtonIcon(ContextCompat.getDrawable(getContext(), resId));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     public void setMenuButtonIcon(@NonNull Drawable menuButtonIcon) {
         this.menuButtonIcon = menuButtonIcon;
         createRotatingDrawable();
@@ -830,14 +840,6 @@ public class FABsMenu extends ViewGroup {
             InputStream inputStream = getContext().getContentResolver().openInputStream(uri);
             Drawable icon = Drawable.createFromStream(inputStream, uri.toString());
             if (icon != null) setMenuButtonIcon(icon);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
-    public void setMenuButtonIcon(@DrawableRes int resId) {
-        try {
-            setMenuButtonIcon(ContextCompat.getDrawable(getContext(), resId));
         } catch (Exception e) {
             e.printStackTrace();
         }

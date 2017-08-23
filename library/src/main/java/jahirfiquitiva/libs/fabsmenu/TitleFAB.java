@@ -29,7 +29,7 @@ import android.view.View;
 
 @CoordinatorLayout.DefaultBehavior(FABSnackbarBehavior.class)
 public class TitleFAB extends FloatingActionButton {
-
+    
     private static final int MAX_CHARACTERS_COUNT = 25;
     private String title;
     private boolean titleClickEnabled;
@@ -39,57 +39,58 @@ public class TitleFAB extends FloatingActionButton {
     private int titleTextColor;
     private int titleCornerRadius;
     private int titleTextPadding;
-
+    
     private View.OnClickListener clickListener;
-
+    
     public TitleFAB(Context context) {
         this(context, null);
     }
-
+    
     public TitleFAB(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
     }
-
+    
     public TitleFAB(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context, attrs);
     }
-
+    
     void init(Context context, AttributeSet attributeSet) {
         TypedArray attr = context.obtainStyledAttributes(attributeSet, R.styleable.TitleFAB, 0, 0);
         title = attr.getString(R.styleable.TitleFAB_fab_title);
         titleClickEnabled = attr.getBoolean(R.styleable.TitleFAB_fab_enableTitleClick, false);
         titleBackgroundColor = attr.getInt(R.styleable.TitleFAB_fab_title_backgroundColor,
-                ContextCompat.getColor(context, android.R.color.white));
+                                           ContextCompat.getColor(context, android.R.color.white));
         titleTextColor = attr.getInt(R.styleable.TitleFAB_fab_title_textColor,
-                ContextCompat.getColor(context, android.R.color.black));
+                                     ContextCompat.getColor(context, android.R.color.black));
         titleCornerRadius = attr.getDimensionPixelSize(
                 R.styleable.TitleFAB_fab_title_cornerRadius, -1);
         titleTextPadding = attr.getDimensionPixelSize(R.styleable.TitleFAB_fab_title_textPadding,
-                (int) DimensionUtils.convertDpToPixel(8, context));
+                                                      (int) DimensionUtils
+                                                              .convertDpToPixel(8, context));
         attr.recycle();
     }
-
+    
     @Override
     public void setBackgroundColor(@ColorInt int color) {
         super.setBackgroundTintList(ColorStateList.valueOf(color));
     }
-
+    
+    public OnClickListener getOnClickListener() {
+        return clickListener;
+    }
+    
     @Override
     public void setOnClickListener(@Nullable OnClickListener l) {
         super.setOnClickListener(l);
         this.clickListener = l;
     }
-
-    public OnClickListener getOnClickListener() {
-        return clickListener;
-    }
-
+    
     LabelView getLabelView() {
         return (LabelView) getTag(R.id.fab_label);
     }
-
+    
     public String getTitle() {
         if (title == null) return null;
         StringBuilder titleBuilder = new StringBuilder();
@@ -100,7 +101,7 @@ public class TitleFAB extends FloatingActionButton {
         }
         return titleBuilder.toString();
     }
-
+    
     public void setTitle(String title) {
         this.title = title;
         LabelView label = getLabelView();
@@ -108,43 +109,43 @@ public class TitleFAB extends FloatingActionButton {
             label.getContent().setText(title);
         }
     }
-
+    
     public boolean isTitleClickEnabled() {
         return titleClickEnabled;
     }
-
+    
     public void setTitleClickEnabled(boolean titleClickEnabled) {
         this.titleClickEnabled = titleClickEnabled;
     }
-
+    
     public int getTitleBackgroundColor() {
         return titleBackgroundColor;
     }
-
+    
     public void setTitleBackgroundColor(@ColorInt int titleBackgroundColor) {
         this.titleBackgroundColor = titleBackgroundColor;
     }
-
+    
     public int getTitleTextColor() {
         return titleTextColor;
     }
-
+    
     public void setTitleTextColor(@ColorInt int titleTextColor) {
         this.titleTextColor = titleTextColor;
     }
-
+    
     public int getTitleCornerRadius() {
         return titleCornerRadius;
     }
-
+    
     public void setTitleCornerRadius(int titleCornerRadius) {
         this.titleCornerRadius = titleCornerRadius;
     }
-
+    
     public int getTitleTextPadding() {
         return titleTextPadding;
     }
-
+    
     public void setTitleTextPadding(int titleTextPadding) {
         this.titleTextPadding = titleTextPadding;
     }
