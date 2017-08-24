@@ -14,9 +14,11 @@
   ~ limitations under the License.
   -->
 
-<RelativeLayout
+<android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinator"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:fab="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -25,7 +27,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             fab:fabs_menu_overlayColor="#4d000000"
-            fab:fabs_menu_clickableOverlay="true">
+            fab:fabs_menu_clickableOverlay="true"
+            tools:layout_behavior="@string/fabs_menu_layout_behavior">
 
         <!-- FABs Menu is the main view. It will contain all the items FABs and it create the menu fab itself -->
         <jahirfiquitiva.libs.fabsmenu.FABsMenu
@@ -92,4 +95,10 @@
 
     </jahirfiquitiva.libs.fabsmenu.FABsMenuLayout>
 
-</RelativeLayout>
+    <Button
+            android:id="@+id/snack_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show snackbar"/>
+
+</android.support.design.widget.CoordinatorLayout>

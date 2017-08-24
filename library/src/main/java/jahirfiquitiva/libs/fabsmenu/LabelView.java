@@ -27,56 +27,56 @@ import android.util.TypedValue;
 import android.widget.TextView;
 
 public class LabelView extends CardView {
-
+    
     @ColorInt
     private int rightBackgroundColor;
     private TextView content;
-
+    
     public LabelView(Context context, @ColorInt int backgroundColor) {
         super(context);
         rightBackgroundColor = backgroundColor;
         setCardBackgroundColor(0);
     }
-
+    
     public LabelView(Context context, AttributeSet attrs, @ColorInt int backgroundColor) {
         super(context, attrs);
         rightBackgroundColor = backgroundColor;
         setCardBackgroundColor(0);
     }
-
+    
     public LabelView(Context context, AttributeSet attrs, int defStyleAttr,
                      @ColorInt int backgroundColor) {
         super(context, attrs, defStyleAttr);
         rightBackgroundColor = backgroundColor;
         setCardBackgroundColor(0);
     }
-
+    
     @Override
     public void setOnClickListener(@Nullable OnClickListener l) {
         if (l != null) {
             TypedValue outValue = new TypedValue();
             getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackground,
-                    outValue, true);
+                                                     outValue, true);
             setForeground(ContextCompat.getDrawable(getContext(), outValue.resourceId));
         } else {
             setForeground(null);
         }
         super.setOnClickListener(l);
     }
-
+    
     @Override
     public void setForeground(Drawable foreground) {
         super.setForeground(foreground);
     }
-
+    
     public TextView getContent() {
         return content;
     }
-
+    
     public void setContent(TextView content) {
         this.content = content;
     }
-
+    
     @Override
     public void setCardBackgroundColor(@ColorInt int ignored) {
         super.setCardBackgroundColor(rightBackgroundColor);

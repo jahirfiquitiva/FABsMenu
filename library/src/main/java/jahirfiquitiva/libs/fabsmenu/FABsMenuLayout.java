@@ -23,43 +23,46 @@ import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+@CoordinatorLayout.DefaultBehavior(FABSnackbarBehavior.class)
 public class FABsMenuLayout extends FrameLayout {
-
+    
     @ColorInt
     private int overlayColor;
     private View overlayView;
     private boolean clickableOverlay;
-
+    
     public FABsMenuLayout(@NonNull Context context) {
         super(context);
     }
-
+    
     public FABsMenuLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
     }
-
+    
     public FABsMenuLayout(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int
             defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs);
     }
-
+    
     private void init(Context context, AttributeSet attrs) {
         try {
             TypedArray a = context.getTheme().obtainStyledAttributes(attrs,
-                    R.styleable.FABsMenuLayout, 0, 0);
+                                                                     R.styleable.FABsMenuLayout, 0,
+                                                                     0);
             overlayColor = a.getColor(R.styleable.FABsMenuLayout_fabs_menu_overlayColor,
-                    Color.parseColor("#4d000000"));
+                                      Color.parseColor("#4d000000"));
             clickableOverlay = a.getBoolean(R.styleable.FABsMenuLayout_fabs_menu_clickableOverlay,
-                    true);
+                                            true);
             a.recycle();
-
+            
             overlayView = new View(context);
             overlayView.setLayoutParams(new FrameLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -70,28 +73,28 @@ public class FABsMenuLayout extends FrameLayout {
             e.printStackTrace();
         }
     }
-
+    
     @ColorInt
     public int getOverlayColor() {
         return overlayColor;
     }
-
+    
     public void setOverlayColor(@ColorInt int overlayColor) {
         this.overlayColor = overlayColor;
     }
-
+    
     public View getOverlayView() {
         return overlayView;
     }
-
+    
     public void setOverlayView(View overlayView) {
         this.overlayView = overlayView;
     }
-
+    
     public boolean hasClickableOverlay() {
         return clickableOverlay;
     }
-
+    
     public void setClickableOverlay(boolean clickableOverlay) {
         this.clickableOverlay = clickableOverlay;
     }

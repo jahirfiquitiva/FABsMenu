@@ -46,6 +46,7 @@ Finally, use it in your layout, just like this:
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:fab="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -54,7 +55,8 @@ Finally, use it in your layout, just like this:
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             fab:fabs_menu_overlayColor="#4d000000"
-            fab:fabs_menu_clickableOverlay="true">
+            fab:fabs_menu_clickableOverlay="true"
+            tools:layout_behavior="@string/fabs_menu_layout_behavior">
 
         <!-- FABs Menu is the main view. It will contain all the items FABs and it create the menu fab itself -->
         <jahirfiquitiva.libs.fabsmenu.FABsMenu
