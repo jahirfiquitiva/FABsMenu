@@ -155,8 +155,8 @@ public class FABsMenu extends ViewGroup {
             menuButtonRippleColor = attr.getColor(R.styleable.FABsMenu_fab_moreButtonRippleColor,
                                                   getColor(android.R.color.holo_blue_light));
             
-            menuButtonSize = attr.getInt(R.styleable.FABsMenu_fab_moreButtonSize, TitleFAB
-                    .SIZE_NORMAL);
+            menuButtonSize = attr.getInt(R.styleable.FABsMenu_fab_moreButtonSize,
+                                         TitleFAB.SIZE_NORMAL);
             
             expandDirection = attr.getInt(R.styleable.FABsMenu_fab_expandDirection, EXPAND_UP);
             
@@ -165,6 +165,10 @@ public class FABsMenu extends ViewGroup {
             
             attr.recycle();
             
+            if (menuListener == null) {
+                setMenuListener(new FABsMenuListener() {
+                });
+            }
             createAddButton(context);
         } catch (Exception e) {
             e.printStackTrace();
@@ -823,7 +827,17 @@ public class FABsMenu extends ViewGroup {
         return menuListener;
     }
     
+    /**
+     * @param menuListener
+     *         the menu listener
+     * @deprecated Use {@link #setMenuListener(FABsMenuListener)} instead
+     */
+    @Deprecated
     public void setMenuUpdateListener(FABsMenuListener menuListener) {
+        setMenuListener(menuListener);
+    }
+    
+    public void setMenuListener(FABsMenuListener menuListener) {
         this.menuListener = menuListener;
     }
     

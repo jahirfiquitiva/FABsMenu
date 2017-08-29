@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         });
         
         final FABsMenu menu = findViewById(R.id.fabs_menu);
-        menu.setMenuUpdateListener(new FABsMenuListener() {
+        menu.setMenuListener(new FABsMenuListener() {
             // You don't need to override all methods. Just the ones you want.
             
             @Override
