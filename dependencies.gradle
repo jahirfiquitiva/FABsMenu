@@ -22,12 +22,11 @@ ext.versions = [
         minSdk                 : 16,
         targetSdk              : 26,
         compileSdk             : 26,
-        buildTools             : '26.0.2',
+        buildTools             : '26.0.1',
         versionCode            : 103,
         versionName            : '1.0.3',
         gradlePlugin           : '2.3.3',
         libPubPlugin           : '1.5',
         // Libraries versions
-        supportLibs            : '25.3.1',
-        supportLibsTest        : '26.+',
+        supportLibs            : '26.0.2'
 ]

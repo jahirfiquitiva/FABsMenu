@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply from: '../dependencies.gradle'
@@ -48,10 +47,10 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     // Android Support Libraries
-    compile 'com.android.support:support-v13:' + versions.supportLibsTest
-    compile 'com.android.support:appcompat-v7:' + versions.supportLibsTest
-    compile 'com.android.support:cardview-v7:' + versions.supportLibsTest
-    compile 'com.android.support:design:' + versions.supportLibsTest
+    compile 'com.android.support:support-v13:' + versions.supportLibs
+    compile 'com.android.support:appcompat-v7:' + versions.supportLibs
+    compile 'com.android.support:cardview-v7:' + versions.supportLibs
+    compile 'com.android.support:design:' + versions.supportLibs
 }
 
 tasks.whenTaskAdded { task ->
