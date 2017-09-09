@@ -37,7 +37,7 @@ public class TitleFAB extends FloatingActionButton {
     private int titleBackgroundColor;
     @ColorInt
     private int titleTextColor;
-    private int titleCornerRadius;
+    private float titleCornerRadius;
     private int titleTextPadding;
     
     private View.OnClickListener clickListener;
@@ -116,6 +116,10 @@ public class TitleFAB extends FloatingActionButton {
     
     public void setTitleClickEnabled(boolean titleClickEnabled) {
         this.titleClickEnabled = titleClickEnabled;
+        LabelView label = getLabelView();
+        if (label != null) {
+            label.setClickable(titleClickEnabled);
+        }
     }
     
     public int getTitleBackgroundColor() {
@@ -124,6 +128,10 @@ public class TitleFAB extends FloatingActionButton {
     
     public void setTitleBackgroundColor(@ColorInt int titleBackgroundColor) {
         this.titleBackgroundColor = titleBackgroundColor;
+        LabelView label = getLabelView();
+        if (label != null && label.getContent() != null) {
+            label.getContent().setBackgroundColor(titleBackgroundColor);
+        }
     }
     
     public int getTitleTextColor() {
@@ -132,14 +140,22 @@ public class TitleFAB extends FloatingActionButton {
     
     public void setTitleTextColor(@ColorInt int titleTextColor) {
         this.titleTextColor = titleTextColor;
+        LabelView label = getLabelView();
+        if (label != null && label.getContent() != null) {
+            label.getContent().setTextColor(titleTextColor);
+        }
     }
     
-    public int getTitleCornerRadius() {
+    public float getTitleCornerRadius() {
         return titleCornerRadius;
     }
     
-    public void setTitleCornerRadius(int titleCornerRadius) {
+    public void setTitleCornerRadius(float titleCornerRadius) {
         this.titleCornerRadius = titleCornerRadius;
+        LabelView label = getLabelView();
+        if (label != null) {
+            label.setRadius(titleCornerRadius);
+        }
     }
     
     public int getTitleTextPadding() {
@@ -148,5 +164,10 @@ public class TitleFAB extends FloatingActionButton {
     
     public void setTitleTextPadding(int titleTextPadding) {
         this.titleTextPadding = titleTextPadding;
+        LabelView label = getLabelView();
+        if (label != null && label.getContent() != null) {
+            label.getContent().setPadding(titleTextPadding, titleTextPadding / 2, titleTextPadding,
+                                          titleTextPadding / 2);
+        }
     }
 }

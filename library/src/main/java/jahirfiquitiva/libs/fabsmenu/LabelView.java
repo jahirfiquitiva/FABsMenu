@@ -19,6 +19,7 @@ package jahirfiquitiva.libs.fabsmenu;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
@@ -30,6 +31,8 @@ public class LabelView extends CardView {
     
     @ColorInt
     private int rightBackgroundColor;
+    @ColorInt
+    private int textColor;
     private TextView content;
     
     public LabelView(Context context, @ColorInt int backgroundColor) {
@@ -75,6 +78,20 @@ public class LabelView extends CardView {
     
     public void setContent(TextView content) {
         this.content = content;
+    }
+    
+    @ColorInt
+    public int getTextColor() {
+        return textColor;
+    }
+    
+    public void setTextColor(@ColorInt int color) {
+        this.textColor = color;
+        content.setTextColor(color);
+    }
+    
+    public void setTextColorFromRes(@ColorRes int color) {
+        setTextColor(ContextCompat.getColor(getContext(), color));
     }
     
     @Override
