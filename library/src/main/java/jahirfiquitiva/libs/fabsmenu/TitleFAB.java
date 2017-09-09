@@ -16,6 +16,8 @@
 
 package jahirfiquitiva.libs.fabsmenu;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -24,8 +26,12 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.view.animation.FastOutLinearInInterpolator;
+import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.Interpolator;
 
 @CoordinatorLayout.DefaultBehavior(FABSnackbarBehavior.class)
 public class TitleFAB extends FloatingActionButton {
@@ -184,6 +190,158 @@ public class TitleFAB extends FloatingActionButton {
         if (label != null && label.getContent() != null) {
             label.getContent().setPadding(titleTextPadding, titleTextPadding / 2, titleTextPadding,
                                           titleTextPadding / 2);
+        }
+    }
+
+    /**
+     * Hide/show animations from FloatingActionButton
+     * https://goo.gl/e5DWfT
+     */
+    static final Interpolator FAST_OUT_LINEAR_IN_INTERPOLATOR = new FastOutLinearInInterpolator();
+    static final Interpolator LINEAR_OUT_SLOW_IN_INTERPOLATOR = new LinearOutSlowInInterpolator();
+
+    static final int SHOW_HIDE_ANIM_DURATION = 200;
+    static final int ANIM_STATE_NONE = 0;
+    static final int ANIM_STATE_HIDING = 1;
+    static final int ANIM_STATE_SHOWING = 2;
+
+    int mAnimState = ANIM_STATE_NONE;
+
+    boolean isOrWillBeShown() {
+        View label = getLabelView();
+        if (label == null) return false;
+        if (label.getVisibility() != View.VISIBLE) {
+            // If we not currently visible, return true if we're animating to be shown
+            return mAnimState == ANIM_STATE_SHOWING;
+        } else {
+            // Otherwise if we're visible, return true if we're not animating to be hidden
+            return mAnimState != ANIM_STATE_HIDING;
+        }
+    }
+
+    boolean isOrWillBeHidden() {
+        View label = getLabelView();
+        if (label == null) return true;
+        if (label.getVisibility() == View.VISIBLE) {
+            // If we currently visible, return true if we're animating to be hidden
+            return mAnimState == ANIM_STATE_HIDING;
+        } else {
+            // Otherwise if we're not visible, return true if we're not animating to be shown
+            return mAnimState != ANIM_STATE_SHOWING;
+        }
+    }
+
+    @Override
+    public void show() {
+        final View label = getLabelView();
+        if (label == null) {
+            super.show();
+            return;
+        }
+
+        if (isOrWillBeShown()) {
+            // We either are or will soon be visible, skip the call
+            return;
+        }
+
+        label.animate().cancel();
+
+        if (shouldAnimateVisibilityChange()) {
+            mAnimState = ANIM_STATE_SHOWING;
+
+            if (label.getVisibility() != View.VISIBLE) {
+                // If the view isn't visible currently, we'll animate it from a single pixel
+                label.setAlpha(0f);
+                label.setScaleY(0f);
+                label.setScaleX(0f);
+            }
+
+            label.animate()
+                    .scaleX(1f)
+                    .scaleY(1f)
+                    .alpha(1f)
+                    .setDuration(SHOW_HIDE_ANIM_DURATION)
+                    .setInterpolator(LINEAR_OUT_SLOW_IN_INTERPOLATOR)
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                            TitleFAB.super.show();
+                            label.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            mAnimState = ANIM_STATE_NONE;
+                        }
+                    });
+        } else {
+            label.setVisibility(View.VISIBLE);
+            label.setAlpha(1f);
+            label.setScaleY(1f);
+            label.setScaleX(1f);
+        }
+    }
+
+    @Override
+    public void hide() {
+        final View label = getLabelView();
+        if (label == null) {
+            super.hide();
+            return;
+        }
+
+        if (isOrWillBeHidden()) {
+            // We either are or will soon be hidden, skip the call
+            return;
+        }
+
+        label.animate().cancel();
+
+        if (shouldAnimateVisibilityChange()) {
+            mAnimState = ANIM_STATE_HIDING;
+
+            label.animate()
+                    .scaleX(0f)
+                    .scaleY(0f)
+                    .alpha(0f)
+                    .setDuration(SHOW_HIDE_ANIM_DURATION)
+                    .setInterpolator(FAST_OUT_LINEAR_IN_INTERPOLATOR)
+                    .setListener(new AnimatorListenerAdapter() {
+                        private boolean mCancelled;
+
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                            TitleFAB.super.hide();
+                            label.setVisibility(View.VISIBLE);
+                            mCancelled = false;
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+                            mCancelled = true;
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            mAnimState = ANIM_STATE_NONE;
+
+                            if (!mCancelled) {
+                                label.setVisibility(View.GONE);
+                            }
+                        }
+                    });
+        } else {
+            // If the view isn't laid out, or we're in the editor, don't run the animation
+            label.setVisibility(View.GONE);
+        }
+    }
+
+    private boolean shouldAnimateVisibilityChange() {
+        View label = getLabelView();
+        if (label != null) {
+            return ViewCompat.isLaidOut(this) && ViewCompat.isLaidOut(label) && !isInEditMode();
+        } else {
+            return ViewCompat.isLaidOut(this) && !isInEditMode();
         }
     }
 }

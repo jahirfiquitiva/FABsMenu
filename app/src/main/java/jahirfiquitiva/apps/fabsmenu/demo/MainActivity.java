@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         menu.removeButton(toRemove);
 
         // Adds a button to the bottom
-        TitleFAB toAdd = new TitleFAB(this);
+        final TitleFAB toAdd = new TitleFAB(this);
         toAdd.setTitle("A new added fab");
         toAdd.setBackgroundColor(Color.parseColor("#ff5722"));
         toAdd.setTitleClickEnabled(true);
@@ -115,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 showToast("You pressed the new button");
+                toAdd.hide();
             }
         });
         menu.addButton(toAdd);

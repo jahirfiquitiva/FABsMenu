@@ -660,7 +660,8 @@ public class FABsMenu extends ViewGroup {
         for (int i = 0; i < buttonsCount; i++) {
             View child = getChildAt(i);
             if ((child instanceof TitleFAB) && (!(child instanceof MenuFAB))) {
-                child.setVisibility(visible ? View.VISIBLE : View.GONE);
+                if (visible) ((TitleFAB) child).show();
+                else ((TitleFAB) child).hide();
             }
         }
     }
