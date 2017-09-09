@@ -34,7 +34,7 @@ allprojects {
 Next, add the dependency to your `build.gradle`:
 ```groovy
 dependencies {
-    compile 'me.jahirfiquitiva:FABsMenu:1.0.7'
+    compile 'me.jahirfiquitiva:FABsMenu:1.0.8'
 }
 ```
 
