@@ -539,6 +539,7 @@ public class FABsMenu extends ViewGroup {
                 labelText.setPadding(mLabelTextPadding, mLabelTextPadding / 2, mLabelTextPadding,
                                      mLabelTextPadding / 2);
 
+                /*
                 if (button.isTitleClickEnabled()) {
                     label.setClickable(true);
                     label.setOnClickListener(new OnClickListener() {
@@ -549,6 +550,7 @@ public class FABsMenu extends ViewGroup {
                         }
                     });
                 }
+                */
 
                 label.addView(labelText);
                 label.setContent(labelText);
@@ -616,7 +618,10 @@ public class FABsMenu extends ViewGroup {
                     for (int i = 0; i < buttonsCount; i++) {
                         View child = getChildAt(i);
                         if (child instanceof TitleFAB) {
-                            ((TitleFAB) child).getLabelView().setOnClickListener(null);
+                            View label = ((TitleFAB) child).getLabelView();
+                            if (label != null) {
+                                label.setOnClickListener(null);
+                            }
                         }
                     }
                 }
@@ -651,12 +656,14 @@ public class FABsMenu extends ViewGroup {
                         View child = getChildAt(i);
                         if (child instanceof TitleFAB) {
                             boolean clickableLabel = ((TitleFAB) child).isTitleClickEnabled();
-                            if (clickableLabel) {
-                                ((TitleFAB) child).getLabelView()
-                                        .setOnClickListener(
-                                                ((TitleFAB) child).getOnClickListener());
-                            } else {
-                                ((TitleFAB) child).getLabelView().setOnClickListener(null);
+                            View label = ((TitleFAB) child).getLabelView();
+                            if (label != null) {
+                                if (clickableLabel) {
+                                    label.setOnClickListener(
+                                            ((TitleFAB) child).getOnClickListener());
+                                } else {
+                                    label.setOnClickListener(null);
+                                }
                             }
                         }
                     }
