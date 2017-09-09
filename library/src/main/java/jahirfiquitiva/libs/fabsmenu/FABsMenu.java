@@ -609,17 +609,18 @@ public class FABsMenu extends ViewGroup {
             touchDelegateGroup.setEnabled(false);
             toggleOverlay(false, immediately);
             collapseAnimation.setDuration(immediately ? 0 : animationDuration);
-            /*
             collapseAnimation.addListener(new AnimatorListenerAdapter() {
                 @Override
-                public void onAnimationEnd(Animator animation) {
-                    super.onAnimationEnd(animation);
+                public void onAnimationStart(Animator animation) {
+                    super.onAnimationStart(animation);
                     for (int i = 0; i < buttonsCount; i++) {
-                        View v = getChildAt(i);
+                        View child = getChildAt(i);
+                        if (child instanceof TitleFAB) {
+                            ((TitleFAB) child).getLabelView().setOnClickListener(null);
+                        }
                     }
                 }
             });
-            */
             collapseAnimation.start();
             expandAnimation.cancel();
             if (menuListener != null) {
@@ -642,6 +643,25 @@ public class FABsMenu extends ViewGroup {
             touchDelegateGroup.setEnabled(true);
             toggleOverlay(true, false);
             collapseAnimation.cancel();
+            expandAnimation.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    for (int i = 0; i < buttonsCount; i++) {
+                        View child = getChildAt(i);
+                        if (child instanceof TitleFAB) {
+                            boolean clickableLabel = ((TitleFAB) child).isTitleClickEnabled();
+                            if (clickableLabel) {
+                                ((TitleFAB) child).getLabelView()
+                                        .setOnClickListener(
+                                                ((TitleFAB) child).getOnClickListener());
+                            } else {
+                                ((TitleFAB) child).getLabelView().setOnClickListener(null);
+                            }
+                        }
+                    }
+                }
+            });
             expandAnimation.start();
             if (menuListener != null) {
                 menuListener.onMenuExpanded(this);
