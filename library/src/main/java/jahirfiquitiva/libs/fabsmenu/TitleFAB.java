@@ -29,7 +29,7 @@ import android.view.View;
 
 @CoordinatorLayout.DefaultBehavior(FABSnackbarBehavior.class)
 public class TitleFAB extends FloatingActionButton {
-    
+
     private static final int MAX_CHARACTERS_COUNT = 25;
     private String title;
     private boolean titleClickEnabled;
@@ -39,23 +39,23 @@ public class TitleFAB extends FloatingActionButton {
     private int titleTextColor;
     private float titleCornerRadius;
     private int titleTextPadding;
-    
+
     private View.OnClickListener clickListener;
-    
+
     public TitleFAB(Context context) {
         this(context, null);
     }
-    
+
     public TitleFAB(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
     }
-    
+
     public TitleFAB(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context, attrs);
     }
-    
+
     void init(Context context, AttributeSet attributeSet) {
         TypedArray attr = context.obtainStyledAttributes(attributeSet, R.styleable.TitleFAB, 0, 0);
         title = attr.getString(R.styleable.TitleFAB_fab_title);
@@ -71,26 +71,26 @@ public class TitleFAB extends FloatingActionButton {
                                                               .convertDpToPixel(8, context));
         attr.recycle();
     }
-    
+
     @Override
     public void setBackgroundColor(@ColorInt int color) {
         super.setBackgroundTintList(ColorStateList.valueOf(color));
     }
-    
+
     public OnClickListener getOnClickListener() {
         return clickListener;
     }
-    
+
     @Override
     public void setOnClickListener(@Nullable OnClickListener l) {
         super.setOnClickListener(l);
         this.clickListener = l;
     }
-    
+
     LabelView getLabelView() {
         return (LabelView) getTag(R.id.fab_label);
     }
-    
+
     public String getTitle() {
         if (title == null) return null;
         StringBuilder titleBuilder = new StringBuilder();
@@ -101,7 +101,7 @@ public class TitleFAB extends FloatingActionButton {
         }
         return titleBuilder.toString();
     }
-    
+
     public void setTitle(String title) {
         this.title = title;
         LabelView label = getLabelView();
@@ -109,11 +109,11 @@ public class TitleFAB extends FloatingActionButton {
             label.getContent().setText(title);
         }
     }
-    
+
     public boolean isTitleClickEnabled() {
         return titleClickEnabled;
     }
-    
+
     public void setTitleClickEnabled(boolean titleClickEnabled) {
         this.titleClickEnabled = titleClickEnabled;
         LabelView label = getLabelView();
@@ -121,11 +121,11 @@ public class TitleFAB extends FloatingActionButton {
             label.setClickable(titleClickEnabled);
         }
     }
-    
+
     public int getTitleBackgroundColor() {
         return titleBackgroundColor;
     }
-    
+
     public void setTitleBackgroundColor(@ColorInt int titleBackgroundColor) {
         this.titleBackgroundColor = titleBackgroundColor;
         LabelView label = getLabelView();
@@ -133,11 +133,11 @@ public class TitleFAB extends FloatingActionButton {
             label.getContent().setBackgroundColor(titleBackgroundColor);
         }
     }
-    
+
     public int getTitleTextColor() {
         return titleTextColor;
     }
-    
+
     public void setTitleTextColor(@ColorInt int titleTextColor) {
         this.titleTextColor = titleTextColor;
         LabelView label = getLabelView();
@@ -145,11 +145,11 @@ public class TitleFAB extends FloatingActionButton {
             label.getContent().setTextColor(titleTextColor);
         }
     }
-    
+
     public float getTitleCornerRadius() {
         return titleCornerRadius;
     }
-    
+
     public void setTitleCornerRadius(float titleCornerRadius) {
         this.titleCornerRadius = titleCornerRadius;
         LabelView label = getLabelView();
@@ -157,11 +157,11 @@ public class TitleFAB extends FloatingActionButton {
             label.setRadius(titleCornerRadius);
         }
     }
-    
+
     public int getTitleTextPadding() {
         return titleTextPadding;
     }
-    
+
     public void setTitleTextPadding(int titleTextPadding) {
         this.titleTextPadding = titleTextPadding;
         LabelView label = getLabelView();

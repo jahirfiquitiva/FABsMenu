@@ -28,32 +28,32 @@ import android.util.TypedValue;
 import android.widget.TextView;
 
 public class LabelView extends CardView {
-    
+
     @ColorInt
     private int rightBackgroundColor;
     @ColorInt
     private int textColor;
     private TextView content;
-    
+
     public LabelView(Context context, @ColorInt int backgroundColor) {
         super(context);
         rightBackgroundColor = backgroundColor;
         setCardBackgroundColor(0);
     }
-    
+
     public LabelView(Context context, AttributeSet attrs, @ColorInt int backgroundColor) {
         super(context, attrs);
         rightBackgroundColor = backgroundColor;
         setCardBackgroundColor(0);
     }
-    
+
     public LabelView(Context context, AttributeSet attrs, int defStyleAttr,
                      @ColorInt int backgroundColor) {
         super(context, attrs, defStyleAttr);
         rightBackgroundColor = backgroundColor;
         setCardBackgroundColor(0);
     }
-    
+
     @Override
     public void setOnClickListener(@Nullable OnClickListener l) {
         if (l != null) {
@@ -61,39 +61,43 @@ public class LabelView extends CardView {
             getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackground,
                                                      outValue, true);
             setForeground(ContextCompat.getDrawable(getContext(), outValue.resourceId));
+            setClickable(true);
+            setFocusable(true);
         } else {
             setForeground(null);
+            setClickable(false);
+            setFocusable(false);
         }
         super.setOnClickListener(l);
     }
-    
+
     @Override
     public void setForeground(Drawable foreground) {
         super.setForeground(foreground);
     }
-    
+
     public TextView getContent() {
         return content;
     }
-    
+
     public void setContent(TextView content) {
         this.content = content;
     }
-    
+
     @ColorInt
     public int getTextColor() {
         return textColor;
     }
-    
+
     public void setTextColor(@ColorInt int color) {
         this.textColor = color;
         content.setTextColor(color);
     }
-    
+
     public void setTextColorFromRes(@ColorRes int color) {
         setTextColor(ContextCompat.getColor(getContext(), color));
     }
-    
+
     @Override
     public void setCardBackgroundColor(@ColorInt int ignored) {
         super.setCardBackgroundColor(rightBackgroundColor);

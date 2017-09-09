@@ -95,76 +95,76 @@ public class FABsMenu extends ViewGroup {
     private int maxButtonHeight;
     private TouchDelegateGroup touchDelegateGroup;
     private FABsMenuListener menuListener;
-    
+
     public FABsMenu(Context context) {
         this(context, null);
     }
-    
+
     public FABsMenu(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
     }
-    
+
     public FABsMenu(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context, attrs);
     }
-    
+
     private void init(Context context, AttributeSet attributeSet) {
         try {
             buttonSpacing = (int) DimensionUtils.convertDpToPixel(16, context);
             labelsMargin = getResources().getDimensionPixelSize(R.dimen.fab_labels_margin);
             labelsVerticalOffset = (int) DimensionUtils.convertDpToPixel(-1.5f, context);
-            
+
             touchDelegateGroup = new TouchDelegateGroup(this);
             setTouchDelegate(touchDelegateGroup);
-            
+
             TypedArray attr = context.obtainStyledAttributes(attributeSet, R.styleable.FABsMenu,
                                                              0, 0);
-            
+
             menuMargins = attr.getDimensionPixelSize(R.styleable.FABsMenu_fab_menuMargins, 0);
-            
+
             menuTopMargin = attr.getDimensionPixelSize(R.styleable.FABsMenu_fab_menuTopMargin,
                                                        menuMargins != 0
                                                        ? menuMargins
                                                        : (int) DimensionUtils
                                                                .convertDpToPixel(16, context));
-            
+
             menuBottomMargin = attr.getDimensionPixelSize(R.styleable.FABsMenu_fab_menuBottomMargin,
                                                           menuMargins != 0
                                                           ? menuMargins
                                                           : (int) DimensionUtils
                                                                   .convertDpToPixel(16, context));
-            
+
             menuRightMargin = attr.getDimensionPixelSize(R.styleable.FABsMenu_fab_menuRightMargin,
                                                          menuMargins != 0
                                                          ? menuMargins
                                                          : (int) DimensionUtils
                                                                  .convertDpToPixel(16, context));
-            
+
             menuLeftMargin = attr.getDimensionPixelSize(R.styleable.FABsMenu_fab_menuLeftMargin,
                                                         menuMargins != 0
                                                         ? menuMargins
                                                         : (int) DimensionUtils
                                                                 .convertDpToPixel(16, context));
-            
+
             menuButtonIcon = attr.getDrawable(R.styleable.FABsMenu_fab_moreButtonPlusIcon);
-            
+
             menuButtonColor = attr.getColor(R.styleable.FABsMenu_fab_moreButtonBackgroundColor,
                                             getColor(android.R.color.holo_blue_dark));
             menuButtonRippleColor = attr.getColor(R.styleable.FABsMenu_fab_moreButtonRippleColor,
                                                   getColor(android.R.color.holo_blue_light));
-            
+
             menuButtonSize = attr.getInt(R.styleable.FABsMenu_fab_moreButtonSize,
                                          TitleFAB.SIZE_NORMAL);
-            
+
             expandDirection = attr.getInt(R.styleable.FABsMenu_fab_expandDirection, EXPAND_UP);
-            
+
             labelsPosition = attr.getInt(R.styleable.FABsMenu_fab_labelsPosition,
                                          LABELS_ON_LEFT_SIDE);
-            
+
             attr.recycle();
-            
+
             if (menuListener == null) {
                 setMenuListener(new FABsMenuListener() {
                 });
@@ -174,21 +174,21 @@ public class FABsMenu extends ViewGroup {
             e.printStackTrace();
         }
     }
-    
+
     private boolean expandsHorizontally() {
         return expandDirection == EXPAND_LEFT || expandDirection == EXPAND_RIGHT;
     }
-    
+
     private void createAddButton(Context context) {
         menuButton = new MenuFAB(context);
-        
+
         if (menuButtonIcon != null) {
             createRotatingDrawable();
         }
-        
+
         menuButton.setBackgroundTintList(ColorStateList.valueOf(menuButtonColor));
         menuButton.setRippleColor(menuButtonRippleColor);
-        
+
         menuButton.setId(R.id.fab_expand_menu_button);
         menuButton.setSize(menuButtonSize);
         menuButton.setOnClickListener(new OnClickListener() {
@@ -197,16 +197,16 @@ public class FABsMenu extends ViewGroup {
                 if (menuListener != null) menuListener.onMenuClicked(FABsMenu.this);
             }
         });
-        
+
         addView(menuButton, super.generateDefaultLayoutParams());
         buttonsCount++;
     }
-    
+
     private void createRotatingDrawable() {
         RotatingDrawable dr = new RotatingDrawable(menuButtonIcon);
-        
+
         final OvershootInterpolator interpolator = new OvershootInterpolator();
-        
+
         final ObjectAnimator collapseAnimator = ObjectAnimator.ofFloat(dr,
                                                                        "rotation",
                                                                        EXPANDED_PLUS_ROTATION,
@@ -215,17 +215,17 @@ public class FABsMenu extends ViewGroup {
                                                                      "rotation",
                                                                      COLLAPSED_PLUS_ROTATION,
                                                                      EXPANDED_PLUS_ROTATION);
-        
+
         collapseAnimator.setInterpolator(interpolator);
         expandAnimator.setInterpolator(interpolator);
-        
+
         expandAnimation.play(expandAnimator);
         collapseAnimation.play(collapseAnimator);
-        
+
         menuButton.setImageDrawable(dr);
         rotatingDrawable = dr;
     }
-    
+
     public void addButton(TitleFAB button) {
         if (buttonsCount >= 6)
             throw new IllegalArgumentException("A floating action buttons menu should have no " +
@@ -236,7 +236,7 @@ public class FABsMenu extends ViewGroup {
         if (buttonsCount < 3)
             Log.w("FABsMenu", "A floating action buttons menu should have at least three options");
     }
-    
+
     public void removeButton(TitleFAB button) {
         try {
             removeView(button.getLabelView());
@@ -247,29 +247,29 @@ public class FABsMenu extends ViewGroup {
             e.printStackTrace();
         }
     }
-    
+
     private int getColor(@ColorRes int id) {
         return ContextCompat.getColor(getContext(), id);
     }
-    
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         measureChildren(widthMeasureSpec, heightMeasureSpec);
-        
+
         int width = buttonSpacing;
         int height = buttonSpacing;
-        
+
         maxButtonWidth = 0;
         maxButtonHeight = 0;
         int maxLabelWidth = 0;
-        
+
         for (int i = 0; i < buttonsCount; i++) {
             View child = getChildAt(i);
-            
+
             if (child.getVisibility() == GONE) {
                 continue;
             }
-            
+
             switch (expandDirection) {
                 case EXPAND_UP:
                 case EXPAND_DOWN:
@@ -282,7 +282,7 @@ public class FABsMenu extends ViewGroup {
                     maxButtonHeight = Math.max(maxButtonHeight, child.getMeasuredHeight());
                     break;
             }
-            
+
             if (!expandsHorizontally()) {
                 LabelView label = (LabelView) child.getTag(R.id.fab_label);
                 if (label != null) {
@@ -290,13 +290,13 @@ public class FABsMenu extends ViewGroup {
                 }
             }
         }
-        
+
         if (!expandsHorizontally()) {
             width = maxButtonWidth + (maxLabelWidth > 0 ? maxLabelWidth + labelsMargin : 0);
         } else {
             height = maxButtonHeight;
         }
-        
+
         switch (expandDirection) {
             case EXPAND_UP:
             case EXPAND_DOWN:
@@ -309,17 +309,17 @@ public class FABsMenu extends ViewGroup {
                 width = adjustForOvershoot(width);
                 break;
         }
-        
+
         height += (Math.max(menuTopMargin, menuBottomMargin)) * 2;
         width += (Math.max(menuLeftMargin, menuRightMargin)) * 2;
-        
+
         setMeasuredDimension(width, height);
     }
-    
+
     private int adjustForOvershoot(int dimension) {
         return dimension * 12 / 10;
     }
-    
+
     @SuppressLint("DrawAllocation")
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
@@ -327,89 +327,99 @@ public class FABsMenu extends ViewGroup {
             case EXPAND_UP:
             case EXPAND_DOWN:
                 boolean expandUp = expandDirection == EXPAND_UP;
-                
+
                 touchDelegateGroup.clearTouchDelegates();
-                
+
                 int addButtonY = expandUp ? b - t - menuButton.getMeasuredHeight() : 0;
-                
+
                 if (expandUp) addButtonY -= menuBottomMargin;
                 else addButtonY += menuTopMargin;
-                
+
                 // Ensure menuButton is centered on the line where the buttons should be
                 int buttonsHorizontalCenter = labelsPosition == LABELS_ON_LEFT_SIDE
                                               ? r - l - maxButtonWidth / 2
                                               : maxButtonWidth / 2;
-                
+
                 buttonsHorizontalCenter -= labelsPosition == LABELS_ON_LEFT_SIDE
                                            ? menuRightMargin
                                            : menuLeftMargin;
-                
+
                 int addButtonLeft = buttonsHorizontalCenter - menuButton.getMeasuredWidth() / 2;
                 menuButton.layout(addButtonLeft, addButtonY,
                                   addButtonLeft + menuButton.getMeasuredWidth(),
                                   addButtonY + menuButton.getMeasuredHeight());
-                
+
                 int labelsOffset = maxButtonWidth / 2 + labelsMargin;
                 int labelsXNearButton = labelsPosition == LABELS_ON_LEFT_SIDE
                                         ? buttonsHorizontalCenter - labelsOffset
                                         : buttonsHorizontalCenter + labelsOffset;
-                
+
                 int nextY = expandUp ?
                             addButtonY - buttonSpacing :
                             addButtonY + menuButton.getMeasuredHeight() + buttonSpacing;
-                
+
                 for (int i = buttonsCount - 1; i >= 0; i--) {
                     final View child = getChildAt(i);
-                    
+
                     if (child == menuButton || child.getVisibility() == GONE) continue;
-                    
+
                     int childX = buttonsHorizontalCenter - child.getMeasuredWidth() / 2;
                     int childY = expandUp ? nextY - child.getMeasuredHeight() : nextY;
                     child.layout(childX, childY, childX + child.getMeasuredWidth(), childY +
                             child.getMeasuredHeight());
-                    
+
                     float collapsedTranslation = addButtonY - childY;
                     float expandedTranslation = 0f;
-                    
+
                     child.setTranslationY(expanded ? expandedTranslation : collapsedTranslation);
                     child.setAlpha(expanded ? 1f : 0f);
-                    
+
                     LayoutParams params = (LayoutParams) child.getLayoutParams();
                     params.mCollapseDir.setFloatValues(expandedTranslation, collapsedTranslation);
                     params.mExpandDir.setFloatValues(collapsedTranslation, expandedTranslation);
                     params.setAnimationsTarget(child);
-                    
+
+                    if (child instanceof TitleFAB) {
+                        boolean clickableLabel = ((TitleFAB) child).isTitleClickEnabled();
+                        if (clickableLabel && !expanded) {
+                            ((TitleFAB) child).getLabelView()
+                                    .setOnClickListener(((TitleFAB) child).getOnClickListener());
+                        } else {
+                            ((TitleFAB) child).getLabelView().setOnClickListener(null);
+                        }
+                    }
+
                     View label = (View) child.getTag(R.id.fab_label);
                     if (label != null) {
                         int labelXAwayFromButton = labelsPosition == LABELS_ON_LEFT_SIDE
                                                    ? labelsXNearButton - label.getMeasuredWidth()
                                                    : labelsXNearButton + label.getMeasuredWidth();
-                        
+
                         int labelLeft = labelsPosition == LABELS_ON_LEFT_SIDE
                                         ? labelXAwayFromButton
                                         : labelsXNearButton;
-                        
+
                         int labelRight = labelsPosition == LABELS_ON_LEFT_SIDE
                                          ? labelsXNearButton
                                          : labelXAwayFromButton;
-                        
+
                         int labelTop = childY - labelsVerticalOffset +
                                 (child.getMeasuredHeight() - label.getMeasuredHeight()) / 2;
-                        
+
                         label.layout(labelLeft, labelTop, labelRight, labelTop +
                                 label.getMeasuredHeight());
-                        
+
                         Rect touchArea = new Rect(
                                 Math.min(childX, labelLeft),
                                 childY - buttonSpacing / 2,
                                 Math.max(childX + child.getMeasuredWidth(), labelRight),
                                 childY + child.getMeasuredHeight() + buttonSpacing / 2);
                         touchDelegateGroup.addTouchDelegate(new TouchDelegate(touchArea, child));
-                        
+
                         label.setTranslationY(expanded ? expandedTranslation :
                                               collapsedTranslation);
                         label.setAlpha(expanded ? 1f : 0f);
-                        
+
                         LayoutParams labelParams = (LayoutParams) label.getLayoutParams();
                         labelParams.mCollapseDir.setFloatValues(expandedTranslation,
                                                                 collapsedTranslation);
@@ -417,57 +427,57 @@ public class FABsMenu extends ViewGroup {
                                                               expandedTranslation);
                         labelParams.setAnimationsTarget(label);
                     }
-                    
+
                     nextY = expandUp ?
                             childY - buttonSpacing :
                             childY + child.getMeasuredHeight() + buttonSpacing;
                 }
                 break;
-            
+
             case EXPAND_LEFT:
             case EXPAND_RIGHT:
                 boolean expandLeft = expandDirection == EXPAND_LEFT;
-                
+
                 int addButtonX = expandLeft ? r - l - menuButton.getMeasuredWidth() : 0;
-                
+
                 if (expandLeft) addButtonX -= menuRightMargin;
                 else addButtonX += menuLeftMargin;
-                
+
                 // Ensure menuButton is centered on the line where the buttons should be
-                int addButtonTop = b - t - maxButtonHeight + (maxButtonHeight - menuButton
-                        .getMeasuredHeight()) / 2;
-                
+                int addButtonTop = b - t - maxButtonHeight + (maxButtonHeight -
+                        menuButton.getMeasuredHeight()) / 2;
+
                 addButtonTop -= menuBottomMargin;
-                
+
                 menuButton.layout(addButtonX, addButtonTop, addButtonX + menuButton
                         .getMeasuredWidth(), addButtonTop + menuButton.getMeasuredHeight());
-                
+
                 int nextX = expandLeft ?
                             addButtonX - buttonSpacing :
                             addButtonX + menuButton.getMeasuredWidth() + buttonSpacing;
-                
+
                 for (int i = buttonsCount - 1; i >= 0; i--) {
                     final View child = getChildAt(i);
-                    
+
                     if (child == menuButton || child.getVisibility() == GONE) continue;
-                    
+
                     int childX = expandLeft ? nextX - child.getMeasuredWidth() : nextX;
                     int childY = addButtonTop + (menuButton.getMeasuredHeight() - child
                             .getMeasuredHeight()) / 2;
                     child.layout(childX, childY, childX + child.getMeasuredWidth(), childY +
                             child.getMeasuredHeight());
-                    
+
                     float collapsedTranslation = addButtonX - childX;
                     float expandedTranslation = 0f;
-                    
+
                     child.setTranslationX(expanded ? expandedTranslation : collapsedTranslation);
                     child.setAlpha(expanded ? 1f : 0f);
-                    
+
                     LayoutParams params = (LayoutParams) child.getLayoutParams();
                     params.mCollapseDir.setFloatValues(expandedTranslation, collapsedTranslation);
                     params.mExpandDir.setFloatValues(collapsedTranslation, expandedTranslation);
                     params.setAnimationsTarget(child);
-                    
+
                     nextX = expandLeft ?
                             childX - buttonSpacing :
                             childX + child.getMeasuredWidth() + buttonSpacing;
@@ -475,60 +485,60 @@ public class FABsMenu extends ViewGroup {
                 break;
         }
     }
-    
+
     @Override
     protected ViewGroup.LayoutParams generateDefaultLayoutParams() {
         return new LayoutParams(super.generateDefaultLayoutParams());
     }
-    
+
     @Override
     public ViewGroup.LayoutParams generateLayoutParams(AttributeSet attrs) {
         return new LayoutParams(super.generateLayoutParams(attrs));
     }
-    
+
     @Override
     protected ViewGroup.LayoutParams generateLayoutParams(ViewGroup.LayoutParams p) {
         return new LayoutParams(super.generateLayoutParams(p));
     }
-    
+
     @Override
     protected boolean checkLayoutParams(ViewGroup.LayoutParams p) {
         return super.checkLayoutParams(p);
     }
-    
+
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        
+
         bringChildToFront(menuButton);
         buttonsCount = getChildCount();
-        
+
         createLabels();
     }
-    
+
     private void createLabels() {
         if (!expandsHorizontally()) {
             for (int i = 0; i < buttonsCount; i++) {
                 final TitleFAB button = (TitleFAB) getChildAt(i);
                 String title = button.getTitle();
-                
+
                 if (button == menuButton || title == null || title.length() <= 0 ||
                         button.getTag(R.id.fab_label) != null) continue;
-                
+
                 final LabelView label = new LabelView(getContext(),
                                                       button.getTitleBackgroundColor());
                 label.setId(i + 1);
-                
+
                 if (button.getTitleCornerRadius() != -1)
                     label.setRadius(button.getTitleCornerRadius());
-                
+
                 final TextView labelText = new TextView(getContext());
                 labelText.setText(button.getTitle());
                 labelText.setTextColor(button.getTitleTextColor());
                 int mLabelTextPadding = button.getTitleTextPadding();
                 labelText.setPadding(mLabelTextPadding, mLabelTextPadding / 2, mLabelTextPadding,
                                      mLabelTextPadding / 2);
-                
+
                 if (button.isTitleClickEnabled()) {
                     label.setClickable(true);
                     label.setOnClickListener(new OnClickListener() {
@@ -539,11 +549,11 @@ public class FABsMenu extends ViewGroup {
                         }
                     });
                 }
-                
+
                 label.addView(labelText);
                 label.setContent(labelText);
                 addView(label);
-                
+
                 button.setTag(R.id.fab_label, label);
             }
         } else {
@@ -551,7 +561,7 @@ public class FABsMenu extends ViewGroup {
                     "horizontally");
         }
     }
-    
+
     private void toggleOverlay(final boolean show, boolean immediately) {
         final ViewParent parent = getParent();
         if (parent != null) {
@@ -584,21 +594,32 @@ public class FABsMenu extends ViewGroup {
             }
         }
     }
-    
+
     public void collapse() {
         collapse(false);
     }
-    
+
     public void collapseImmediately() {
         collapse(true);
     }
-    
+
     private void collapse(boolean immediately) {
         if (expanded) {
             expanded = false;
             touchDelegateGroup.setEnabled(false);
             toggleOverlay(false, immediately);
             collapseAnimation.setDuration(immediately ? 0 : animationDuration);
+            /*
+            collapseAnimation.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    for (int i = 0; i < buttonsCount; i++) {
+                        View v = getChildAt(i);
+                    }
+                }
+            });
+            */
             collapseAnimation.start();
             expandAnimation.cancel();
             if (menuListener != null) {
@@ -606,7 +627,7 @@ public class FABsMenu extends ViewGroup {
             }
         }
     }
-    
+
     public void toggle() {
         if (expanded) {
             collapse();
@@ -614,7 +635,7 @@ public class FABsMenu extends ViewGroup {
             expand();
         }
     }
-    
+
     public void expand() {
         if (!expanded) {
             expanded = true;
@@ -627,17 +648,17 @@ public class FABsMenu extends ViewGroup {
             }
         }
     }
-    
+
     public boolean isExpanded() {
         return expanded;
     }
-    
+
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
         menuButton.setEnabled(enabled);
     }
-    
+
     @Override
     public Parcelable onSaveInstanceState() {
         Parcelable superState = super.onSaveInstanceState();
@@ -645,7 +666,7 @@ public class FABsMenu extends ViewGroup {
         savedState.expanded = expanded;
         return savedState;
     }
-    
+
     @Override
     public void onRestoreInstanceState(Parcelable state) {
         if (state instanceof SavedState) {
@@ -661,16 +682,16 @@ public class FABsMenu extends ViewGroup {
             super.onRestoreInstanceState(state);
         }
     }
-    
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         return false;
     }
-    
+
     public int getMenuMargins() {
         return menuMargins;
     }
-    
+
     public void setMenuMargins(int menuMargins) {
         this.menuMargins = menuMargins;
         setMenuTopMargin(menuMargins);
@@ -679,176 +700,89 @@ public class FABsMenu extends ViewGroup {
         setMenuRightMargin(menuMargins);
         requestLayout();
     }
-    
+
     public int getMenuTopMargin() {
         return menuTopMargin;
     }
-    
+
     public void setMenuTopMargin(int menuTopMargin) {
         this.menuTopMargin = menuTopMargin;
         requestLayout();
     }
-    
+
     public int getMenuBottomMargin() {
         return menuBottomMargin;
     }
-    
+
     public void setMenuBottomMargin(int menuBottomMargin) {
         this.menuBottomMargin = menuBottomMargin;
         requestLayout();
     }
-    
+
     public int getMenuRightMargin() {
         return menuRightMargin;
     }
-    
+
     public void setMenuRightMargin(int menuRightMargin) {
         this.menuRightMargin = menuRightMargin;
         requestLayout();
     }
-    
+
     public int getMenuLeftMargin() {
         return menuLeftMargin;
     }
-    
+
     public void setMenuLeftMargin(int menuLeftMargin) {
         this.menuLeftMargin = menuLeftMargin;
         requestLayout();
     }
-    
+
     @ColorInt
     public int getMenuButtonColor() {
         return menuButtonColor;
     }
-    
+
     public void setMenuButtonColor(@ColorInt int menuButtonColor) {
         this.menuButtonColor = menuButtonColor;
     }
-    
+
     @ColorInt
     public int getMenuButtonRippleColor() {
         return menuButtonRippleColor;
     }
-    
+
     public void setMenuButtonRippleColor(@ColorInt int menuButtonRippleColor) {
         this.menuButtonRippleColor = menuButtonRippleColor;
     }
-    
+
     public int getMenuButtonSize() {
         return menuButtonSize;
     }
-    
+
     public void setMenuButtonSize(int menuButtonSize) {
         this.menuButtonSize = menuButtonSize;
     }
-    
+
     public int getExpandDirection() {
         return expandDirection;
     }
-    
+
     public void setExpandDirection(@EXPAND_DIRECTION int expandDirection) {
         this.expandDirection = expandDirection;
     }
-    
+
     public MenuFAB getMenuButton() {
         return menuButton;
     }
-    
+
     public void setMenuButton(@NonNull MenuFAB menuButton) {
         this.menuButton = menuButton;
     }
-    
+
     public Drawable getMenuButtonIcon() {
         return menuButtonIcon;
     }
-    
-    public void setMenuButtonIcon(@DrawableRes int resId) {
-        try {
-            setMenuButtonIcon(ContextCompat.getDrawable(getContext(), resId));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
-    public void setMenuButtonIcon(@NonNull Drawable menuButtonIcon) {
-        this.menuButtonIcon = menuButtonIcon;
-        createRotatingDrawable();
-    }
-    
-    public RotatingDrawable getRotatingDrawable() {
-        return rotatingDrawable;
-    }
-    
-    public int getButtonSpacing() {
-        return buttonSpacing;
-    }
-    
-    public void setButtonSpacing(int buttonSpacing) {
-        this.buttonSpacing = buttonSpacing;
-    }
-    
-    public int getLabelsMargin() {
-        return labelsMargin;
-    }
-    
-    public void setLabelsMargin(int labelsMargin) {
-        this.labelsMargin = labelsMargin;
-    }
-    
-    public int getLabelsPosition() {
-        return labelsPosition;
-    }
-    
-    public void setLabelsPosition(@LABELS_POSITION int labelsPosition) {
-        this.labelsPosition = labelsPosition;
-    }
-    
-    public int getButtonsCount() {
-        return buttonsCount;
-    }
-    
-    public int getMaxButtonWidth() {
-        return maxButtonWidth;
-    }
-    
-    public void setMaxButtonWidth(int maxButtonWidth) {
-        this.maxButtonWidth = maxButtonWidth;
-    }
-    
-    public int getMaxButtonHeight() {
-        return maxButtonHeight;
-    }
-    
-    public void setMaxButtonHeight(int maxButtonHeight) {
-        this.maxButtonHeight = maxButtonHeight;
-    }
-    
-    public FABsMenuListener getMenuListener() {
-        return menuListener;
-    }
-    
-    /**
-     * @param menuListener
-     *         the menu listener
-     * @deprecated Use {@link #setMenuListener(FABsMenuListener)} instead
-     */
-    @Deprecated
-    public void setMenuUpdateListener(FABsMenuListener menuListener) {
-        setMenuListener(menuListener);
-    }
-    
-    public void setMenuListener(FABsMenuListener menuListener) {
-        this.menuListener = menuListener;
-    }
-    
-    public void setMenuButtonIcon(@NonNull Bitmap bitmap) {
-        try {
-            setMenuButtonIcon(new BitmapDrawable(getResources(), bitmap));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
+
     public void setMenuButtonIcon(@NonNull Uri uri) {
         try {
             InputStream inputStream = getContext().getContentResolver().openInputStream(uri);
@@ -858,47 +792,134 @@ public class FABsMenu extends ViewGroup {
             e.printStackTrace();
         }
     }
-    
+
+    public void setMenuButtonIcon(@DrawableRes int resId) {
+        try {
+            setMenuButtonIcon(ContextCompat.getDrawable(getContext(), resId));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setMenuButtonIcon(@NonNull Drawable menuButtonIcon) {
+        this.menuButtonIcon = menuButtonIcon;
+        createRotatingDrawable();
+    }
+
+    public RotatingDrawable getRotatingDrawable() {
+        return rotatingDrawable;
+    }
+
+    public int getButtonSpacing() {
+        return buttonSpacing;
+    }
+
+    public void setButtonSpacing(int buttonSpacing) {
+        this.buttonSpacing = buttonSpacing;
+    }
+
+    public int getLabelsMargin() {
+        return labelsMargin;
+    }
+
+    public void setLabelsMargin(int labelsMargin) {
+        this.labelsMargin = labelsMargin;
+    }
+
+    public int getLabelsPosition() {
+        return labelsPosition;
+    }
+
+    public void setLabelsPosition(@LABELS_POSITION int labelsPosition) {
+        this.labelsPosition = labelsPosition;
+    }
+
+    public int getButtonsCount() {
+        return buttonsCount;
+    }
+
+    public int getMaxButtonWidth() {
+        return maxButtonWidth;
+    }
+
+    public void setMaxButtonWidth(int maxButtonWidth) {
+        this.maxButtonWidth = maxButtonWidth;
+    }
+
+    public int getMaxButtonHeight() {
+        return maxButtonHeight;
+    }
+
+    public void setMaxButtonHeight(int maxButtonHeight) {
+        this.maxButtonHeight = maxButtonHeight;
+    }
+
+    public FABsMenuListener getMenuListener() {
+        return menuListener;
+    }
+
+    public void setMenuListener(FABsMenuListener menuListener) {
+        this.menuListener = menuListener;
+    }
+
+    /**
+     * @param menuListener
+     *         the menu listener
+     * @deprecated Use {@link #setMenuListener(FABsMenuListener)} instead
+     */
+    @Deprecated
+    public void setMenuUpdateListener(FABsMenuListener menuListener) {
+        setMenuListener(menuListener);
+    }
+
+    public void setMenuButtonIcon(@NonNull Bitmap bitmap) {
+        try {
+            setMenuButtonIcon(new BitmapDrawable(getResources(), bitmap));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void setLabelsVerticalOffset(int labelsVerticalOffset) {
         this.labelsVerticalOffset = labelsVerticalOffset;
     }
-    
+
     public int getAnimationDuration() {
         return animationDuration;
     }
-    
+
     public void setAnimationDuration(int animationDuration) {
         this.animationDuration = animationDuration;
     }
-    
+
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({EXPAND_UP, EXPAND_DOWN, EXPAND_LEFT, EXPAND_RIGHT})
     public @interface EXPAND_DIRECTION {
     }
-    
+
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({LABELS_ON_LEFT_SIDE, LABELS_ON_RIGHT_SIDE})
     public @interface LABELS_POSITION {
     }
-    
+
     private static class RotatingDrawable extends LayerDrawable {
         private float mRotation;
-        
+
         public RotatingDrawable(Drawable drawable) {
             super(new Drawable[]{drawable});
         }
-        
+
         @SuppressWarnings("UnusedDeclaration")
         public float getRotation() {
             return mRotation;
         }
-        
+
         @SuppressWarnings("UnusedDeclaration")
         public void setRotation(float rotation) {
             mRotation = rotation;
             invalidateSelf();
         }
-        
+
         @Override
         public void draw(Canvas canvas) {
             canvas.save();
@@ -907,60 +928,60 @@ public class FABsMenu extends ViewGroup {
             canvas.restore();
         }
     }
-    
+
     public static class SavedState extends BaseSavedState {
         public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
-            
+
             @Override
             public SavedState createFromParcel(Parcel in) {
                 return new SavedState(in);
             }
-            
+
             @Override
             public SavedState[] newArray(int size) {
                 return new SavedState[size];
             }
         };
         public boolean expanded;
-        
+
         public SavedState(Parcelable parcel) {
             super(parcel);
         }
-        
+
         private SavedState(Parcel in) {
             super(in);
             expanded = in.readInt() == 1;
         }
-        
+
         @Override
         public void writeToParcel(@NonNull Parcel out, int flags) {
             super.writeToParcel(out, flags);
             out.writeInt(expanded ? 1 : 0);
         }
     }
-    
+
     private class LayoutParams extends ViewGroup.LayoutParams {
-        
+
         private ObjectAnimator mExpandDir = new ObjectAnimator();
         private ObjectAnimator mExpandAlpha = new ObjectAnimator();
         private ObjectAnimator mCollapseDir = new ObjectAnimator();
         private ObjectAnimator mCollapseAlpha = new ObjectAnimator();
         private boolean animationsSetToPlay;
-        
+
         public LayoutParams(ViewGroup.LayoutParams source) {
             super(source);
-            
+
             mExpandDir.setInterpolator(expandInterpolator);
             mExpandAlpha.setInterpolator(alphaExpandInterpolator);
             mCollapseDir.setInterpolator(collapseInterpolator);
             mCollapseAlpha.setInterpolator(collapseInterpolator);
-            
+
             mCollapseAlpha.setProperty(View.ALPHA);
             mCollapseAlpha.setFloatValues(1f, 0f);
-            
+
             mExpandAlpha.setProperty(View.ALPHA);
             mExpandAlpha.setFloatValues(0f, 1f);
-            
+
             switch (expandDirection) {
                 case EXPAND_UP:
                 case EXPAND_DOWN:
@@ -974,18 +995,18 @@ public class FABsMenu extends ViewGroup {
                     break;
             }
         }
-        
+
         public void setAnimationsTarget(View view) {
             mCollapseAlpha.setTarget(view);
             mCollapseDir.setTarget(view);
             mExpandAlpha.setTarget(view);
             mExpandDir.setTarget(view);
-            
+
             // Now that the animations have targets, set them to be played
             if (!animationsSetToPlay) {
                 addLayerTypeListener(mExpandDir, view);
                 addLayerTypeListener(mCollapseDir, view);
-                
+
                 collapseAnimation.play(mCollapseAlpha);
                 collapseAnimation.play(mCollapseDir);
                 expandAnimation.play(mExpandAlpha);
@@ -993,14 +1014,14 @@ public class FABsMenu extends ViewGroup {
                 animationsSetToPlay = true;
             }
         }
-        
+
         private void addLayerTypeListener(Animator animator, final View view) {
             animator.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     view.setLayerType(LAYER_TYPE_NONE, null);
                 }
-                
+
                 @Override
                 public void onAnimationStart(Animator animation) {
                     view.setLayerType(LAYER_TYPE_HARDWARE, null);

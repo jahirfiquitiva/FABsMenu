@@ -36,7 +36,7 @@ public class DimensionUtils {
         DisplayMetrics metrics = resources.getDisplayMetrics();
         return dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
-    
+
     /**
      * This method converts device specific pixels to density independent pixels.
      *

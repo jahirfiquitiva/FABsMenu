@@ -20,10 +20,10 @@ public abstract class FABsMenuListener {
     public void onMenuClicked(FABsMenu fabsMenu) {
         fabsMenu.toggle();
     }
-    
+
     public void onMenuExpanded(FABsMenu fabsMenu) {
     }
-    
+
     public void onMenuCollapsed(FABsMenu fabsMenu) {
     }
 }
