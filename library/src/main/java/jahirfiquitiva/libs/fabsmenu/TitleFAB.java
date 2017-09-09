@@ -57,19 +57,25 @@ public class TitleFAB extends FloatingActionButton {
     }
 
     void init(Context context, AttributeSet attributeSet) {
-        TypedArray attr = context.obtainStyledAttributes(attributeSet, R.styleable.TitleFAB, 0, 0);
-        title = attr.getString(R.styleable.TitleFAB_fab_title);
-        titleClickEnabled = attr.getBoolean(R.styleable.TitleFAB_fab_enableTitleClick, false);
-        titleBackgroundColor = attr.getInt(R.styleable.TitleFAB_fab_title_backgroundColor,
-                                           ContextCompat.getColor(context, android.R.color.white));
-        titleTextColor = attr.getInt(R.styleable.TitleFAB_fab_title_textColor,
-                                     ContextCompat.getColor(context, android.R.color.black));
-        titleCornerRadius = attr.getDimensionPixelSize(
-                R.styleable.TitleFAB_fab_title_cornerRadius, -1);
-        titleTextPadding = attr.getDimensionPixelSize(R.styleable.TitleFAB_fab_title_textPadding,
-                                                      (int) DimensionUtils
-                                                              .convertDpToPixel(8, context));
-        attr.recycle();
+        try {
+            TypedArray attr =
+                    context.obtainStyledAttributes(attributeSet, R.styleable.TitleFAB, 0, 0);
+            title = attr.getString(R.styleable.TitleFAB_fab_title);
+            titleClickEnabled = attr.getBoolean(R.styleable.TitleFAB_fab_enableTitleClick, false);
+            titleBackgroundColor = attr.getInt(R.styleable.TitleFAB_fab_title_backgroundColor,
+                                               ContextCompat
+                                                       .getColor(context, android.R.color.white));
+            titleTextColor = attr.getInt(R.styleable.TitleFAB_fab_title_textColor,
+                                         ContextCompat.getColor(context, android.R.color.black));
+            titleCornerRadius =
+                    attr.getDimensionPixelSize(R.styleable.TitleFAB_fab_title_cornerRadius, -1);
+            titleTextPadding =
+                    attr.getDimensionPixelSize(R.styleable.TitleFAB_fab_title_textPadding,
+                                               (int) DimensionUtils.convertDpToPixel(8, context));
+            attr.recycle();
+            setOnClickListener(null);
+        } catch (Exception ignored) {
+        }
     }
 
     @Override
@@ -82,9 +88,19 @@ public class TitleFAB extends FloatingActionButton {
     }
 
     @Override
+    public void setClickable(boolean clickable) {
+        super.setClickable(clickable);
+        setFocusable(clickable);
+        View label = getLabelView();
+        if (label != null)
+            label.setOnClickListener(titleClickEnabled && clickable ? clickListener : null);
+    }
+
+    @Override
     public void setOnClickListener(@Nullable OnClickListener l) {
-        super.setOnClickListener(l);
         this.clickListener = l;
+        setClickable(l != null);
+        super.setOnClickListener(l);
     }
 
     LabelView getLabelView() {

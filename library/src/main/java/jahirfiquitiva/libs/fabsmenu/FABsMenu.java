@@ -40,6 +40,7 @@ import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -207,14 +208,10 @@ public class FABsMenu extends ViewGroup {
 
         final OvershootInterpolator interpolator = new OvershootInterpolator();
 
-        final ObjectAnimator collapseAnimator = ObjectAnimator.ofFloat(dr,
-                                                                       "rotation",
-                                                                       EXPANDED_PLUS_ROTATION,
-                                                                       COLLAPSED_PLUS_ROTATION);
-        final ObjectAnimator expandAnimator = ObjectAnimator.ofFloat(dr,
-                                                                     "rotation",
-                                                                     COLLAPSED_PLUS_ROTATION,
-                                                                     EXPANDED_PLUS_ROTATION);
+        final ObjectAnimator collapseAnimator = ObjectAnimator
+                .ofFloat(dr, "rotation", EXPANDED_PLUS_ROTATION, COLLAPSED_PLUS_ROTATION);
+        final ObjectAnimator expandAnimator = ObjectAnimator
+                .ofFloat(dr, "rotation", COLLAPSED_PLUS_ROTATION, EXPANDED_PLUS_ROTATION);
 
         collapseAnimator.setInterpolator(interpolator);
         expandAnimator.setInterpolator(interpolator);
@@ -379,16 +376,6 @@ public class FABsMenu extends ViewGroup {
                     params.mExpandDir.setFloatValues(collapsedTranslation, expandedTranslation);
                     params.setAnimationsTarget(child);
 
-                    if (child instanceof TitleFAB) {
-                        boolean clickableLabel = ((TitleFAB) child).isTitleClickEnabled();
-                        if (clickableLabel && !expanded) {
-                            ((TitleFAB) child).getLabelView()
-                                    .setOnClickListener(((TitleFAB) child).getOnClickListener());
-                        } else {
-                            ((TitleFAB) child).getLabelView().setOnClickListener(null);
-                        }
-                    }
-
                     View label = (View) child.getTag(R.id.fab_label);
                     if (label != null) {
                         int labelXAwayFromButton = labelsPosition == LABELS_ON_LEFT_SIDE
@@ -462,8 +449,8 @@ public class FABsMenu extends ViewGroup {
                     if (child == menuButton || child.getVisibility() == GONE) continue;
 
                     int childX = expandLeft ? nextX - child.getMeasuredWidth() : nextX;
-                    int childY = addButtonTop + (menuButton.getMeasuredHeight() - child
-                            .getMeasuredHeight()) / 2;
+                    int childY = addButtonTop + (menuButton.getMeasuredHeight() -
+                            child.getMeasuredHeight()) / 2;
                     child.layout(childX, childY, childX + child.getMeasuredWidth(), childY +
                             child.getMeasuredHeight());
 
@@ -539,19 +526,6 @@ public class FABsMenu extends ViewGroup {
                 labelText.setPadding(mLabelTextPadding, mLabelTextPadding / 2, mLabelTextPadding,
                                      mLabelTextPadding / 2);
 
-                /*
-                if (button.isTitleClickEnabled()) {
-                    label.setClickable(true);
-                    label.setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            if (button.getOnClickListener() != null)
-                                button.getOnClickListener().onClick(label);
-                        }
-                    });
-                }
-                */
-
                 label.addView(labelText);
                 label.setContent(labelText);
                 addView(label);
@@ -605,27 +579,22 @@ public class FABsMenu extends ViewGroup {
         collapse(true);
     }
 
+    private AnimatorListenerAdapter collapseListener = new AnimatorListenerAdapter() {
+        @Override
+        public void onAnimationStart(Animator animation) {
+            super.onAnimationStart(animation);
+            setMenuButtonsClickable(false);
+        }
+    };
+
     private void collapse(boolean immediately) {
         if (expanded) {
             expanded = false;
             touchDelegateGroup.setEnabled(false);
             toggleOverlay(false, immediately);
             collapseAnimation.setDuration(immediately ? 0 : animationDuration);
-            collapseAnimation.addListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationStart(Animator animation) {
-                    super.onAnimationStart(animation);
-                    for (int i = 0; i < buttonsCount; i++) {
-                        View child = getChildAt(i);
-                        if (child instanceof TitleFAB) {
-                            View label = ((TitleFAB) child).getLabelView();
-                            if (label != null) {
-                                label.setOnClickListener(null);
-                            }
-                        }
-                    }
-                }
-            });
+            collapseAnimation.removeListener(collapseListener);
+            collapseAnimation.addListener(collapseListener);
             collapseAnimation.start();
             expandAnimation.cancel();
             if (menuListener != null) {
@@ -642,33 +611,22 @@ public class FABsMenu extends ViewGroup {
         }
     }
 
+    private AnimatorListenerAdapter expandListener = new AnimatorListenerAdapter() {
+        @Override
+        public void onAnimationEnd(Animator animation) {
+            super.onAnimationEnd(animation);
+            setMenuButtonsClickable(true);
+        }
+    };
+
     public void expand() {
         if (!expanded) {
             expanded = true;
             touchDelegateGroup.setEnabled(true);
             toggleOverlay(true, false);
             collapseAnimation.cancel();
-            expandAnimation.addListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    super.onAnimationEnd(animation);
-                    for (int i = 0; i < buttonsCount; i++) {
-                        View child = getChildAt(i);
-                        if (child instanceof TitleFAB) {
-                            boolean clickableLabel = ((TitleFAB) child).isTitleClickEnabled();
-                            View label = ((TitleFAB) child).getLabelView();
-                            if (label != null) {
-                                if (clickableLabel) {
-                                    label.setOnClickListener(
-                                            ((TitleFAB) child).getOnClickListener());
-                                } else {
-                                    label.setOnClickListener(null);
-                                }
-                            }
-                        }
-                    }
-                }
-            });
+            expandAnimation.removeListener(expandListener);
+            expandAnimation.addListener(expandListener);
             expandAnimation.start();
             if (menuListener != null) {
                 menuListener.onMenuExpanded(this);
@@ -684,6 +642,28 @@ public class FABsMenu extends ViewGroup {
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
         menuButton.setEnabled(enabled);
+    }
+
+    public void setMenuButtonsClickable(boolean clickable) {
+        for (int i = 0; i < buttonsCount; i++) {
+            View child = getChildAt(i);
+            if ((child instanceof TitleFAB) && (!(child instanceof MenuFAB))) {
+                child.setClickable(clickable);
+            }
+        }
+    }
+
+    public void attachToRecyclerView(@NonNull RecyclerView rv) {
+        rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    if (isExpanded()) collapse(true);
+                    menuButton.hide();
+                } else menuButton.show();
+            }
+        });
     }
 
     @Override

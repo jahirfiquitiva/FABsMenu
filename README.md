@@ -165,6 +165,13 @@ toAdd.setBackgroundColor(Color.parseColor("#ff5722"));
 menu.addButton(toAdd);
 ```
 
+And you can also attach the `FABsMenu` to a `RecyclerView` so it gets hidden on scroll, like this:
+```java
+RecyclerView rv = findViewById(R.id.rv);
+FABsMenu menu = findViewById(R.id.fabs_menu);
+menu.attachToRecyclerView(rv);
+```
+
 
 ## Attributes explanation
 
