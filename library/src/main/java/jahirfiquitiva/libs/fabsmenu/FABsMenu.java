@@ -585,6 +585,12 @@ public class FABsMenu extends ViewGroup {
             super.onAnimationStart(animation);
             setMenuButtonsClickable(false);
         }
+
+        @Override
+        public void onAnimationEnd(Animator animation) {
+            super.onAnimationEnd(animation);
+            setMenuButtonsVisibility(false);
+        }
     };
 
     private void collapse(boolean immediately) {
@@ -612,6 +618,12 @@ public class FABsMenu extends ViewGroup {
     }
 
     private AnimatorListenerAdapter expandListener = new AnimatorListenerAdapter() {
+        @Override
+        public void onAnimationStart(Animator animation) {
+            super.onAnimationStart(animation);
+            setMenuButtonsVisibility(true);
+        }
+
         @Override
         public void onAnimationEnd(Animator animation) {
             super.onAnimationEnd(animation);
@@ -642,6 +654,15 @@ public class FABsMenu extends ViewGroup {
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
         menuButton.setEnabled(enabled);
+    }
+
+    public void setMenuButtonsVisibility(boolean visible) {
+        for (int i = 0; i < buttonsCount; i++) {
+            View child = getChildAt(i);
+            if ((child instanceof TitleFAB) && (!(child instanceof MenuFAB))) {
+                child.setVisibility(visible ? View.VISIBLE : View.GONE);
+            }
+        }
     }
 
     public void setMenuButtonsClickable(boolean clickable) {
