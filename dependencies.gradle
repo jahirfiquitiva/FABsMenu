@@ -19,7 +19,7 @@ ext.versions = [
         appId                  : "FABsMenu",
         appGroup               : "jahirfiquitiva.apps",
         libGroup               : "jahirfiquitiva.libs",
-        minSdk                 : 16,
+        minSdk                 : 14,
         targetSdk              : 26,
         compileSdk             : 26,
         buildTools             : '26.0.1',
