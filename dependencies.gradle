@@ -28,5 +28,5 @@ ext.versions = [
         gradlePlugin           : '3.0.1',
         libPubPlugin           : '2.0',
         // Libraries versions
-        supportLibs            : '22.0.2'
+        supportLibs            : '27.0.2'
 ]
