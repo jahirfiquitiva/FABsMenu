@@ -16,17 +16,17 @@
 
 ext.versions = [
         // Core app details
-        appId                  : "FABsMenu",
-        appGroup               : "jahirfiquitiva.apps",
-        libGroup               : "jahirfiquitiva.libs",
-        minSdk                 : 14,
-        targetSdk              : 27,
-        compileSdk             : 27,
-        buildTools             : '27.0.2',
-        versionCode            : 110,
-        versionName            : '1.1.0',
-        gradlePlugin           : '3.0.1',
-        libPubPlugin           : '2.0',
+        appId       : "FABsMenu",
+        appGroup    : "jahirfiquitiva.apps",
+        libGroup    : "jahirfiquitiva.libs",
+        minSdk      : 14,
+        targetSdk   : 27,
+        compileSdk  : 27,
+        buildTools  : '27.0.2',
+        versionCode : 110,
+        versionName : '1.1.0',
+        gradlePlugin: '3.0.1',
+        libPubPlugin: '2.0',
         // Libraries versions
-        supportLibs            : '27.0.2'
+        supportLibs : '27.0.2'
 ]

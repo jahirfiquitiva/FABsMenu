@@ -22,9 +22,8 @@ android {
     buildToolsVersion versions.buildTools
 
     applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            output.outputFile = new File(output.outputFile.parent,
-                    versions.appId + "-v${variant.versionName}-${variant.name}.apk")
+        variant.outputs.all { output ->
+            outputFileName = versions.appId + "-v${variant.versionName}-${variant.name}.apk"
         }
     }
 
@@ -45,7 +44,6 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
