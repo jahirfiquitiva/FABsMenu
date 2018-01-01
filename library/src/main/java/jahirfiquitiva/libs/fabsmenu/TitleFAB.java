@@ -151,8 +151,8 @@ public class TitleFAB extends FloatingActionButton {
     public void setTitleBackgroundColor(@ColorInt int titleBackgroundColor) {
         this.titleBackgroundColor = titleBackgroundColor;
         LabelView label = getLabelView();
-        if (label != null && label.getContent() != null) {
-            label.getContent().setBackgroundColor(titleBackgroundColor);
+        if (label != null) {
+            label.setBackgroundColor(titleBackgroundColor);
         }
     }
 

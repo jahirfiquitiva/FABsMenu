@@ -90,12 +90,17 @@ public class LabelView extends CardView {
     }
 
     public void setTextColor(@ColorInt int color) {
-        this.textColor = color;
+        textColor = color;
         content.setTextColor(color);
     }
 
     public void setTextColorFromRes(@ColorRes int color) {
         setTextColor(ContextCompat.getColor(getContext(), color));
+    }
+
+    public void setBackgroundColor(@ColorInt int backgroundColor) {
+        rightBackgroundColor = backgroundColor;
+        setCardBackgroundColor(0);
     }
 
     @Override
