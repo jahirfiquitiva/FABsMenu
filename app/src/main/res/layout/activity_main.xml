@@ -59,7 +59,6 @@
                 fab:fab_moreButtonBackgroundColor="@color/pink"
                 fab:fab_moreButtonRippleColor="@color/pink_pressed"
                 fab:fab_moreButtonSize="normal"
-                fab:fab_labelsPosition="left"
                 fab:fab_expandDirection="up">
 
             <!-- This is the item that appears at the top of the menu -->
