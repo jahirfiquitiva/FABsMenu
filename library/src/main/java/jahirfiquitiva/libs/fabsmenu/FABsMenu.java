@@ -162,7 +162,7 @@ public class FABsMenu extends ViewGroup {
             expandDirection = attr.getInt(R.styleable.FABsMenu_fab_expandDirection, EXPAND_UP);
 
             labelsPosition = attr.getInt(R.styleable.FABsMenu_fab_labelsPosition,
-                                         LABELS_ON_LEFT_SIDE);
+                    isRtl() ? LABELS_ON_RIGHT_SIDE : LABELS_ON_LEFT_SIDE);
 
             attr.recycle();
 
@@ -339,7 +339,7 @@ public class FABsMenu extends ViewGroup {
 
                 buttonsHorizontalCenter -= labelsPosition == LABELS_ON_LEFT_SIDE
                                            ? menuRightMargin
-                                           : menuLeftMargin;
+                                           : - menuLeftMargin;
 
                 int addButtonLeft = buttonsHorizontalCenter - menuButton.getMeasuredWidth() / 2;
                 menuButton.layout(addButtonLeft, addButtonY,
@@ -648,6 +648,10 @@ public class FABsMenu extends ViewGroup {
 
     public boolean isExpanded() {
         return expanded;
+    }
+
+    private boolean isRtl() {
+        return getResources().getBoolean(R.bool.is_right_to_left);
     }
 
     @Override
