@@ -19,7 +19,7 @@ System.out.println("Hello, world!");
 java.lang.RuntimeException: This is an example Exception log
     at jahirfiquitiva.libs.fabsmenu.HelloWorld
     at jahirfiquitiva.libs.fabsmenu.HelloWorld$ThisIsNotARealLog
-    at android.app.Instrumentation.callActivityOnResume(Instrumentation.kava)
+    at android.app.Instrumentation.callActivityOnResume(Instrumentation.java)
 ```
  
 ###### Reproduction Steps
