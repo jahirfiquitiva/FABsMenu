@@ -1,7 +1,7 @@
 - [ ] I have verified there are no duplicate active or recent bugs, questions, or requests
 - [ ] I have verified that I am using the latest version of FABsMenu.
 
-###### Device/dashboard info:
+###### Device/library info:
  - FABsMenu version: `?`
  - Device OS version: `?`
  - Device Manufacturer: `?`
