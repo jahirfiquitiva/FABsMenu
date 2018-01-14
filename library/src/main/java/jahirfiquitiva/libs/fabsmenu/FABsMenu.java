@@ -307,6 +307,8 @@ public class FABsMenu extends ViewGroup {
                 width += buttonSpacing * (buttonsCount - 1);
                 width = adjustForOvershoot(width);
                 break;
+            default: // Do Nothing
+                break;
         }
 
         height += (Math.max(menuTopMargin, menuBottomMargin)) * 2;
@@ -448,7 +450,7 @@ public class FABsMenu extends ViewGroup {
                 for (int i = buttonsCount - 1; i >= 0; i--) {
                     final View child = getChildAt(i);
 
-                    if (child == menuButton || child.getVisibility() == GONE) continue;
+                    if (child.equals(menuButton) || child.getVisibility() == GONE) continue;
 
                     int childX = expandLeft ? nextX - child.getMeasuredWidth() : nextX;
                     int childY = addButtonTop + (menuButton.getMeasuredHeight() -
