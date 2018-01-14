@@ -1031,6 +1031,8 @@ public class FABsMenu extends ViewGroup {
                     mCollapseDir.setProperty(View.TRANSLATION_X);
                     mExpandDir.setProperty(View.TRANSLATION_X);
                     break;
+                default: // Do Nothing
+                    break;
             }
         }
 
