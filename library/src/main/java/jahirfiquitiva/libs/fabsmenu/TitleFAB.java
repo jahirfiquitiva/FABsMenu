@@ -37,6 +37,23 @@ import android.view.animation.Interpolator;
 public class TitleFAB extends FloatingActionButton {
 
     private static final int MAX_CHARACTERS_COUNT = 25;
+
+    /**
+     * Hide/show animations from FloatingActionButton
+     * https://goo.gl/e5DWfT
+     */
+    private static final Interpolator FAST_OUT_LINEAR_IN_INTERPOLATOR =
+            new FastOutLinearInInterpolator();
+    private static final Interpolator LINEAR_OUT_SLOW_IN_INTERPOLATOR =
+            new LinearOutSlowInInterpolator();
+
+    private static final int SHOW_HIDE_ANIM_DURATION = 200;
+    private static final int ANIM_STATE_NONE = 0;
+    private static final int ANIM_STATE_HIDING = 1;
+    private static final int ANIM_STATE_SHOWING = 2;
+
+    int mAnimState = ANIM_STATE_NONE;
+
     private String title;
     private boolean titleClickEnabled;
     @ColorInt
@@ -192,20 +209,6 @@ public class TitleFAB extends FloatingActionButton {
                                           titleTextPadding / 2);
         }
     }
-
-    /**
-     * Hide/show animations from FloatingActionButton
-     * https://goo.gl/e5DWfT
-     */
-    static final Interpolator FAST_OUT_LINEAR_IN_INTERPOLATOR = new FastOutLinearInInterpolator();
-    static final Interpolator LINEAR_OUT_SLOW_IN_INTERPOLATOR = new LinearOutSlowInInterpolator();
-
-    static final int SHOW_HIDE_ANIM_DURATION = 200;
-    static final int ANIM_STATE_NONE = 0;
-    static final int ANIM_STATE_HIDING = 1;
-    static final int ANIM_STATE_SHOWING = 2;
-
-    int mAnimState = ANIM_STATE_NONE;
 
     boolean isOrWillBeShown() {
         View label = getLabelView();

@@ -162,7 +162,7 @@ public class FABsMenu extends ViewGroup {
             expandDirection = attr.getInt(R.styleable.FABsMenu_fab_expandDirection, EXPAND_UP);
 
             labelsPosition = attr.getInt(R.styleable.FABsMenu_fab_labelsPosition,
-                    isRtl() ? LABELS_ON_RIGHT_SIDE : LABELS_ON_LEFT_SIDE);
+                                         isRtl() ? LABELS_ON_RIGHT_SIDE : LABELS_ON_LEFT_SIDE);
 
             attr.recycle();
 
@@ -278,6 +278,8 @@ public class FABsMenu extends ViewGroup {
                     width += child.getMeasuredWidth();
                     maxButtonHeight = Math.max(maxButtonHeight, child.getMeasuredHeight());
                     break;
+                default: // Do Nothing
+                    break;
             }
 
             if (!expandsHorizontally()) {
@@ -339,7 +341,7 @@ public class FABsMenu extends ViewGroup {
 
                 buttonsHorizontalCenter -= labelsPosition == LABELS_ON_LEFT_SIDE
                                            ? menuRightMargin
-                                           : - menuLeftMargin;
+                                           : -menuLeftMargin;
 
                 int addButtonLeft = buttonsHorizontalCenter - menuButton.getMeasuredWidth() / 2;
                 menuButton.layout(addButtonLeft, addButtonY,
@@ -358,7 +360,7 @@ public class FABsMenu extends ViewGroup {
                 for (int i = buttonsCount - 1; i >= 0; i--) {
                     final View child = getChildAt(i);
 
-                    if (child == menuButton || child.getVisibility() == GONE) continue;
+                    if (child.equals(menuButton) || child.getVisibility() == GONE) continue;
 
                     int childX = buttonsHorizontalCenter - child.getMeasuredWidth() / 2;
                     int childY = expandUp ? nextY - child.getMeasuredHeight() : nextY;
@@ -509,7 +511,7 @@ public class FABsMenu extends ViewGroup {
                 final TitleFAB button = (TitleFAB) getChildAt(i);
                 String title = button.getTitle();
 
-                if (button == menuButton || title == null || title.length() <= 0 ||
+                if (button.equals(menuButton) || title == null || title.length() <= 0 ||
                         button.getTag(R.id.fab_label) != null) continue;
 
                 final LabelView label = new LabelView(getContext(),
@@ -540,34 +542,32 @@ public class FABsMenu extends ViewGroup {
 
     private void toggleOverlay(final boolean show, boolean immediately) {
         final ViewParent parent = getParent();
-        if (parent != null) {
-            if (parent instanceof FABsMenuLayout) {
-                final View overlay = ((FABsMenuLayout) parent).getOverlayView();
-                if (show) {
-                    overlay.setAlpha(0);
-                    overlay.setVisibility(VISIBLE);
-                }
-                overlay.animate().alpha(show ? 1f : 0f)
-                        .setDuration(immediately ? 0 : animationDuration).setListener(
-                        new AnimatorListenerAdapter() {
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                super.onAnimationEnd(animation);
-                                if (!show) {
-                                    overlay.setVisibility(GONE);
-                                    overlay.setOnClickListener(null);
-                                } else {
-                                    if (((FABsMenuLayout) parent).hasClickableOverlay())
-                                        overlay.setOnClickListener(new OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
-                                                collapse();
-                                            }
-                                        });
-                                }
-                            }
-                        }).start();
+        if (parent != null && parent instanceof FABsMenuLayout) {
+            final View overlay = ((FABsMenuLayout) parent).getOverlayView();
+            if (show) {
+                overlay.setAlpha(0);
+                overlay.setVisibility(VISIBLE);
             }
+            overlay.animate().alpha(show ? 1.0F : 0.0F)
+                    .setDuration(immediately ? 0 : animationDuration).setListener(
+                    new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            if (!show) {
+                                overlay.setVisibility(GONE);
+                                overlay.setOnClickListener(null);
+                            } else {
+                                if (((FABsMenuLayout) parent).hasClickableOverlay())
+                                    overlay.setOnClickListener(new OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            collapse();
+                                        }
+                                    });
+                            }
+                        }
+                    }).start();
         }
     }
 
@@ -898,6 +898,7 @@ public class FABsMenu extends ViewGroup {
     /**
      * @param menuListener
      *         the menu listener
+     *
      * @deprecated Use {@link #setMenuListener(FABsMenuListener)} instead
      */
     @Deprecated

@@ -40,7 +40,7 @@ public class TouchDelegateGroup extends TouchDelegate {
 
     public void removeTouchDelegate(TouchDelegate touchDelegate) {
         mTouchDelegates.remove(touchDelegate);
-        if (mCurrentTouchDelegate == touchDelegate) {
+        if (mCurrentTouchDelegate.equals(touchDelegate)) {
             mCurrentTouchDelegate = null;
         }
     }
@@ -75,6 +75,8 @@ public class TouchDelegateGroup extends TouchDelegate {
             case MotionEvent.ACTION_UP:
                 delegate = mCurrentTouchDelegate;
                 mCurrentTouchDelegate = null;
+                break;
+            default: // Do Nothing
                 break;
         }
 
