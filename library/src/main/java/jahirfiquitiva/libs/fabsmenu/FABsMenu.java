@@ -474,6 +474,8 @@ public class FABsMenu extends ViewGroup {
                             childX + child.getMeasuredWidth() + buttonSpacing;
                 }
                 break;
+            default: // Do Nothing
+                break;
         }
     }
 
