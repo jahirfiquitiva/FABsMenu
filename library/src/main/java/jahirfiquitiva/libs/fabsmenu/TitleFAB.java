@@ -84,7 +84,7 @@ public class TitleFAB extends FloatingActionButton {
             TypedArray attr =
                     context.obtainStyledAttributes(attributeSet, R.styleable.TitleFAB, 0, 0);
             title = attr.getString(R.styleable.TitleFAB_fab_title);
-            titleClickEnabled = attr.getBoolean(R.styleable.TitleFAB_fab_enableTitleClick, false);
+            titleClickEnabled = attr.getBoolean(R.styleable.TitleFAB_fab_enableTitleClick, true);
             titleBackgroundColor = attr.getInt(R.styleable.TitleFAB_fab_title_backgroundColor,
                                                ContextCompat
                                                        .getColor(context, android.R.color.white));
@@ -95,6 +95,7 @@ public class TitleFAB extends FloatingActionButton {
             titleTextPadding =
                     attr.getDimensionPixelSize(R.styleable.TitleFAB_fab_title_textPadding,
                                                (int) DimensionUtils.convertDpToPixel(8, context));
+            setSize(FloatingActionButton.SIZE_MINI);
             attr.recycle();
             setOnClickListener(null);
         } catch (Exception ignored) {
