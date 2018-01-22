@@ -39,6 +39,7 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -711,8 +712,9 @@ public class FABsMenu extends ViewGroup {
             expanded = savedState.expanded;
             touchDelegateGroup.setEnabled(expanded);
             if (rotatingDrawable != null) {
-                rotatingDrawable.setRotation(expanded ? EXPANDED_PLUS_ROTATION :
-                                             COLLAPSED_PLUS_ROTATION);
+                rotatingDrawable.setRotation(expanded
+                                             ? EXPANDED_PLUS_ROTATION
+                                             : COLLAPSED_PLUS_ROTATION);
             }
             super.onRestoreInstanceState(savedState.getSuperState());
         } else {
@@ -780,6 +782,7 @@ public class FABsMenu extends ViewGroup {
     }
 
     public void setMenuButtonColor(@ColorInt int menuButtonColor) {
+        this.menuButton.setBackgroundColor(menuButtonColor);
         this.menuButtonColor = menuButtonColor;
     }
 
@@ -789,6 +792,7 @@ public class FABsMenu extends ViewGroup {
     }
 
     public void setMenuButtonRippleColor(@ColorInt int menuButtonRippleColor) {
+        this.menuButton.setRippleColor(menuButtonRippleColor);
         this.menuButtonRippleColor = menuButtonRippleColor;
     }
 
@@ -796,7 +800,8 @@ public class FABsMenu extends ViewGroup {
         return menuButtonSize;
     }
 
-    public void setMenuButtonSize(int menuButtonSize) {
+    public void setMenuButtonSize(@FloatingActionButton.Size int menuButtonSize) {
+        this.menuButton.setSize(FloatingActionButton.SIZE_MINI);
         this.menuButtonSize = menuButtonSize;
     }
 
@@ -814,6 +819,7 @@ public class FABsMenu extends ViewGroup {
 
     public void setMenuButton(@NonNull MenuFAB menuButton) {
         this.menuButton = menuButton;
+        invalidate();
     }
 
     public Drawable getMenuButtonIcon() {
@@ -832,13 +838,17 @@ public class FABsMenu extends ViewGroup {
 
     public void setMenuButtonIcon(@DrawableRes int resId) {
         try {
-            setMenuButtonIcon(ContextCompat.getDrawable(getContext(), resId));
+            Drawable icon = ContextCompat.getDrawable(getContext(), resId);
+            if (icon != null) setMenuButtonIcon(icon);
+            else throw new NullPointerException(
+                    "The icon you try to assign to FABsMenu does not exist");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void setMenuButtonIcon(@NonNull Drawable menuButtonIcon) {
+        this.menuButton.setImageDrawable(menuButtonIcon);
         this.menuButtonIcon = menuButtonIcon;
         createRotatingDrawable();
     }
@@ -853,6 +863,7 @@ public class FABsMenu extends ViewGroup {
 
     public void setButtonSpacing(int buttonSpacing) {
         this.buttonSpacing = buttonSpacing;
+        invalidate();
     }
 
     public int getLabelsMargin() {
@@ -861,6 +872,7 @@ public class FABsMenu extends ViewGroup {
 
     public void setLabelsMargin(int labelsMargin) {
         this.labelsMargin = labelsMargin;
+        invalidate();
     }
 
     public int getLabelsPosition() {
@@ -869,6 +881,7 @@ public class FABsMenu extends ViewGroup {
 
     public void setLabelsPosition(@LABELS_POSITION int labelsPosition) {
         this.labelsPosition = labelsPosition;
+        invalidate();
     }
 
     public int getButtonsCount() {
@@ -881,6 +894,7 @@ public class FABsMenu extends ViewGroup {
 
     public void setMaxButtonWidth(int maxButtonWidth) {
         this.maxButtonWidth = maxButtonWidth;
+        invalidate();
     }
 
     public int getMaxButtonHeight() {
@@ -889,6 +903,7 @@ public class FABsMenu extends ViewGroup {
 
     public void setMaxButtonHeight(int maxButtonHeight) {
         this.maxButtonHeight = maxButtonHeight;
+        invalidate();
     }
 
     public FABsMenuListener getMenuListener() {
