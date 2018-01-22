@@ -727,6 +727,26 @@ public class FABsMenu extends ViewGroup {
         return false;
     }
 
+    public void show() {
+        show(false);
+    }
+
+    public void show(boolean expand) {
+        setVisibility(View.VISIBLE);
+        menuButton.show();
+        if (expand) expand();
+    }
+
+    public void hide() {
+        hide(true);
+    }
+
+    public void hide(boolean collapse) {
+        if (collapse) collapse();
+        menuButton.hide();
+        setVisibility(View.GONE);
+    }
+
     public int getMenuMargins() {
         return menuMargins;
     }
@@ -801,8 +821,9 @@ public class FABsMenu extends ViewGroup {
     }
 
     public void setMenuButtonSize(@FloatingActionButton.Size int menuButtonSize) {
-        this.menuButton.setSize(FloatingActionButton.SIZE_MINI);
+        this.menuButton.setSize(menuButtonSize);
         this.menuButtonSize = menuButtonSize;
+        requestLayout();
     }
 
     public int getExpandDirection() {
@@ -811,6 +832,7 @@ public class FABsMenu extends ViewGroup {
 
     public void setExpandDirection(@EXPAND_DIRECTION int expandDirection) {
         this.expandDirection = expandDirection;
+        requestLayout();
     }
 
     public MenuFAB getMenuButton() {
@@ -819,7 +841,7 @@ public class FABsMenu extends ViewGroup {
 
     public void setMenuButton(@NonNull MenuFAB menuButton) {
         this.menuButton = menuButton;
-        invalidate();
+        requestLayout();
     }
 
     public Drawable getMenuButtonIcon() {
@@ -863,7 +885,7 @@ public class FABsMenu extends ViewGroup {
 
     public void setButtonSpacing(int buttonSpacing) {
         this.buttonSpacing = buttonSpacing;
-        invalidate();
+        requestLayout();
     }
 
     public int getLabelsMargin() {
@@ -872,7 +894,7 @@ public class FABsMenu extends ViewGroup {
 
     public void setLabelsMargin(int labelsMargin) {
         this.labelsMargin = labelsMargin;
-        invalidate();
+        requestLayout();
     }
 
     public int getLabelsPosition() {
@@ -881,7 +903,7 @@ public class FABsMenu extends ViewGroup {
 
     public void setLabelsPosition(@LABELS_POSITION int labelsPosition) {
         this.labelsPosition = labelsPosition;
-        invalidate();
+        requestLayout();
     }
 
     public int getButtonsCount() {
@@ -894,7 +916,7 @@ public class FABsMenu extends ViewGroup {
 
     public void setMaxButtonWidth(int maxButtonWidth) {
         this.maxButtonWidth = maxButtonWidth;
-        invalidate();
+        requestLayout();
     }
 
     public int getMaxButtonHeight() {
@@ -903,7 +925,7 @@ public class FABsMenu extends ViewGroup {
 
     public void setMaxButtonHeight(int maxButtonHeight) {
         this.maxButtonHeight = maxButtonHeight;
-        invalidate();
+        requestLayout();
     }
 
     public FABsMenuListener getMenuListener() {
