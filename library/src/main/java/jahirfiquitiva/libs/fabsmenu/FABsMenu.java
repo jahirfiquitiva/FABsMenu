@@ -548,31 +548,12 @@ public class FABsMenu extends ViewGroup {
     private void toggleOverlay(final boolean show, boolean immediately) {
         final ViewParent parent = getParent();
         if (parent != null && parent instanceof FABsMenuLayout) {
-            final View overlay = ((FABsMenuLayout) parent).getOverlayView();
-            if (show) {
-                overlay.setAlpha(0);
-                overlay.setVisibility(VISIBLE);
-            }
-            overlay.animate().alpha(show ? 1.0F : 0.0F)
-                    .setDuration(immediately ? 0 : animationDuration).setListener(
-                    new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            if (!show) {
-                                overlay.setVisibility(GONE);
-                                overlay.setOnClickListener(null);
-                            } else {
-                                if (((FABsMenuLayout) parent).hasClickableOverlay())
-                                    overlay.setOnClickListener(new OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            collapse();
-                                        }
-                                    });
-                            }
-                        }
-                    }).start();
+            ((FABsMenuLayout) parent).toggle(show, immediately, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    collapse();
+                }
+            });
         }
     }
 
@@ -745,6 +726,13 @@ public class FABsMenu extends ViewGroup {
         if (collapse) collapse();
         menuButton.hide();
         setVisibility(View.GONE);
+    }
+
+    public void setOverlayColor(@ColorInt int color) {
+        final ViewParent parent = getParent();
+        if (parent != null && parent instanceof FABsMenuLayout) {
+            ((FABsMenuLayout) parent).setOverlayColor(color);
+        }
     }
 
     public int getMenuMargins() {
@@ -964,6 +952,10 @@ public class FABsMenu extends ViewGroup {
     }
 
     public void setAnimationDuration(int animationDuration) {
+        final ViewParent parent = getParent();
+        if (parent != null && parent instanceof FABsMenuLayout) {
+            ((FABsMenuLayout) parent).setAnimationDuration(animationDuration);
+        }
         this.animationDuration = animationDuration;
     }
 

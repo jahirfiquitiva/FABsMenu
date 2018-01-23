@@ -16,6 +16,8 @@
 
 package jahirfiquitiva.libs.fabsmenu;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -36,6 +38,7 @@ public class FABsMenuLayout extends FrameLayout {
     private int overlayColor;
     private View overlayView;
     private boolean clickableOverlay;
+    private int animationDuration = 500;
 
     public FABsMenuLayout(@NonNull Context context) {
         super(context);
@@ -80,6 +83,7 @@ public class FABsMenuLayout extends FrameLayout {
     }
 
     public void setOverlayColor(@ColorInt int overlayColor) {
+        overlayView.setBackgroundColor(overlayColor);
         this.overlayColor = overlayColor;
     }
 
@@ -97,5 +101,56 @@ public class FABsMenuLayout extends FrameLayout {
 
     public void setClickableOverlay(boolean clickableOverlay) {
         this.clickableOverlay = clickableOverlay;
+    }
+
+    public void setAnimationDuration(int animationDuration) {
+        this.animationDuration = animationDuration;
+    }
+
+    public void show() {
+        toggle(true);
+    }
+
+    public void show(boolean immediately) {
+        toggle(true, immediately);
+    }
+
+    public void hide() {
+        toggle(false);
+    }
+
+    public void hide(boolean immediately) {
+        toggle(false, immediately);
+    }
+
+    public void toggle(boolean show) {
+        toggle(show, false);
+    }
+
+    public void toggle(boolean show, boolean immediately) {
+        toggle(show, immediately, null);
+    }
+
+    public void toggle(final boolean show, boolean immediately,
+                       final OnClickListener onOverlayClick) {
+        if (show) {
+            overlayView.setAlpha(0);
+            overlayView.setVisibility(VISIBLE);
+        }
+        overlayView.animate().alpha(show ? 1.0F : 0.0F)
+                .setDuration(immediately ? 0 : animationDuration).setListener(
+                new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        if (!show) {
+                            overlayView.setVisibility(GONE);
+                            overlayView.setOnClickListener(null);
+                        } else {
+                            if (hasClickableOverlay())
+                                overlayView.setOnClickListener(onOverlayClick);
+                        }
+                    }
+                }).start();
     }
 }
