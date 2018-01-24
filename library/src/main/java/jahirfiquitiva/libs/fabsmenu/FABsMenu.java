@@ -246,9 +246,9 @@ public class FABsMenu extends ViewGroup {
     }
 
     public void removeButton(int index) throws IllegalArgumentException, IndexOutOfBoundsException {
-        View button = getChildAt(index);
         if (index >= 0 && index < buttonsCount) {
-            if (button instanceof TitleFAB) {
+            View button = getChildAt(index);
+            if (button instanceof TitleFAB && !(button instanceof MenuFAB)) {
                 removeButton((TitleFAB) button);
             } else {
                 throw new IllegalArgumentException(
