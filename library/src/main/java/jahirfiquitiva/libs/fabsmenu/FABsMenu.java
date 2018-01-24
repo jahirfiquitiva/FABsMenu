@@ -171,7 +171,7 @@ public class FABsMenu extends ViewGroup {
                 setMenuListener(new FABsMenuListener() {
                 });
             }
-            createAddButton(context);
+            createMenuButton(context);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -181,7 +181,7 @@ public class FABsMenu extends ViewGroup {
         return expandDirection == EXPAND_LEFT || expandDirection == EXPAND_RIGHT;
     }
 
-    private void createAddButton(Context context) {
+    private void createMenuButton(Context context) {
         menuButton = new MenuFAB(context);
 
         if (menuButtonIcon != null) {
@@ -248,8 +248,14 @@ public class FABsMenu extends ViewGroup {
     public void removeButton(int index) throws IndexOutOfBoundsException {
         View button = getChildAt(index);
         if (button != null) {
-            if (button instanceof TitleFAB && !(button instanceof MenuFAB)) {
+            try {
+                String title = ((TitleFAB) button).getTitle();
+                if (button.equals(menuButton) || title == null || title.length() <= 0 ||
+                        button.getTag(R.id.fab_label) != null)
+                    return;
+
                 removeButton((TitleFAB) button);
+            } catch (Exception ignored) {
             }
         } else {
             throw new IndexOutOfBoundsException(
