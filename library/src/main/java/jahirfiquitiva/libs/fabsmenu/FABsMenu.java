@@ -224,25 +224,57 @@ public class FABsMenu extends ViewGroup {
         rotatingDrawable = dr;
     }
 
-    public void addButton(TitleFAB button) {
+    public void addAllButtons(TitleFAB... buttons) throws IllegalArgumentException {
+        for (TitleFAB button : buttons) {
+            addButton(button);
+        }
+    }
+
+    public void addButton(TitleFAB button, int index) throws IllegalArgumentException {
         if (buttonsCount >= 6)
             throw new IllegalArgumentException("A floating action buttons menu should have no " +
                                                        "more than six options.");
-        addView(button, buttonsCount - 1);
+        addView(button, index);
         buttonsCount++;
         createLabels();
         if (buttonsCount < 3)
             Log.w("FABsMenu", "A floating action buttons menu should have at least three options");
     }
 
+    public void addButton(TitleFAB button) throws IllegalArgumentException {
+        addButton(button, buttonsCount - 1);
+    }
+
+    public void removeButton(int index) throws IllegalArgumentException, IndexOutOfBoundsException {
+        View button = getChildAt(index);
+        if (index >= 0 && index < buttonsCount) {
+            if (button instanceof TitleFAB) {
+                removeButton((TitleFAB) button);
+            } else {
+                throw new IllegalArgumentException(
+                        "The View you are trying to remove is not an instance of TitleFAB");
+            }
+        } else {
+            throw new IndexOutOfBoundsException(
+                    "The index of the button you try to remove is invalid");
+        }
+    }
+
     public void removeButton(TitleFAB button) {
         try {
+            button.hide();
+            button.setTag(R.id.fab_label, null);
             removeView(button.getLabelView());
             removeView(button);
-            button.setTag(R.id.fab_label, null);
             buttonsCount--;
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void removeAllButtons() {
+        for (int i = 0; i < buttonsCount; i++) {
+            removeButton(i);
         }
     }
 
