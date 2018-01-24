@@ -235,8 +235,11 @@ public class FABsMenu extends ViewGroup {
             throw new IllegalArgumentException("A floating action buttons menu should have no " +
                                                        "more than six options.");
         addView(button, index);
-        buttonsCount++;
+        buttonsCount += 1;
         createLabels();
+        if (buttonsCount > 1 && getVisibility() != View.VISIBLE) {
+            show(false);
+        }
         if (buttonsCount < 3)
             Log.w("FABsMenu", "A floating action buttons menu should have at least three options");
     }
@@ -245,39 +248,47 @@ public class FABsMenu extends ViewGroup {
         addButton(button, buttonsCount - 1);
     }
 
-    public void removeButton(int index) throws IndexOutOfBoundsException {
-        View button = getChildAt(index);
-        if (button != null) {
-            try {
-                String title = ((TitleFAB) button).getTitle();
-                if (button.equals(menuButton) || title == null || title.length() <= 0 ||
-                        button.getTag(R.id.fab_label) != null)
-                    return;
-
-                removeButton((TitleFAB) button);
-            } catch (Exception ignored) {
+    @SuppressWarnings("UnnecessaryReturnStatement")
+    private void removeButtonInternal(int index, boolean throwException)
+            throws NullPointerException, IllegalArgumentException {
+        View child = getChildAt(index);
+        if (child != null) {
+            if (child instanceof MenuFAB) {
+                return;
+            } else if (child instanceof TitleFAB) {
+                removeButton((TitleFAB) child);
+            } else {
+                if (throwException)
+                    throw new IllegalArgumentException(
+                            "The view you want to remove is not an instance of TitleFAB");
             }
         } else {
-            throw new IndexOutOfBoundsException(
-                    "The index of the button you try to remove is invalid");
+            if (throwException)
+                throw new NullPointerException("The button you want to remove does not exists");
         }
+    }
+
+    @SuppressLint("ResourceType")
+    public void removeButton(int index) throws IndexOutOfBoundsException {
+        removeButtonInternal(index, false);
     }
 
     public void removeButton(TitleFAB button) {
         try {
             button.hide();
-            button.setTag(R.id.fab_label, null);
             removeView(button.getLabelView());
             removeView(button);
-            buttonsCount--;
+            button.setTag(R.id.fab_label, null);
+            buttonsCount -= 1;
+            if (buttonsCount <= 1) hide();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void removeAllButtons() {
-        for (int i = 0; i < buttonsCount; i++) {
-            removeButton(i);
+        for (int i = 0; i <= getChildCount(); i++) {
+            removeButton(0);
         }
     }
 
