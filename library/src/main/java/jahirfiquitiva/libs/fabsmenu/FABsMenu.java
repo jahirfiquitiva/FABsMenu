@@ -245,14 +245,11 @@ public class FABsMenu extends ViewGroup {
         addButton(button, buttonsCount - 1);
     }
 
-    public void removeButton(int index) throws IllegalArgumentException, IndexOutOfBoundsException {
-        if (index >= 0 && index < buttonsCount) {
-            View button = getChildAt(index);
+    public void removeButton(int index) throws IndexOutOfBoundsException {
+        View button = getChildAt(index);
+        if (button != null) {
             if (button instanceof TitleFAB && !(button instanceof MenuFAB)) {
                 removeButton((TitleFAB) button);
-            } else {
-                throw new IllegalArgumentException(
-                        "The View you are trying to remove is not an instance of TitleFAB");
             }
         } else {
             throw new IndexOutOfBoundsException(
