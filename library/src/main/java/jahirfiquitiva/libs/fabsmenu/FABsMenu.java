@@ -1006,9 +1006,15 @@ public class FABsMenu extends ViewGroup {
     }
 
     public void setAnimationDuration(int animationDuration) {
-        final ViewParent parent = getParent();
-        if (parent != null && parent instanceof FABsMenuLayout) {
-            ((FABsMenuLayout) parent).setAnimationDuration(animationDuration);
+        setAnimationDuration(animationDuration, true);
+    }
+
+    public void setAnimationDuration(int animationDuration, boolean applyToOverlay) {
+        if (applyToOverlay) {
+            final ViewParent parent = getParent();
+            if (parent != null && parent instanceof FABsMenuLayout) {
+                ((FABsMenuLayout) parent).setAnimationDuration(animationDuration);
+            }
         }
         this.animationDuration = animationDuration;
     }
