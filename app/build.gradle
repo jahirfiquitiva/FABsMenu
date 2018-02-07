@@ -13,11 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 apply plugin: 'com.android.application'
-apply from: '../dependencies.gradle'
 
 android {
+    signingConfigs {
+        release {
+            keyAlias 'fabsmenu'
+            keyPassword 'fabsmenu'
+            storeFile file('fabsmenu.jks')
+            storePassword 'fabsmenu'
+        }
+    }
+
     compileSdkVersion versions.compileSdk
     buildToolsVersion versions.buildTools
 
@@ -28,8 +35,9 @@ android {
     }
 
     lintOptions {
-        disable 'MissingTranslation'
-        disable 'GoogleAppIndexingWarning'
+        abortOnError false
+        checkReleaseBuilds false
+        disable 'MissingTranslation', 'GoogleAppIndexingWarning'
     }
 
     defaultConfig {
@@ -45,6 +53,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 }
