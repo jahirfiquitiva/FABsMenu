@@ -23,7 +23,6 @@ import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -107,13 +106,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Log.d("FABsMenu", "Current buttons count: " + menu.getButtonsCount());
-
         // Removes a button
         TitleFAB toRemove = findViewById(R.id.to_remove);
         menu.removeButton(toRemove);
-
-        Log.d("FABsMenu", "Buttons count after removal: " + menu.getButtonsCount());
 
         // Adds a button to the bottom
         final TitleFAB toAdd = new TitleFAB(this);
@@ -128,8 +123,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         menu.addButton(toAdd);
-
-        Log.d("FABsMenu", "Buttons count after addition: " + menu.getButtonsCount());
     }
 
     @Override
@@ -153,10 +146,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
             menu.addButton(toAdd);
-            Log.d("FABsMenu", "Buttons count after addition: " + menu.getButtonsCount());
         } else if (item.getItemId() == R.id.remove) {
             menu.removeAllButtons();
-            Log.d("FABsMenu", "Buttons count after removing all: " + menu.getButtonsCount());
         }
         return super.onOptionsItemSelected(item);
     }

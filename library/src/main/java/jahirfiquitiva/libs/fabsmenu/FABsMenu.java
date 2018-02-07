@@ -89,14 +89,16 @@ public class FABsMenu extends ViewGroup {
     private int labelsMargin;
     private int labelsVerticalOffset;
     private int labelsPosition;
-    private boolean expanded;
-    private AnimatorSet expandAnimation = new AnimatorSet().setDuration(animationDuration);
-    private AnimatorSet collapseAnimation = new AnimatorSet().setDuration(animationDuration);
     private int buttonsCount;
     private int maxButtonWidth;
     private int maxButtonHeight;
     private TouchDelegateGroup touchDelegateGroup;
     private FABsMenuListener menuListener;
+    private boolean expanded;
+
+    private boolean animating = false;
+    private AnimatorSet expandAnimation = new AnimatorSet().setDuration(animationDuration);
+    private AnimatorSet collapseAnimation = new AnimatorSet().setDuration(animationDuration);
 
     public FABsMenu(Context context) {
         this(context, null);
@@ -622,12 +624,15 @@ public class FABsMenu extends ViewGroup {
         public void onAnimationEnd(Animator animation) {
             super.onAnimationEnd(animation);
             setMenuButtonsVisibility(false);
+            animating = false;
+            expanded = false;
         }
     };
 
     private void collapse(boolean immediately) {
+        if (animating) return;
         if (expanded) {
-            expanded = false;
+            animating = true;
             touchDelegateGroup.setEnabled(false);
             toggleOverlay(false, immediately);
             collapseAnimation.setDuration(immediately ? 0 : animationDuration);
@@ -660,12 +665,15 @@ public class FABsMenu extends ViewGroup {
         public void onAnimationEnd(Animator animation) {
             super.onAnimationEnd(animation);
             setMenuButtonsClickable(true);
+            animating = false;
+            expanded = true;
         }
     };
 
     public void expand() {
+        if (animating) return;
         if (!expanded) {
-            expanded = true;
+            animating = true;
             touchDelegateGroup.setEnabled(true);
             toggleOverlay(true, false);
             collapseAnimation.cancel();

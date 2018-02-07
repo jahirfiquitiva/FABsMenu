@@ -1,10 +1,33 @@
-# FloatingActionButtons Menu (FABsMenu)
+<img src="https://www.jahirfiquitiva.me/assets/img/portfolio/libs/fabsmenu.png" width="192" align="right" hspace="20" />
 
+FloatingActionButtons Menu (FABsMenu)
+======
+
+![API](https://img.shields.io/badge/API-14%2B-34bf49.svg)
 [![JitPack Badge](https://jitpack.io/v/jahirfiquitiva/FABsMenu.svg)](https://jitpack.io/#jahirfiquitiva/FABsMenu)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/3ab596acdd5648599c34d56dba1eea39)](https://www.codacy.com/app/jahirfiquitiva/FABsMenu?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jahirfiquitiva/FABsMenu&amp;utm_campaign=Badge_Grade)
 [![Build Status](https://travis-ci.org/jahirfiquitiva/FABsMenu.svg?branch=master)](https://travis-ci.org/jahirfiquitiva/FABsMenu)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/3ab596acdd5648599c34d56dba1eea39)](https://www.codacy.com/app/jahirfiquitiva/FABsMenu?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jahirfiquitiva/FABsMenu&amp;utm_campaign=Badge_Grade)
 
 Just a simple library to use a menu of `FloatingActionButton`s from Design Support Library that follows [Material Design guidelines](https://material.io/guidelines/components/buttons-floating-action-button.html#buttons-floating-action-button-transitions)
+
+<a target="_blank" href="http://bit.ly/FABsMenuAPK">
+<img src="http://jahirfiquitiva.me/share/download_sample.svg?maxAge=432000" width="200"/>
+</a>
+
+<a target="_blank" href="http://www.jahirfiquitiva.me/support/">
+<img src="http://jahirfiquitiva.me/share/support_my_work.svg?maxAge=432000" width="200"/>
+</a>
+
+## Show some  :blue_heart:
+[![GitHub stars](https://img.shields.io/github/stars/jahirfiquitiva/FABsMenu.svg?style=social&label=Star)](https://github.com/jahirfiquitiva/FABsMenu)
+[![GitHub forks](https://img.shields.io/github/forks/jahirfiquitiva/FABsMenu.svg?style=social&label=Fork)](https://github.com/jahirfiquitiva/FABsMenu/fork)
+[![GitHub watchers](https://img.shields.io/github/watchers/jahirfiquitiva/FABsMenu.svg?style=social&label=Watch)](https://github.com/jahirfiquitiva/FABsMenu)
+
+[![Follow on GitHub](https://img.shields.io/github/followers/jahirfiquitiva.svg?style=social&label=Follow)](https://github.com/jahirfiquitiva)
+[![Twitter Follow](https://img.shields.io/twitter/follow/jahirfiquitiva.svg?style=social)](https://twitter.com/jahirfiquitiva)
+[![Google+](https://img.shields.io/badge/Follow-Google%2B-ea4335.svg)](https://plus.google.com/+JahirFiquitivaR)
+
+---
 
 ### Long story
 
@@ -15,32 +38,38 @@ I was looking for a new library, and the ones I knew of, have been deprecated/ab
 This library uses the design library FABs but wraps them inside a ViewGroup to make them look like the FloatingActionButtons menu suggested in Material Design guidelines.
 
 
-## Preview
+---
+
+# Preview
 
 ![FABs Menu Preview](https://github.com/jahirfiquitiva/FABsMenu/raw/master/preview/preview.gif)
 
+## Changelog
+:radio_button: You can find it in the [Releases page](https://github.com/jahirfiquitiva/FABsMenu/releases)
 
-## Usage
+---
 
-Add jitpack dependency to your root `build.gradle`:
-```groovy
+# Including in your project
+FABsMenu is available via JitPack, so getting it as simple as adding it as a dependency, like this:
+
+1. Add JitPack repository to your root `build.gradle` file
+```gradle
 allprojects {
     repositories {
         maven { url 'https://jitpack.io' }
     }
 }
 ```
-
-Next, add the dependency to your `build.gradle`:
-```groovy
+2. Add the dependency in your project `build.gradle` file
+```gradle
 dependencies {
-   implementation 'me.jahirfiquitiva:FABsMenu:1.1.1'
+    implementation 'me.jahirfiquitiva:FABsMenu:{latest version}'
 }
 ```
+where `{latest version}` corresponds to published version in   [![JitPack](https://jitpack.io/v/jahirfiquitiva/FABsMenu.svg)](https://jitpack.io/#jahirfiquitiva/FABsMenu)
 
-Then sync the gradle files.
-
-Finally, use it in your layout, just like this:
+## How to implement
+You can use it in your layout, just like this:
 
 ```xml
 <RelativeLayout
@@ -215,26 +244,41 @@ menu.attachToRecyclerView(rv);
 4. As stated in guidelines, a FABsMenu should not have more than 6 items. If you use more than 6, you will get an `IllegalArgumentException`. Also, remember FABs menu should have **at least** 3 items too.
 5. For now, the icon you set for FABsMenu will always rotate, so be sure you set an icon that looks good in both states (normal and rotated).
 
+---
+
 ## Apps using FABsMenu
 
 * Yours? Fill [an issue](https://github.com/jahirfiquitiva/FABsMenu/issues/new) and let me know ;)
 
-## Developed by
+---
 
-* Jahir Fiquitiva
-	* [Website](https://www.jahirfiquitiva.me)
-	* [Google+](https://google.com/+JahirFiquitivaR)
-	* [Donate](https://paypal.me/jahirfiquitiva/5)
+# Developed by
 
-## Credits
+### [Jahir Fiquitiva](https://www.jahirfiquitiva.me/)
+
+[![Follow on GitHub](https://img.shields.io/github/followers/jahirfiquitiva.svg?style=social&label=Follow)](https://github.com/jahirfiquitiva)
+[![Twitter Follow](https://img.shields.io/twitter/follow/jahirfiquitiva.svg?style=social)](https://twitter.com/jahirfiquitiva)
+[![Google+](https://img.shields.io/badge/Follow-Google%2B-ea4335.svg)](https://plus.google.com/+JahirFiquitivaR)
+
+If you found this app/library helpful and want to thank me, you can:
+
+<a target="_blank" href="http://www.jahirfiquitiva.me/support/">
+<img src="http://jahirfiquitiva.me/share/support_my_work.svg?maxAge=432000" width="200"/>
+</a>
+
+**Thanks in advance!** :pray:
+
+---
+
+# Credits
 
 This project is based on Future Simple's [android-floating-action-button](https://github.com/futuresimple/android-floating-action-button) project, which is also based on [FloatingActionButton](https://github.com/makovkastar/FloatingActionButton) library by [Oleksandr Melnykov](https://github.com/makovkastar).
 
 
-## License
+# License
 
 
-    Copyright (c) 2017 Jahir Fiquitiva
+    Copyright (c) 2018 Jahir Fiquitiva
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -249,7 +293,7 @@ This project is based on Future Simple's [android-floating-action-button](https:
     limitations under the License.
 
 
-## Original license
+# Original license
 	
 
     Copyright (c) 2014 Jerzy Chalupski
