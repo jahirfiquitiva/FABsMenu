@@ -9,7 +9,7 @@ firstPRMergeComment: >
   Congrats on merging your first pull request here! :tada: How awesome!
 
 newIssueWelcomeComment: >
-  Thanks for opening your first issue here :smiley:! Please be sure to follow the issue template and check the [contribution guidelines](.github/CONTRIBUTING.md) :wink: (otherwise the issue will be ignored :confused:).
+  Thanks for opening your first issue here :smiley:! Please be sure to follow the issue template and check the [contribution guidelines](https://github.com/jahirfiquitiva/FABsMenu/blob/master/.github/CONTRIBUTING.md) :wink: (otherwise the issue will be ignored :confused:).
 
 sentimentBotToxicityThreshold: .7
 
