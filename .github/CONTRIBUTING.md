@@ -2,12 +2,6 @@ Contributing
 ======
 Considering that this project is actively maintained, contributions of all types are welcome.
 
-Asking Questions
--------
-Before asking any question, read the [wiki](../..//wiki).
-It may contains the answer to your questions.
-If not, or if the wiki isn't clear, open a new issue. The issue will be labeled with _question_.
-
 
 Opening issues
 -------
