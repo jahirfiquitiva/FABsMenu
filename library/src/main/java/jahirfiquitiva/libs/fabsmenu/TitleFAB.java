@@ -30,6 +30,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Interpolator;
 
@@ -51,6 +52,7 @@ public class TitleFAB extends FloatingActionButton {
     private static final int ANIM_STATE_NONE = 0;
     private static final int ANIM_STATE_HIDING = 1;
     private static final int ANIM_STATE_SHOWING = 2;
+    private static final String TAG = TitleFAB.class.getSimpleName();
 
     int mAnimState = ANIM_STATE_NONE;
 
@@ -80,26 +82,28 @@ public class TitleFAB extends FloatingActionButton {
     }
 
     void init(Context context, AttributeSet attributeSet) {
+        TypedArray attr =
+                context.obtainStyledAttributes(attributeSet, R.styleable.TitleFAB, 0, 0);
         try {
-            TypedArray attr =
-                    context.obtainStyledAttributes(attributeSet, R.styleable.TitleFAB, 0, 0);
             title = attr.getString(R.styleable.TitleFAB_fab_title);
             titleClickEnabled = attr.getBoolean(R.styleable.TitleFAB_fab_enableTitleClick, true);
             titleBackgroundColor = attr.getInt(R.styleable.TitleFAB_fab_title_backgroundColor,
-                                               ContextCompat
-                                                       .getColor(context, android.R.color.white));
+                    ContextCompat
+                            .getColor(context, android.R.color.white));
             titleTextColor = attr.getInt(R.styleable.TitleFAB_fab_title_textColor,
-                                         ContextCompat.getColor(context, android.R.color.black));
+                    ContextCompat.getColor(context, android.R.color.black));
             titleCornerRadius =
                     attr.getDimensionPixelSize(R.styleable.TitleFAB_fab_title_cornerRadius, -1);
             titleTextPadding =
                     attr.getDimensionPixelSize(R.styleable.TitleFAB_fab_title_textPadding,
-                                               (int) DimensionUtils.convertDpToPixel(8, context));
-            setSize(FloatingActionButton.SIZE_MINI);
+                            (int) DimensionUtils.convertDpToPixel(8, context));
+        } catch (Exception e) {
+            Log.w(TAG, "Failure reading attributes", e);
+        } finally {
             attr.recycle();
-            setOnClickListener(null);
-        } catch (Exception ignored) {
         }
+        setOnClickListener(null);
+        setSize(FloatingActionButton.SIZE_MINI);
     }
 
     @Override
@@ -207,7 +211,7 @@ public class TitleFAB extends FloatingActionButton {
         LabelView label = getLabelView();
         if (label != null && label.getContent() != null) {
             label.getContent().setPadding(titleTextPadding, titleTextPadding / 2, titleTextPadding,
-                                          titleTextPadding / 2);
+                    titleTextPadding / 2);
         }
     }
 
