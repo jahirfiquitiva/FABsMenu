@@ -82,6 +82,7 @@ public class TitleFAB extends FloatingActionButton {
     }
 
     void init(Context context, AttributeSet attributeSet) {
+        int fabSize = TitleFAB.SIZE_MINI;
         TypedArray attr =
                 context.obtainStyledAttributes(attributeSet, R.styleable.TitleFAB, 0, 0);
         try {
@@ -97,13 +98,14 @@ public class TitleFAB extends FloatingActionButton {
             titleTextPadding =
                     attr.getDimensionPixelSize(R.styleable.TitleFAB_fab_title_textPadding,
                             (int) DimensionUtils.convertDpToPixel(8, context));
+            fabSize = attr.getInt(R.styleable.TitleFAB_fabSize, fabSize);
         } catch (Exception e) {
             Log.w(TAG, "Failure reading attributes", e);
         } finally {
             attr.recycle();
         }
         setOnClickListener(null);
-        setSize(FloatingActionButton.SIZE_MINI);
+        setSize(fabSize);
     }
 
     @Override
