@@ -27,6 +27,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -34,6 +35,7 @@ import android.widget.FrameLayout;
 @CoordinatorLayout.DefaultBehavior(FABSnackbarBehavior.class)
 public class FABsMenuLayout extends FrameLayout {
 
+    private static final String TAG = FABsMenuLayout.class.getSimpleName();
     @ColorInt
     private int overlayColor;
     private View overlayView;
@@ -56,25 +58,27 @@ public class FABsMenuLayout extends FrameLayout {
     }
 
     private void init(Context context, AttributeSet attrs) {
+        TypedArray attr = context.getTheme().obtainStyledAttributes(attrs,
+                R.styleable.FABsMenuLayout, 0,
+                0);
         try {
-            TypedArray a = context.getTheme().obtainStyledAttributes(attrs,
-                                                                     R.styleable.FABsMenuLayout, 0,
-                                                                     0);
-            overlayColor = a.getColor(R.styleable.FABsMenuLayout_fabs_menu_overlayColor,
+            overlayColor = attr.getColor(R.styleable.FABsMenuLayout_fabs_menu_overlayColor,
                                       Color.parseColor("#4d000000"));
-            clickableOverlay = a.getBoolean(R.styleable.FABsMenuLayout_fabs_menu_clickableOverlay,
+            clickableOverlay = attr.getBoolean(R.styleable.FABsMenuLayout_fabs_menu_clickableOverlay,
                                             true);
-            a.recycle();
-
-            overlayView = new View(context);
-            overlayView.setLayoutParams(new FrameLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            overlayView.setBackgroundColor(overlayColor);
-            overlayView.setVisibility(View.GONE);
-            addView(overlayView);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "Failure setting MenuButton icon", e);
+        }finally {
+            attr.recycle();
         }
+
+        overlayView = new View(context);
+        overlayView.setLayoutParams(new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        overlayView.setBackgroundColor(overlayColor);
+        overlayView.setVisibility(View.GONE);
+        addView(overlayView);
+
     }
 
     @ColorInt

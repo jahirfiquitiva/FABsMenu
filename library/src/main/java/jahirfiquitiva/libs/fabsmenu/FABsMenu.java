@@ -40,6 +40,7 @@ import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -67,6 +68,7 @@ public class FABsMenu extends ViewGroup {
     public static final int EXPAND_RIGHT = 3;
     public static final int LABELS_ON_LEFT_SIDE = 0;
     public static final int LABELS_ON_RIGHT_SIDE = 1;
+    private static final String TAG = FABsMenu.class.getSimpleName();
     private static final float COLLAPSED_PLUS_ROTATION = 0f;
     private static final float EXPANDED_PLUS_ROTATION = 90f + 45f;
     private static Interpolator expandInterpolator = new OvershootInterpolator();
@@ -115,17 +117,16 @@ public class FABsMenu extends ViewGroup {
     }
 
     private void init(Context context, AttributeSet attributeSet) {
+        buttonSpacing = (int) DimensionUtils.convertDpToPixel(16, context);
+        labelsMargin = getResources().getDimensionPixelSize(R.dimen.fab_labels_margin);
+        labelsVerticalOffset = (int) DimensionUtils.convertDpToPixel(-1.5f, context);
+
+        touchDelegateGroup = new TouchDelegateGroup(this);
+        setTouchDelegate(touchDelegateGroup);
+
+        TypedArray attr = context.obtainStyledAttributes(attributeSet, R.styleable.FABsMenu,
+                0, 0);
         try {
-            buttonSpacing = (int) DimensionUtils.convertDpToPixel(16, context);
-            labelsMargin = getResources().getDimensionPixelSize(R.dimen.fab_labels_margin);
-            labelsVerticalOffset = (int) DimensionUtils.convertDpToPixel(-1.5f, context);
-
-            touchDelegateGroup = new TouchDelegateGroup(this);
-            setTouchDelegate(touchDelegateGroup);
-
-            TypedArray attr = context.obtainStyledAttributes(attributeSet, R.styleable.FABsMenu,
-                                                             0, 0);
-
             menuMargins = attr.getDimensionPixelSize(R.styleable.FABsMenu_fab_menuMargins, 0);
 
             menuTopMargin = attr.getDimensionPixelSize(R.styleable.FABsMenu_fab_menuTopMargin,
@@ -152,7 +153,10 @@ public class FABsMenu extends ViewGroup {
                                                         : (int) DimensionUtils
                                                                 .convertDpToPixel(16, context));
 
-            menuButtonIcon = attr.getDrawable(R.styleable.FABsMenu_fab_moreButtonPlusIcon);
+            int drawableId = attr.getResourceId(R.styleable.FABsMenu_fab_moreButtonPlusIcon, 0);
+            if(drawableId != 0){
+                menuButtonIcon = VectorDrawableCompat.create(getResources(), drawableId, context.getTheme());
+            }
 
             menuButtonColor = attr.getColor(R.styleable.FABsMenu_fab_moreButtonBackgroundColor,
                                             getColor(android.R.color.holo_blue_dark));
@@ -165,18 +169,20 @@ public class FABsMenu extends ViewGroup {
             expandDirection = attr.getInt(R.styleable.FABsMenu_fab_expandDirection, EXPAND_UP);
 
             labelsPosition = attr.getInt(R.styleable.FABsMenu_fab_labelsPosition,
-                                         isRtl() ? LABELS_ON_RIGHT_SIDE : LABELS_ON_LEFT_SIDE);
+                    isRtl() ? LABELS_ON_RIGHT_SIDE : LABELS_ON_LEFT_SIDE);
 
-            attr.recycle();
 
-            if (menuListener == null) {
-                setMenuListener(new FABsMenuListener() {
-                });
-            }
-            createMenuButton(context);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.w(TAG, "Failure reading attributes", e);
+        } finally {
+            attr.recycle();
         }
+
+        if (menuListener == null) {
+            setMenuListener(new FABsMenuListener() {
+            });
+        }
+        createMenuButton(context);
     }
 
     private boolean expandsHorizontally() {
@@ -235,7 +241,7 @@ public class FABsMenu extends ViewGroup {
     public void addButton(TitleFAB button, int index) throws IllegalArgumentException {
         if (buttonsCount >= 6)
             throw new IllegalArgumentException("A floating action buttons menu should have no " +
-                                                       "more than six options.");
+                    "more than six options.");
         addView(button, index);
         buttonsCount += 1;
         createLabels();
@@ -243,7 +249,7 @@ public class FABsMenu extends ViewGroup {
             show(false);
         }
         if (buttonsCount < 3)
-            Log.w("FABsMenu", "A floating action buttons menu should have at least three options");
+            Log.w(TAG, "A floating action buttons menu should have at least three options");
     }
 
     public void addButton(TitleFAB button) throws IllegalArgumentException {
@@ -284,7 +290,7 @@ public class FABsMenu extends ViewGroup {
             buttonsCount -= 1;
             if (buttonsCount <= 1) hide();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "Failure removing Button", e);
         }
     }
 
@@ -896,7 +902,7 @@ public class FABsMenu extends ViewGroup {
             Drawable icon = Drawable.createFromStream(inputStream, uri.toString());
             if (icon != null) setMenuButtonIcon(icon);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "Failure setting MenuButton icon", e);
         }
     }
 
@@ -907,7 +913,7 @@ public class FABsMenu extends ViewGroup {
             else throw new NullPointerException(
                     "The icon you try to assign to FABsMenu does not exist");
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "Failure setting MenuButton icon", e);
         }
     }
 
@@ -993,7 +999,7 @@ public class FABsMenu extends ViewGroup {
         try {
             setMenuButtonIcon(new BitmapDrawable(getResources(), bitmap));
         } catch (Exception e) {
-            e.printStackTrace();
+           Log.e(TAG, "Failure setting MenuButton icon", e);
         }
     }
 
