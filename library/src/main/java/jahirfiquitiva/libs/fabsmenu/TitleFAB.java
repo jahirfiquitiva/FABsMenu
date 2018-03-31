@@ -98,7 +98,7 @@ public class TitleFAB extends FloatingActionButton {
             titleTextPadding =
                     attr.getDimensionPixelSize(R.styleable.TitleFAB_fab_title_textPadding,
                             (int) DimensionUtils.convertDpToPixel(8, context));
-            fabSize = attr.getInt(R.styleable.TitleFAB_fabSize, fabSize);
+            fabSize = attr.getInt(R.styleable.FloatingActionButton_fabSize, fabSize);
         } catch (Exception e) {
             Log.w(TAG, "Failure reading attributes", e);
         } finally {
