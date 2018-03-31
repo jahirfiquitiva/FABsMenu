@@ -28,12 +28,6 @@
         <attr name="fab_title_textPadding" format="dimension"/>
         <attr name="fab_title_cornerRadius" format="dimension"/>
         <attr name="fab_enableTitleClick" format="boolean"/>
-        <attr name="fabSize" format="enum">
-            <enum name="auto" value="-1"/>
-            <enum name="normal" value="0"/>
-            <enum name="mini" value="1"/>
-        </attr>
-
     </declare-styleable>
 
     <declare-styleable name="FABsMenu">
