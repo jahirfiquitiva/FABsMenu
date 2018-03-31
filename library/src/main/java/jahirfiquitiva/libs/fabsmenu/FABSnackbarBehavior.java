@@ -49,6 +49,7 @@ public class FABSnackbarBehavior extends CoordinatorLayout.Behavior<View> {
 
     private float mTranslationY;
 
+    @SuppressWarnings("WeakerAccess")
     public FABSnackbarBehavior() {
         super();
     }

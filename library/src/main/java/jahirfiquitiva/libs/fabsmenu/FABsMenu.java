@@ -60,8 +60,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @SuppressWarnings("unused")
-@CoordinatorLayout.DefaultBehavior(FABSnackbarBehavior.class)
-public class FABsMenu extends ViewGroup {
+public class FABsMenu extends ViewGroup implements CoordinatorLayout.AttachedBehavior {
     public static final int EXPAND_UP = 0;
     public static final int EXPAND_DOWN = 1;
     public static final int EXPAND_LEFT = 2;
@@ -101,6 +100,36 @@ public class FABsMenu extends ViewGroup {
     private boolean animating = false;
     private AnimatorSet expandAnimation = new AnimatorSet().setDuration(animationDuration);
     private AnimatorSet collapseAnimation = new AnimatorSet().setDuration(animationDuration);
+    private AnimatorListenerAdapter collapseListener = new AnimatorListenerAdapter() {
+        @Override
+        public void onAnimationStart(Animator animation) {
+            super.onAnimationStart(animation);
+            setMenuButtonsClickable(false);
+        }
+
+        @Override
+        public void onAnimationEnd(Animator animation) {
+            super.onAnimationEnd(animation);
+            setMenuButtonsVisibility(false);
+            animating = false;
+            expanded = false;
+        }
+    };
+    private AnimatorListenerAdapter expandListener = new AnimatorListenerAdapter() {
+        @Override
+        public void onAnimationStart(Animator animation) {
+            super.onAnimationStart(animation);
+            setMenuButtonsVisibility(true);
+        }
+
+        @Override
+        public void onAnimationEnd(Animator animation) {
+            super.onAnimationEnd(animation);
+            setMenuButtonsClickable(true);
+            animating = false;
+            expanded = true;
+        }
+    };
 
     public FABsMenu(Context context) {
         this(context, null);
@@ -125,7 +154,7 @@ public class FABsMenu extends ViewGroup {
         setTouchDelegate(touchDelegateGroup);
 
         TypedArray attr = context.obtainStyledAttributes(attributeSet, R.styleable.FABsMenu,
-                0, 0);
+                                                         0, 0);
         try {
             menuMargins = attr.getDimensionPixelSize(R.styleable.FABsMenu_fab_menuMargins, 0);
 
@@ -154,8 +183,9 @@ public class FABsMenu extends ViewGroup {
                                                                 .convertDpToPixel(16, context));
 
             int drawableId = attr.getResourceId(R.styleable.FABsMenu_fab_moreButtonPlusIcon, 0);
-            if(drawableId != 0){
-                menuButtonIcon = VectorDrawableCompat.create(getResources(), drawableId, context.getTheme());
+            if (drawableId != 0) {
+                menuButtonIcon =
+                        VectorDrawableCompat.create(getResources(), drawableId, context.getTheme());
             }
 
             menuButtonColor = attr.getColor(R.styleable.FABsMenu_fab_moreButtonBackgroundColor,
@@ -169,7 +199,7 @@ public class FABsMenu extends ViewGroup {
             expandDirection = attr.getInt(R.styleable.FABsMenu_fab_expandDirection, EXPAND_UP);
 
             labelsPosition = attr.getInt(R.styleable.FABsMenu_fab_labelsPosition,
-                    isRtl() ? LABELS_ON_RIGHT_SIDE : LABELS_ON_LEFT_SIDE);
+                                         isRtl() ? LABELS_ON_RIGHT_SIDE : LABELS_ON_LEFT_SIDE);
 
 
         } catch (Exception e) {
@@ -241,7 +271,7 @@ public class FABsMenu extends ViewGroup {
     public void addButton(TitleFAB button, int index) throws IllegalArgumentException {
         if (buttonsCount >= 6)
             throw new IllegalArgumentException("A floating action buttons menu should have no " +
-                    "more than six options.");
+                                                       "more than six options.");
         addView(button, index);
         buttonsCount += 1;
         createLabels();
@@ -256,7 +286,7 @@ public class FABsMenu extends ViewGroup {
         addButton(button, buttonsCount - 1);
     }
 
-    @SuppressWarnings("UnnecessaryReturnStatement")
+    @SuppressWarnings({"UnnecessaryReturnStatement", "SameParameterValue"})
     private void removeButtonInternal(int index, boolean throwException)
             throws NullPointerException, IllegalArgumentException {
         View child = getChildAt(index);
@@ -277,6 +307,7 @@ public class FABsMenu extends ViewGroup {
     }
 
     @SuppressLint("ResourceType")
+    @SuppressWarnings("SameParameterValue")
     public void removeButton(int index) throws IndexOutOfBoundsException {
         removeButtonInternal(index, false);
     }
@@ -619,22 +650,6 @@ public class FABsMenu extends ViewGroup {
         collapse(true);
     }
 
-    private AnimatorListenerAdapter collapseListener = new AnimatorListenerAdapter() {
-        @Override
-        public void onAnimationStart(Animator animation) {
-            super.onAnimationStart(animation);
-            setMenuButtonsClickable(false);
-        }
-
-        @Override
-        public void onAnimationEnd(Animator animation) {
-            super.onAnimationEnd(animation);
-            setMenuButtonsVisibility(false);
-            animating = false;
-            expanded = false;
-        }
-    };
-
     private void collapse(boolean immediately) {
         if (animating) return;
         if (expanded) {
@@ -659,22 +674,6 @@ public class FABsMenu extends ViewGroup {
             expand();
         }
     }
-
-    private AnimatorListenerAdapter expandListener = new AnimatorListenerAdapter() {
-        @Override
-        public void onAnimationStart(Animator animation) {
-            super.onAnimationStart(animation);
-            setMenuButtonsVisibility(true);
-        }
-
-        @Override
-        public void onAnimationEnd(Animator animation) {
-            super.onAnimationEnd(animation);
-            setMenuButtonsClickable(true);
-            animating = false;
-            expanded = true;
-        }
-    };
 
     public void expand() {
         if (animating) return;
@@ -763,6 +762,8 @@ public class FABsMenu extends ViewGroup {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
+    @SuppressWarnings("SameParameterValue")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         return false;
@@ -772,6 +773,7 @@ public class FABsMenu extends ViewGroup {
         show(false);
     }
 
+    @SuppressWarnings("SameParameterValue")
     public void show(boolean expand) {
         setVisibility(View.VISIBLE);
         menuButton.show();
@@ -782,6 +784,7 @@ public class FABsMenu extends ViewGroup {
         hide(true);
     }
 
+    @SuppressWarnings("SameParameterValue")
     public void hide(boolean collapse) {
         if (collapse) collapse();
         menuButton.hide();
@@ -896,6 +899,14 @@ public class FABsMenu extends ViewGroup {
         return menuButtonIcon;
     }
 
+    public void setMenuButtonIcon(@NonNull Bitmap bitmap) {
+        try {
+            setMenuButtonIcon(new BitmapDrawable(getResources(), bitmap));
+        } catch (Exception e) {
+            Log.e(TAG, "Failure setting MenuButton icon", e);
+        }
+    }
+
     public void setMenuButtonIcon(@NonNull Uri uri) {
         try {
             InputStream inputStream = getContext().getContentResolver().openInputStream(uri);
@@ -995,14 +1006,6 @@ public class FABsMenu extends ViewGroup {
         setMenuListener(menuListener);
     }
 
-    public void setMenuButtonIcon(@NonNull Bitmap bitmap) {
-        try {
-            setMenuButtonIcon(new BitmapDrawable(getResources(), bitmap));
-        } catch (Exception e) {
-           Log.e(TAG, "Failure setting MenuButton icon", e);
-        }
-    }
-
     public void setLabelsVerticalOffset(int labelsVerticalOffset) {
         this.labelsVerticalOffset = labelsVerticalOffset;
     }
@@ -1015,6 +1018,7 @@ public class FABsMenu extends ViewGroup {
         setAnimationDuration(animationDuration, true);
     }
 
+    @SuppressWarnings("SameParameterValue")
     public void setAnimationDuration(int animationDuration, boolean applyToOverlay) {
         if (applyToOverlay) {
             final ViewParent parent = getParent();
@@ -1025,11 +1029,19 @@ public class FABsMenu extends ViewGroup {
         this.animationDuration = animationDuration;
     }
 
+    @NonNull
+    @Override
+    public CoordinatorLayout.Behavior getBehavior() {
+        return new FABSnackbarBehavior();
+    }
+
+    @SuppressWarnings("WeakerAccess")
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({EXPAND_UP, EXPAND_DOWN, EXPAND_LEFT, EXPAND_RIGHT})
     public @interface EXPAND_DIRECTION {
     }
 
+    @SuppressWarnings("WeakerAccess")
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({LABELS_ON_LEFT_SIDE, LABELS_ON_RIGHT_SIDE})
     public @interface LABELS_POSITION {
@@ -1038,7 +1050,7 @@ public class FABsMenu extends ViewGroup {
     private static class RotatingDrawable extends LayerDrawable {
         private float mRotation;
 
-        public RotatingDrawable(Drawable drawable) {
+        RotatingDrawable(Drawable drawable) {
             super(new Drawable[]{drawable});
         }
 
@@ -1048,7 +1060,7 @@ public class FABsMenu extends ViewGroup {
         }
 
         @SuppressWarnings("UnusedDeclaration")
-        public void setRotation(float rotation) {
+        void setRotation(float rotation) {
             mRotation = rotation;
             invalidateSelf();
         }
@@ -1077,7 +1089,7 @@ public class FABsMenu extends ViewGroup {
         };
         public boolean expanded;
 
-        public SavedState(Parcelable parcel) {
+        SavedState(Parcelable parcel) {
             super(parcel);
         }
 
@@ -1101,7 +1113,7 @@ public class FABsMenu extends ViewGroup {
         private ObjectAnimator mCollapseAlpha = new ObjectAnimator();
         private boolean animationsSetToPlay;
 
-        public LayoutParams(ViewGroup.LayoutParams source) {
+        LayoutParams(ViewGroup.LayoutParams source) {
             super(source);
 
             mExpandDir.setInterpolator(expandInterpolator);
@@ -1131,7 +1143,7 @@ public class FABsMenu extends ViewGroup {
             }
         }
 
-        public void setAnimationsTarget(View view) {
+        void setAnimationsTarget(View view) {
             mCollapseAlpha.setTarget(view);
             mCollapseDir.setTarget(view);
             mExpandAlpha.setTarget(view);

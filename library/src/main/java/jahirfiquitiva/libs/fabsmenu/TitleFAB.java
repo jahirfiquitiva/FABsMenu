@@ -18,6 +18,7 @@ package jahirfiquitiva.libs.fabsmenu;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -81,6 +82,7 @@ public class TitleFAB extends FloatingActionButton {
         init(context, attrs);
     }
 
+    @SuppressLint("PrivateResource")
     void init(Context context, AttributeSet attributeSet) {
         int fabSize = TitleFAB.SIZE_MINI;
         TypedArray attr =
@@ -89,16 +91,16 @@ public class TitleFAB extends FloatingActionButton {
             title = attr.getString(R.styleable.TitleFAB_fab_title);
             titleClickEnabled = attr.getBoolean(R.styleable.TitleFAB_fab_enableTitleClick, true);
             titleBackgroundColor = attr.getInt(R.styleable.TitleFAB_fab_title_backgroundColor,
-                    ContextCompat
-                            .getColor(context, android.R.color.white));
+                                               ContextCompat
+                                                       .getColor(context, android.R.color.white));
             titleTextColor = attr.getInt(R.styleable.TitleFAB_fab_title_textColor,
-                    ContextCompat.getColor(context, android.R.color.black));
+                                         ContextCompat.getColor(context, android.R.color.black));
             titleCornerRadius =
                     attr.getDimensionPixelSize(R.styleable.TitleFAB_fab_title_cornerRadius, -1);
             titleTextPadding =
                     attr.getDimensionPixelSize(R.styleable.TitleFAB_fab_title_textPadding,
-                            (int) DimensionUtils.convertDpToPixel(8, context));
-            fabSize = attr.getInt(R.styleable.TitleFAB_fabSize, fabSize);
+                                               (int) DimensionUtils.convertDpToPixel(8, context));
+            fabSize = attr.getInt(R.styleable.FloatingActionButton_fabSize, fabSize);
         } catch (Exception e) {
             Log.w(TAG, "Failure reading attributes", e);
         } finally {
@@ -118,19 +120,19 @@ public class TitleFAB extends FloatingActionButton {
     }
 
     @Override
+    public void setOnClickListener(@Nullable OnClickListener l) {
+        this.clickListener = l;
+        setClickable(l != null);
+        super.setOnClickListener(l);
+    }
+
+    @Override
     public void setClickable(boolean clickable) {
         super.setClickable(clickable);
         setFocusable(clickable);
         View label = getLabelView();
         if (label != null)
             label.setOnClickListener(titleClickEnabled && clickable ? clickListener : null);
-    }
-
-    @Override
-    public void setOnClickListener(@Nullable OnClickListener l) {
-        this.clickListener = l;
-        setClickable(l != null);
-        super.setOnClickListener(l);
     }
 
     LabelView getLabelView() {
@@ -213,7 +215,7 @@ public class TitleFAB extends FloatingActionButton {
         LabelView label = getLabelView();
         if (label != null && label.getContent() != null) {
             label.getContent().setPadding(titleTextPadding, titleTextPadding / 2, titleTextPadding,
-                    titleTextPadding / 2);
+                                          titleTextPadding / 2);
         }
     }
 

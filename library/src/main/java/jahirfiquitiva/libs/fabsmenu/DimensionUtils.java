@@ -20,7 +20,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
 
-public class DimensionUtils {
+class DimensionUtils {
     /**
      * This method converts dp unit to equivalent pixels, depending on device density.
      *
@@ -29,9 +29,10 @@ public class DimensionUtils {
      *         pixels
      * @param context
      *         Context to get resources and device specific display metrics
+     *
      * @return A float value to represent px equivalent to dp depending on device density
      */
-    public static float convertDpToPixel(float dp, Context context) {
+    static float convertDpToPixel(float dp, Context context) {
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
         return dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
@@ -44,9 +45,10 @@ public class DimensionUtils {
      *         A value in px (pixels) unit. Which we need to convert into db
      * @param context
      *         Context to get resources and device specific display metrics
+     *
      * @return A float value to represent dp equivalent to px value
      */
-    public static float convertPixelsToDp(float px, Context context) {
+    static float convertPixelsToDp(float px, Context context) {
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
         return px / ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);

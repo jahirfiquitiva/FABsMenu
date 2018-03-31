@@ -32,8 +32,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-@CoordinatorLayout.DefaultBehavior(FABSnackbarBehavior.class)
-public class FABsMenuLayout extends FrameLayout {
+@SuppressWarnings("unused")
+public class FABsMenuLayout extends FrameLayout implements CoordinatorLayout.AttachedBehavior {
 
     private static final String TAG = FABsMenuLayout.class.getSimpleName();
     @ColorInt
@@ -59,16 +59,17 @@ public class FABsMenuLayout extends FrameLayout {
 
     private void init(Context context, AttributeSet attrs) {
         TypedArray attr = context.getTheme().obtainStyledAttributes(attrs,
-                R.styleable.FABsMenuLayout, 0,
-                0);
+                                                                    R.styleable.FABsMenuLayout, 0,
+                                                                    0);
         try {
             overlayColor = attr.getColor(R.styleable.FABsMenuLayout_fabs_menu_overlayColor,
-                                      Color.parseColor("#4d000000"));
-            clickableOverlay = attr.getBoolean(R.styleable.FABsMenuLayout_fabs_menu_clickableOverlay,
-                                            true);
+                                         Color.parseColor("#4d000000"));
+            clickableOverlay =
+                    attr.getBoolean(R.styleable.FABsMenuLayout_fabs_menu_clickableOverlay,
+                                    true);
         } catch (Exception e) {
-            Log.e(TAG, "Failure setting MenuButton icon", e);
-        }finally {
+            Log.e(TAG, "Failure configuring FABsMenuLayout overlay", e);
+        } finally {
             attr.recycle();
         }
 
@@ -156,5 +157,11 @@ public class FABsMenuLayout extends FrameLayout {
                         }
                     }
                 }).start();
+    }
+
+    @NonNull
+    @Override
+    public CoordinatorLayout.Behavior getBehavior() {
+        return new FABSnackbarBehavior();
     }
 }
