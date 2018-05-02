@@ -40,6 +40,16 @@ This library uses the design library FABs but wraps them inside a ViewGroup to m
 
 ---
 
+## Deprecated
+
+Unfortunately, due to my limited time between work+University, I don't really find the way to provide proper support for this library. I really appreciate everyone that has been using it and that might continue using it, but, at least for now, this library is deprecated.
+
+If you want to use a similar and more frequently updated library, please refer to @leinardi 's [FloatingActionSpeedDial](https://github.com/leinardi/FloatingActionButtonSpeedDial)
+
+Thanks again for the amazing support. :raised_hands:
+
+---
+
 # Preview
 
 ![FABs Menu Preview](https://github.com/jahirfiquitiva/FABsMenu/raw/master/preview/preview.gif)
