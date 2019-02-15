@@ -14,7 +14,7 @@ Just a simple library to use a menu of `FloatingActionButton`s from Design Suppo
 <img src="http://www.jahirfiquitiva.com/share/download_sample.svg?maxAge=432000" width="200"/>
 </a>
 
-<a target="_blank" href="http://www.jahirfiquitiva.me/support/">
+<a target="_blank" href="http://www.jahirfiquitiva.com/support/">
 <img src="http://www.jahirfiquitiva.com/share/support_my_work.svg?maxAge=432000" width="200"/>
 </a>
 
@@ -264,7 +264,7 @@ menu.attachToRecyclerView(rv);
 
 # Developed by
 
-### [Jahir Fiquitiva](https://www.jahirfiquitiva.me/)
+### [Jahir Fiquitiva](https://www.jahirfiquitiva.com/)
 
 [![Follow on GitHub](https://img.shields.io/github/followers/jahirfiquitiva.svg?style=social&label=Follow)](https://github.com/jahirfiquitiva)
 [![Twitter Follow](https://img.shields.io/twitter/follow/jahirfiquitiva.svg?style=social)](https://twitter.com/jahirfiquitiva)
@@ -272,8 +272,8 @@ menu.attachToRecyclerView(rv);
 
 If you found this app/library helpful and want to thank me, you can:
 
-<a target="_blank" href="http://www.jahirfiquitiva.me/support/">
-<img src="http://jahirfiquitiva.me/share/support_my_work.svg?maxAge=432000" width="200"/>
+<a target="_blank" href="http://www.jahirfiquitiva.com/support/">
+<img src="http://www.jahirfiquitiva.com/share/support_my_work.svg?maxAge=432000" width="200"/>
 </a>
 
 **Thanks in advance!** :pray:
