@@ -1,4 +1,4 @@
-<img src="https://www.jahirfiquitiva.me/assets/img/portfolio/libs/fabsmenu.png" width="192" align="right" hspace="20" />
+<img src="https://www.jahirfiquitiva.com/assets/images/projects/android/fabsmenu.png" width="192" align="right" hspace="20" />
 
 FloatingActionButtons Menu (FABsMenu)
 ======
@@ -11,11 +11,11 @@ FloatingActionButtons Menu (FABsMenu)
 Just a simple library to use a menu of `FloatingActionButton`s from Design Support Library that follows [Material Design guidelines](https://material.io/guidelines/components/buttons-floating-action-button.html#buttons-floating-action-button-transitions)
 
 <a target="_blank" href="http://bit.ly/FABsMenuAPK">
-<img src="http://jahirfiquitiva.me/share/download_sample.svg?maxAge=432000" width="200"/>
+<img src="http://www.jahirfiquitiva.com/share/download_sample.svg?maxAge=432000" width="200"/>
 </a>
 
 <a target="_blank" href="http://www.jahirfiquitiva.me/support/">
-<img src="http://jahirfiquitiva.me/share/support_my_work.svg?maxAge=432000" width="200"/>
+<img src="http://www.jahirfiquitiva.com/share/support_my_work.svg?maxAge=432000" width="200"/>
 </a>
 
 ## Show some  :blue_heart:
