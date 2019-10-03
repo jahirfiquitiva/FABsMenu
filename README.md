@@ -10,7 +10,7 @@ FloatingActionButtons Menu (FABsMenu)
 
 Just a simple library to use a menu of `FloatingActionButton`s from Design Support Library that follows [Material Design guidelines](https://material.io/guidelines/components/buttons-floating-action-button.html#buttons-floating-action-button-transitions)
 
-<a target="_blank" href="http://bit.ly/FABsMenuAPK">
+<a target="_blank" href="http://bit.ly/DLFABsMenuAPK">
 <img src="http://www.jahirfiquitiva.com/share/download_sample.svg?maxAge=432000" width="200"/>
 </a>
 
